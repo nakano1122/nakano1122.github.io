@@ -3,3 +3,5 @@ languageCode = 'en-us'
 title = 'ポートフォリオ'
 
 theme = "hugo-theme-stack"
+
+publishDir = "docs"
