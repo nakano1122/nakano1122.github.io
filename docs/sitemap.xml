@@ -2,10 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://nakano1122.github.io/</loc>
+    <lastmod>2024-02-14T12:34:52+09:00</lastmod>
+  </url><url>
+    <loc>https://nakano1122.github.io/post/</loc>
+    <lastmod>2024-02-14T12:34:52+09:00</lastmod>
+  </url><url>
+    <loc>https://nakano1122.github.io/post/app_development/</loc>
+    <lastmod>2024-02-14T12:34:52+09:00</lastmod>
+  </url><url>
+    <loc>https://nakano1122.github.io/post/qualification1/</loc>
+    <lastmod>2024-02-14T12:26:51+09:00</lastmod>
+  </url><url>
+    <loc>https://nakano1122.github.io/post/toeic/</loc>
+    <lastmod>2024-02-14T12:20:07+09:00</lastmod>
+  </url><url>
     <loc>https://nakano1122.github.io/categories/</loc>
   </url><url>
     <loc>https://nakano1122.github.io/tags/</loc>
-  </url><url>
-    <loc>https://nakano1122.github.io/</loc>
   </url>
 </urlset>
