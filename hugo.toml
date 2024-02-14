@@ -1,5 +1,5 @@
 baseURL = 'https://nakano1122.github.io/'
-languageCode = 'en-us'
+languageCode = 'ja'
 title = 'Akito Nakano 中野暁登'
 
 theme = "hugo-theme-stack"
