@@ -1,7 +1,7 @@
 ---
 title: 'アプリ開発経験'
 date: 2024-02-14T12:34:52+09:00
-image: luca-bravo-alS7ewQ41M8-unsplash.jpg
+image: luca-bravo-alS7ewQ41M8-unsplash1.jpg
 draft: false
 ---
 
