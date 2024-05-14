@@ -1,7 +1,9 @@
 baseURL = 'https://nakano1122.github.io/'
 languageCode = 'ja'
 title = 'Akito Nakano 中野暁登'
-
 theme = "hugo-theme-stack"
 
 publishDir = "docs"
+
+[params]
+github = "https://github.com/nakano1122"
