@@ -1,10 +1,125 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>ポートフォリオ</title>
-        <link>https://nakano1122.github.io/</link>
-        <description>Recent content on ポートフォリオ</description>
+        <title></title>
+        <link>/</link>
+        <description>Recent content on </description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language><atom:link href="https://nakano1122.github.io/index.xml" rel="self" type="application/rss+xml" />
+        <language>en</language>
+        <lastBuildDate>Thu, 29 Aug 2024 20:23:12 +0900</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>インターンシップ</title>
+        <link>/internship/six1/</link>
+        <pubDate>Thu, 29 Aug 2024 20:23:12 +0900</pubDate>
+        
+        <guid>/internship/six1/</guid>
+        <description>&lt;img src="/internship/six1/matt-le-SJSpo9hQf7s-unsplash.jpg" alt="Featured image of post インターンシップ" /&gt;&lt;h2 id=&#34;シックスワン株式会社&#34;&gt;シックスワン株式会社&lt;/h2&gt;
+&lt;h3 id=&#34;期間&#34;&gt;期間&lt;/h3&gt;
+&lt;p&gt;2024/07 ～ 現在&lt;/p&gt;
+&lt;h3 id=&#34;役職&#34;&gt;役職&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;システム開発（長期インターン）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;会社-hp&#34;&gt;会社 HP&lt;/h3&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://six1.jp/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://six1.jp/&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>About</title>
+        <link>/page/about/</link>
+        <pubDate>Wed, 22 May 2024 00:00:00 +0000</pubDate>
+        
+        <guid>/page/about/</guid>
+        <description>&lt;h3 id=&#34;所属&#34;&gt;所属&lt;/h3&gt;
+&lt;p&gt;静岡大学情報学部行動情報学科&lt;/p&gt;
+&lt;h3 id=&#34;学年&#34;&gt;学年&lt;/h3&gt;
+&lt;p&gt;3年&lt;/p&gt;
+&lt;h3 id=&#34;趣味&#34;&gt;趣味&lt;/h3&gt;
+&lt;p&gt;野球（12年）&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>料理系SNSの開発</title>
+        <link>/develop/mealshare/</link>
+        <pubDate>Wed, 14 Feb 2024 12:34:52 +0900</pubDate>
+        
+        <guid>/develop/mealshare/</guid>
+        <description>&lt;img src="/develop/mealshare/luca-bravo-alS7ewQ41M8-unsplash1.jpg" alt="Featured image of post 料理系SNSの開発" /&gt;&lt;h2 id=&#34;料理系-sns-meal-share&#34;&gt;料理系 SNS 「meal share」&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;URL: &lt;a class=&#34;link&#34; href=&#34;https://mealshare-16763142a330.herokuapp.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://mealshare-16763142a330.herokuapp.com&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;アプリの概要&#34;&gt;アプリの概要&lt;/h3&gt;
+&lt;p&gt;料理投稿を閲覧できる SNS です。料理投稿、投稿の閲覧が可能です。料理を閲覧する際の絞り込み機能にこだわっており、料理名による検索のみならず、投稿に付属するタグやいいね数などのランキングから検索することもができます。&lt;/p&gt;
+&lt;h3 id=&#34;開発経緯&#34;&gt;開発経緯&lt;/h3&gt;
+&lt;p&gt;オンラインプログラミングスクールでオリジナルの成果物を作ることになり、作成した。&lt;/p&gt;
+&lt;h3 id=&#34;開発期間&#34;&gt;開発期間&lt;/h3&gt;
+&lt;p&gt;2023/09 ～ 2023/12（2024/12 にデプロイ済み）&lt;/p&gt;
+&lt;h3 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール&lt;/h3&gt;
+&lt;p&gt;PHP, tailwindCSS, AWS(Cloud9)&lt;/p&gt;
+&lt;h3 id=&#34;開発時に意識したこと&#34;&gt;開発時に意識したこと&lt;/h3&gt;
+&lt;p&gt;投稿するユーザには閲覧者からレビューやいいねをもらうことで承認欲求を満たすこと、投稿を閲覧するユーザには献立を考える際のサポートになることを目標としており、多くのユーザに使用していただけるような工夫をしています。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>取得した資格</title>
+        <link>/post/qualification/</link>
+        <pubDate>Wed, 14 Feb 2024 12:26:51 +0900</pubDate>
+        
+        <guid>/post/qualification/</guid>
+        <description>&lt;img src="/post/qualification/helena-hertz-wWZzXlDpMog-unsplash.jpg" alt="Featured image of post 取得した資格" /&gt;&lt;p&gt;基本情報技術者試験合格（2023/09/14）&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>TOEIC</title>
+        <link>/post/toeic/</link>
+        <pubDate>Wed, 14 Feb 2024 12:20:07 +0900</pubDate>
+        
+        <guid>/post/toeic/</guid>
+        <description>&lt;img src="/post/toeic/the-creative-exchange-d2zvqp3fpro-unsplash.jpg" alt="Featured image of post TOEIC" /&gt;&lt;h3 id=&#34;toeic-受験履歴&#34;&gt;TOEIC 受験履歴&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;１回目：565 点&lt;/li&gt;
+&lt;li&gt;２回目：565 点&lt;/li&gt;
+&lt;li&gt;３回目：660 点&lt;/li&gt;
+&lt;li&gt;４回目：695 点&lt;/li&gt;
+&lt;li&gt;５回目：695 点&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/img/toeic_scores_now.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;TOEICスコア推移&#34;
+	
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Archives</title>
+        <link>/page/archives/</link>
+        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+        
+        <guid>/page/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Links</title>
+        <link>/page/links/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>/page/links/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Search</title>
+        <link>/page/search/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>/page/search/</guid>
+        <description></description>
+        </item>
+        
     </channel>
 </rss>
