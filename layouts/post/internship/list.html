@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  
+  {{ if .Content }}
+    <div class="section-content">
+      {{ .Content | safeHTML }}
+    </div>
+  {{ end }}
+
+  {{ range .Pages }}
+    <article>
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <p>{{ .Summary }}</p>
+      <p><a href="{{ .RelPermalink }}">Read more</a></p>
+    </article>
+  {{ else }}
+    <p>No posts found in this section.</p>
+  {{ end }}
+{{ end }}

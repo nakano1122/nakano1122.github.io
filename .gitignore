@@ -23,8 +23,9 @@ _testmain.go
 *.test
 
 public
-themes
+themes/
 resources
 
-assets/jsconfig.json
+docs/
+assets/
 .DS_Store
