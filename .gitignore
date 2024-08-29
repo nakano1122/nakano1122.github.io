@@ -22,10 +22,7 @@ _testmain.go
 *.exe
 *.test
 
-public
 themes/
 resources
 
-docs/
-assets/
 .DS_Store

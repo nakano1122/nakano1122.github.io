@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>アプリ開発経験 on Akito Nakano 中野暁登</title>
+        <link>https://nakano1122.github.io/post/develop/</link>
+        <description>Recent content in アプリ開発経験 on Akito Nakano 中野暁登</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>ja</language>
+        <lastBuildDate>Wed, 14 Feb 2024 12:34:52 +0900</lastBuildDate><atom:link href="https://nakano1122.github.io/post/develop/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>mealshare</title>
+        <link>https://nakano1122.github.io/develop/mealshare/</link>
+        <pubDate>Wed, 14 Feb 2024 12:34:52 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/develop/mealshare/</guid>
+        <description>&lt;img src="https://nakano1122.github.io/luca-bravo-alS7ewQ41M8-unsplash1.jpg" alt="Featured image of post mealshare" /&gt;&lt;h2 id=&#34;料理系-sns-meal-share&#34;&gt;料理系 SNS 「meal share」
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;URL: &lt;a class=&#34;link&#34; href=&#34;https://mealshare-16763142a330.herokuapp.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://mealshare-16763142a330.herokuapp.com&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;アプリの概要&#34;&gt;アプリの概要
+&lt;/h3&gt;&lt;p&gt;料理投稿を閲覧できる SNS です。料理投稿、投稿の閲覧が可能です。料理を閲覧する際の絞り込み機能にこだわっており、料理名による検索のみならず、投稿に付属するタグやいいね数などのランキングから検索することもができます。&lt;/p&gt;
+&lt;h3 id=&#34;開発経緯&#34;&gt;開発経緯
+&lt;/h3&gt;&lt;p&gt;オンラインプログラミングスクールでオリジナルの成果物を作ることになり、作成した。&lt;/p&gt;
+&lt;h3 id=&#34;開発期間&#34;&gt;開発期間
+&lt;/h3&gt;&lt;p&gt;2023/09 ～ 2023/12（2024/12 にデプロイ済み）&lt;/p&gt;
+&lt;h3 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール
+&lt;/h3&gt;&lt;p&gt;PHP, tailwindCSS, AWS(Cloud9)&lt;/p&gt;
+&lt;h3 id=&#34;開発時に意識したこと&#34;&gt;開発時に意識したこと
+&lt;/h3&gt;&lt;p&gt;投稿するユーザには閲覧者からレビューやいいねをもらうことで承認欲求を満たすこと、投稿を閲覧するユーザには献立を考える際のサポートになることを目標としており、多くのユーザに使用していただけるような工夫をしています。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
