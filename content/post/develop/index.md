@@ -1,6 +1,6 @@
 ---
-title: "料理系SNSの開発"
-url: "develop/mealshare/"
+title: "WEB開発"
+url: "develop"
 date: 2024-02-14T12:34:52+09:00
 image: luca-bravo-alS7ewQ41M8-unsplash1.jpg
 draft: false

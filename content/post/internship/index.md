@@ -1,7 +1,7 @@
 ---
-title: "シックスワン株式会社（長期インターン）"
+title: "インターンシップ"
 description:
-url: "internship/six1"
+url: "internship"
 date: 2024-08-29T20:23:12+09:00
 image: matt-le-SJSpo9hQf7s-unsplash.jpg
 math:
