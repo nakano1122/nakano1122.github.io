@@ -24,7 +24,7 @@ draft: false
 
 ### 使用言語及びツール
 
-PHP, tailwindCSS, AWS(Cloud9)
+PHP, Laravel9, tailwindCSS, AWS(Cloud9)
 
 ### 開発時に意識したこと
 

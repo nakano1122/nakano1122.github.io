@@ -1,33 +1,47 @@
-module:
-  hugoVersion:
-    extended: true
-    min: "0.87.0"
+baseurl: https://nakano1122.github.io/
+languageCode: ja
+theme: hugo-theme-stack
+paginate: 3
+title: Akito Nakano 中野暁登
+publishDir: docs
 
-title: 中野暁登のポートフォリオ
-description: 就活用のポートフォリオサイトです。
+# Theme i18n support
+# Available values: ar, bn, ca, de, el, en, es, fr, hu, id, it, ja, ko, nl, pt-br, th, uk, zh-cn, zh-hk, zh-tw
+DefaultContentLanguage: ja
 
-menu:
-  social:
-    - identifier: github
-      name: GitHub
-      url: https://github.com/nakano1122
-      params:
-        icon: brand-github
-    - identifier: X
-      name: X
-      url: https://x.com/
-      params:
-        icon: brand-x
+# Set hasCJKLanguage to true if DefaultContentLanguage is in [zh-cn ja ko]
+# This will make .Summary and .WordCount behave correctly for CJK languages.
+hasCJKLanguage: false
+
+languages:
+  ja:
+    languageName: 中野 暁登
+    title: 中野 暁登
+    weight: 1
+    params:
+      description: 就活用のポートフォリオサイトです。
+
+services:
+  # Change it to your Disqus shortname before using
+  disqus:
+    shortname: "hugo-theme-stack"
+  # GA Tracking ID
+  googleAnalytics:
+    id:
+
+permalinks:
+  post: /p/:slug/
+  page: /:slug/
 
 params:
   mainSections:
     - post
   featuredImageField: image
   rssFullContent: true
-  favicon:
+  favicon: # e.g.: favicon placed in `static/favicon.ico` of your site folder, then set this field to `/favicon.ico` (`/` is necessary)
 
   footer:
-    since: 2024
+    since: 2023
     customText:
 
   dateFormat:
@@ -35,9 +49,8 @@ params:
     lastUpdated: Jan 02, 2006 15:04 MST
 
   sidebar:
-    compact: false
-    emoji:
-    subtitle: 就活用ポートフォリオ
+    emoji: 🍥
+    subtitle: 就活用のポートフォリオサイトです。
     avatar:
       enabled: true
       local: true
@@ -46,89 +59,24 @@ params:
   article:
     math: false
     toc: true
-    readingTime: true
+    readingTime: false
     license:
       enabled: false
-      default: Licensed under CC BY-NC-SA 4.0
-
-  comments:
-    enabled: false
-    provider: disqus
-
-    disqusjs:
-      shortname:
-      apiUrl:
-      apiKey:
-      admin:
-      adminLabel:
-
-    utterances:
-      repo:
-      issueTerm: pathname
-      label:
-
-    remark42:
-      host:
-      site:
-      locale:
-
-    vssue:
-      platform:
-      owner:
-      repo:
-      clientId:
-      clientSecret:
-      autoCreateIssue: false
-
-    # Waline client configuration see: https://waline.js.org/en/reference/client.html
-    waline:
-      serverURL:
-      lang: ja
-      visitor:
-      avatar:
-      emoji:
-        - https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo
-      requiredMeta:
-        - nick
-        - mail
-      placeholder:
-      locale:
-        admin: Admin
-
-    twikoo:
-      envId:
-      region:
-      path:
-      lang:
-
-    giscus:
-      repo:
-      repoID:
-      category:
-      categoryID:
-      mapping:
-      strict:
-      lightTheme:
-      darkTheme:
-      reactionsEnabled: 1
-      emitMetadata: 0
-      inputPosition:
-      lang:
-
-    gitalk:
-      owner:
-      admin:
-      repo:
-      clientID:
-      clientSecret:
-
-    cusdis:
-      host:
-      id:
 
   widgets:
-    homepage: []
-    page: []
+    homepage:
+      - type: search
+      - type: archives
+        params:
+          limit: 5
+      - type: categories
+        params:
+          limit: 10
+      - type: tag-cloud
+        params:
+          limit: 10
+    page:
+      - type: toc
 
   opengraph:
     twitter:
@@ -156,3 +104,51 @@ params:
       enabled: true
     content:
       enabled: true
+
+### Custom menu
+### See https://stack.jimmycai.com/config/menu
+### To remove about, archive and search page menu item, remove `menu` field from their FrontMatter
+menu:
+  main: []
+
+  social:
+    - identifier: github
+      name: GitHub
+      url: https://github.com/nakano1122
+      params:
+        icon: brand-github
+
+    - identifier: X
+      name: X
+      url: https://x.com/EngiNakana32997
+      params:
+        icon: brand-x
+
+related:
+  includeNewer: true
+  threshold: 60
+  toLower: false
+  indices:
+    - name: tags
+      weight: 100
+
+    - name: categories
+      weight: 200
+
+markup:
+  goldmark:
+    renderer:
+      ## Set to true if you have HTML content inside Markdown
+      unsafe: true
+  tableOfContents:
+    endLevel: 4
+    ordered: true
+    startLevel: 2
+  highlight:
+    noClasses: false
+    codeFences: true
+    guessSyntax: true
+    lineNoStart: 1
+    lineNos: true
+    lineNumbersInTable: true
+    tabWidth: 4

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Akito Nakano 中野暁登</title>
+        <title>中野 暁登</title>
         <link>https://nakano1122.github.io/</link>
-        <description>Recent content on Akito Nakano 中野暁登</description>
+        <description>Recent content on 中野 暁登</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>ja</language>
         <lastBuildDate>Thu, 29 Aug 2024 20:23:12 +0900</lastBuildDate><atom:link href="https://nakano1122.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
@@ -26,10 +26,10 @@
         </item>
         <item>
         <title>About</title>
-        <link>https://nakano1122.github.io/page/about/</link>
+        <link>https://nakano1122.github.io/about/</link>
         <pubDate>Wed, 22 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://nakano1122.github.io/page/about/</guid>
+        <guid>https://nakano1122.github.io/about/</guid>
         <description>&lt;h3 id=&#34;所属&#34;&gt;所属
 &lt;/h3&gt;&lt;p&gt;静岡大学情報学部行動情報学科&lt;/p&gt;
 &lt;h3 id=&#34;学年&#34;&gt;学年
@@ -56,27 +56,27 @@
 &lt;h3 id=&#34;開発期間&#34;&gt;開発期間
 &lt;/h3&gt;&lt;p&gt;2023/09 ～ 2023/12（2024/12 にデプロイ済み）&lt;/p&gt;
 &lt;h3 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール
-&lt;/h3&gt;&lt;p&gt;PHP, tailwindCSS, AWS(Cloud9)&lt;/p&gt;
+&lt;/h3&gt;&lt;p&gt;PHP, Laravel9, tailwindCSS, AWS(Cloud9)&lt;/p&gt;
 &lt;h3 id=&#34;開発時に意識したこと&#34;&gt;開発時に意識したこと
 &lt;/h3&gt;&lt;p&gt;投稿するユーザには閲覧者からレビューやいいねをもらうことで承認欲求を満たすこと、投稿を閲覧するユーザには献立を考える際のサポートになることを目標としており、多くのユーザに使用していただけるような工夫をしています。&lt;/p&gt;
 </description>
         </item>
         <item>
         <title>取得した資格</title>
-        <link>https://nakano1122.github.io/post/qualification/</link>
+        <link>https://nakano1122.github.io/p/%E5%8F%96%E5%BE%97%E3%81%97%E3%81%9F%E8%B3%87%E6%A0%BC/</link>
         <pubDate>Wed, 14 Feb 2024 12:26:51 +0900</pubDate>
         
-        <guid>https://nakano1122.github.io/post/qualification/</guid>
-        <description>&lt;img src="https://nakano1122.github.io/post/qualification/helena-hertz-wWZzXlDpMog-unsplash.jpg" alt="Featured image of post 取得した資格" /&gt;&lt;p&gt;基本情報技術者試験合格（2023/09/14）&lt;/p&gt;
+        <guid>https://nakano1122.github.io/p/%E5%8F%96%E5%BE%97%E3%81%97%E3%81%9F%E8%B3%87%E6%A0%BC/</guid>
+        <description>&lt;img src="https://nakano1122.github.io/p/%E5%8F%96%E5%BE%97%E3%81%97%E3%81%9F%E8%B3%87%E6%A0%BC/helena-hertz-wWZzXlDpMog-unsplash.jpg" alt="Featured image of post 取得した資格" /&gt;&lt;p&gt;基本情報技術者試験合格（2023/09/14）&lt;/p&gt;
 </description>
         </item>
         <item>
         <title>TOEIC</title>
-        <link>https://nakano1122.github.io/post/toeic/</link>
+        <link>https://nakano1122.github.io/p/toeic/</link>
         <pubDate>Wed, 14 Feb 2024 12:20:07 +0900</pubDate>
         
-        <guid>https://nakano1122.github.io/post/toeic/</guid>
-        <description>&lt;img src="https://nakano1122.github.io/post/toeic/the-creative-exchange-d2zvqp3fpro-unsplash.jpg" alt="Featured image of post TOEIC" /&gt;&lt;h3 id=&#34;toeic-受験履歴&#34;&gt;TOEIC 受験履歴
+        <guid>https://nakano1122.github.io/p/toeic/</guid>
+        <description>&lt;img src="https://nakano1122.github.io/p/toeic/the-creative-exchange-d2zvqp3fpro-unsplash.jpg" alt="Featured image of post TOEIC" /&gt;&lt;h3 id=&#34;toeic-受験履歴&#34;&gt;TOEIC 受験履歴
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;１回目：565 点&lt;/li&gt;
 &lt;li&gt;２回目：565 点&lt;/li&gt;
@@ -98,26 +98,26 @@
         </item>
         <item>
         <title>Archives</title>
-        <link>https://nakano1122.github.io/page/archives/</link>
+        <link>https://nakano1122.github.io/archives/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
         
-        <guid>https://nakano1122.github.io/page/archives/</guid>
+        <guid>https://nakano1122.github.io/archives/</guid>
         <description></description>
         </item>
         <item>
         <title>Links</title>
-        <link>https://nakano1122.github.io/page/links/</link>
+        <link>https://nakano1122.github.io/links/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://nakano1122.github.io/page/links/</guid>
+        <guid>https://nakano1122.github.io/links/</guid>
         <description></description>
         </item>
         <item>
         <title>Search</title>
-        <link>https://nakano1122.github.io/page/search/</link>
+        <link>https://nakano1122.github.io/search/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://nakano1122.github.io/page/search/</guid>
+        <guid>https://nakano1122.github.io/search/</guid>
         <description></description>
         </item>
         

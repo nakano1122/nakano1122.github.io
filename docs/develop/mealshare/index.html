@@ -5,7 +5,7 @@
 アプリの概要 料理投稿を閲覧できる SNS です。料理投稿、投稿の閲覧が可能です。料理を閲覧する際の絞り込み機能にこだわっており、料理名による検索のみならず、投稿に付属するタグやいいね数などのランキングから検索することもができます。
 開発経緯 オンラインプログラミングスクールでオリジナルの成果物を作ることになり、作成した。
 開発期間 2023/09 ～ 2023/12（2024/12 にデプロイ済み）
-使用言語及びツール PHP, tailwindCSS, AWS(Cloud9)
+使用言語及びツール PHP, Laravel9, tailwindCSS, AWS(Cloud9)
 開発時に意識したこと 投稿するユーザには閲覧者からレビューやいいねをもらうことで承認欲求を満たすこと、投稿を閲覧するユーザには献立を考える際のサポートになることを目標としており、多くのユーザに使用していただけるような工夫をしています。'>
 <title>料理系SNSの開発</title>
 
@@ -16,17 +16,17 @@
 アプリの概要 料理投稿を閲覧できる SNS です。料理投稿、投稿の閲覧が可能です。料理を閲覧する際の絞り込み機能にこだわっており、料理名による検索のみならず、投稿に付属するタグやいいね数などのランキングから検索することもができます。
 開発経緯 オンラインプログラミングスクールでオリジナルの成果物を作ることになり、作成した。
 開発期間 2023/09 ～ 2023/12（2024/12 にデプロイ済み）
-使用言語及びツール PHP, tailwindCSS, AWS(Cloud9)
+使用言語及びツール PHP, Laravel9, tailwindCSS, AWS(Cloud9)
 開発時に意識したこと 投稿するユーザには閲覧者からレビューやいいねをもらうことで承認欲求を満たすこと、投稿を閲覧するユーザには献立を考える際のサポートになることを目標としており、多くのユーザに使用していただけるような工夫をしています。'>
 <meta property='og:url' content='https://nakano1122.github.io/develop/mealshare/'>
-<meta property='og:site_name' content='Akito Nakano 中野暁登'>
+<meta property='og:site_name' content='中野 暁登'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-02-14T12:34:52&#43;09:00'/><meta property='article:modified_time' content='2024-02-14T12:34:52&#43;09:00'/><meta property='og:image' content='https://nakano1122.github.io/develop/mealshare/luca-bravo-alS7ewQ41M8-unsplash1.jpg' />
 <meta name="twitter:title" content="料理系SNSの開発">
 <meta name="twitter:description" content="料理系 SNS 「meal share」 URL: https://mealshare-16763142a330.herokuapp.com
 アプリの概要 料理投稿を閲覧できる SNS です。料理投稿、投稿の閲覧が可能です。料理を閲覧する際の絞り込み機能にこだわっており、料理名による検索のみならず、投稿に付属するタグやいいね数などのランキングから検索することもができます。
 開発経緯 オンラインプログラミングスクールでオリジナルの成果物を作ることになり、作成した。
 開発期間 2023/09 ～ 2023/12（2024/12 にデプロイ済み）
-使用言語及びツール PHP, tailwindCSS, AWS(Cloud9)
+使用言語及びツール PHP, Laravel9, tailwindCSS, AWS(Cloud9)
 開発時に意識したこと 投稿するユーザには閲覧者からレビューやいいねをもらうことで承認欲求を満たすこと、投稿を閲覧するユーザには献立を考える際のサポートになることを目標としており、多くのユーザに使用していただけるような工夫をしています。"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://nakano1122.github.io/develop/mealshare/luca-bravo-alS7ewQ41M8-unsplash1.jpg' />
     </head>
@@ -55,8 +55,8 @@
         }
     })();
 </script>
-<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="メニューを開く・閉じる">
         <span class="hamburger-box">
             <span class="hamburger-inner"></span>
         </span>
@@ -78,15 +78,47 @@
                 
                 </a>
                 
+                    <span class="emoji">🍥</span>
+                
             </figure>
             
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Akito Nakano 中野暁登</a></h1>
-            <h2 class="site-description"></h2>
+            <h1 class="site-name"><a href="/">中野 暁登</a></h1>
+            <h2 class="site-description">就活用のポートフォリオサイトです。</h2>
         </div>
-    </header><ol class="menu" id="main-menu">
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/nakano1122'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://x.com/EngiNakana32997'
+                        target="_blank"
+                        title="X"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
         
         
         
@@ -111,7 +143,7 @@
         
         
         <li >
-            <a href='/page/about/' >
+            <a href='/about/' >
                 
                 
                 
@@ -130,7 +162,7 @@
         
         
         <li >
-            <a href='/page/archives/' >
+            <a href='/archives/' >
                 
                 
                 
@@ -150,7 +182,7 @@
         
         
         <li >
-            <a href='/page/search/' >
+            <a href='/search/' >
                 
                 
                 
@@ -169,7 +201,7 @@
         
         
         <li >
-            <a href='/page/links/' >
+            <a href='/links/' >
                 
                 
                 
@@ -207,14 +239,53 @@
 
 
 
-                    <span>Dark Mode</span>
+                    <span>ダークモード</span>
                 </li>
             
         </div>
     </ol>
 </aside>
 
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目次</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#料理系-sns-meal-share">料理系 SNS 「meal share」</a>
+      <ol>
+        <li><a href="#アプリの概要">アプリの概要</a></li>
+        <li><a href="#開発経緯">開発経緯</a></li>
+        <li><a href="#開発期間">開発期間</a></li>
+        <li><a href="#使用言語及びツール">使用言語及びツール</a></li>
+        <li><a href="#開発時に意識したこと">開発時に意識したこと</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
 
             <main class="main full-width">
     <article class="has-image main-article">
@@ -264,20 +335,6 @@
         
 
         
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    1 minute read
-                </time>
-            </div>
-        
     </footer>
     
 
@@ -301,7 +358,7 @@
 <h3 id="開発期間">開発期間
 </h3><p>2023/09 ～ 2023/12（2024/12 にデプロイ済み）</p>
 <h3 id="使用言語及びツール">使用言語及びツール
-</h3><p>PHP, tailwindCSS, AWS(Cloud9)</p>
+</h3><p>PHP, Laravel9, tailwindCSS, AWS(Cloud9)</p>
 <h3 id="開発時に意識したこと">開発時に意識したこと
 </h3><p>投稿するユーザには閲覧者からレビューやいいねをもらうことで承認欲求を満たすこと、投稿を閲覧するユーザには献立を考える際のサポートになることを目標としており、多くのユーザに使用していただけるような工夫をしています。</p>
 
@@ -330,12 +387,14 @@
     <section class="copyright">
         &copy; 
         
-        2024 Akito Nakano 中野暁登
+            2023 - 
+        
+        2024 中野 暁登
     </section>
     
     <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+        <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> で構築されています。 <br />
+        テーマ <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> は <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> によって設計されています。
     </section>
 </footer>
 
