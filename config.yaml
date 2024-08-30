@@ -2,7 +2,7 @@ baseurl: https://nakano1122.github.io/
 languageCode: ja
 theme: hugo-theme-stack
 paginate: 3
-title: Akito Nakano 中野暁登
+title: 中野暁登
 publishDir: docs
 
 # Theme i18n support
@@ -12,6 +12,8 @@ DefaultContentLanguage: ja
 # Set hasCJKLanguage to true if DefaultContentLanguage is in [zh-cn ja ko]
 # This will make .Summary and .WordCount behave correctly for CJK languages.
 hasCJKLanguage: false
+
+disablePathToLower: true
 
 languages:
   ja:
@@ -50,7 +52,7 @@ params:
 
   sidebar:
     emoji: 🍥
-    subtitle: 就活用のポートフォリオサイトです。
+    subtitle: 就活用ポートフォリオ
     avatar:
       enabled: true
       local: true
@@ -123,6 +125,12 @@ menu:
       url: https://x.com/EngiNakana32997
       params:
         icon: brand-x
+
+    - identifier: Qiita
+      name: Qiita
+      url: https://qiita.com/cafkaf
+      params:
+        icon: link
 
 related:
   includeNewer: true

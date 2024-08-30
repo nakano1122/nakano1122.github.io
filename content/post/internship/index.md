@@ -1,5 +1,5 @@
 ---
-title: "インターンシップ"
+title: "シックスワン株式会社（長期インターン）"
 description:
 url: "internship/six1"
 date: 2024-08-29T20:23:12+09:00
