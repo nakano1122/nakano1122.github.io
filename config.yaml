@@ -13,8 +13,6 @@ DefaultContentLanguage: ja
 # This will make .Summary and .WordCount behave correctly for CJK languages.
 hasCJKLanguage: false
 
-disablePathToLower: true
-
 languages:
   ja:
     languageName: 中野 暁登
