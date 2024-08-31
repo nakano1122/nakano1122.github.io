@@ -6,13 +6,33 @@
         <description>Recent content in Posts on 中野 暁登</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>ja</language>
-        <lastBuildDate>Thu, 29 Aug 2024 20:23:12 +0900</lastBuildDate><atom:link href="https://nakano1122.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>インターンシップ</title>
+        <lastBuildDate>Sat, 31 Aug 2024 12:36:58 +0900</lastBuildDate><atom:link href="https://nakano1122.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>美術館鑑賞アプリ</title>
+        <link>https://nakano1122.github.io/minpaku/</link>
+        <pubDate>Sat, 31 Aug 2024 12:36:58 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/minpaku/</guid>
+        <description>&lt;h2 id=&#34;アプリ概要&#34;&gt;アプリ概要
+&lt;/h2&gt;&lt;p&gt;開発中&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;URL:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;このアプリの強み&#34;&gt;このアプリの強み
+&lt;/h2&gt;&lt;h2 id=&#34;苦労したこと解決法&#34;&gt;苦労したこと＆解決法
+&lt;/h2&gt;&lt;h2 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール
+&lt;/h2&gt;&lt;p&gt;Flask, Vue.js, anime.js&lt;/p&gt;
+&lt;h2 id=&#34;開発期間&#34;&gt;開発期間
+&lt;/h2&gt;&lt;p&gt;2024/04 ～ 現在&lt;/p&gt;
+&lt;h2 id=&#34;論文&#34;&gt;論文
+&lt;/h2&gt;</description>
+        </item>
+        <item>
+        <title>シックスワン株式会社</title>
         <link>https://nakano1122.github.io/internship/</link>
         <pubDate>Thu, 29 Aug 2024 20:23:12 +0900</pubDate>
         
         <guid>https://nakano1122.github.io/internship/</guid>
-        <description>&lt;img src="https://nakano1122.github.io/internship/matt-le-SJSpo9hQf7s-unsplash.jpg" alt="Featured image of post インターンシップ" /&gt;&lt;h2 id=&#34;シックスワン株式会社&#34;&gt;シックスワン株式会社
+        <description>&lt;h2 id=&#34;シックスワン株式会社&#34;&gt;シックスワン株式会社
 &lt;/h2&gt;&lt;h3 id=&#34;期間&#34;&gt;期間
 &lt;/h3&gt;&lt;p&gt;2024/07 ～ 現在&lt;/p&gt;
 &lt;h3 id=&#34;役職&#34;&gt;役職
@@ -25,13 +45,12 @@
 </description>
         </item>
         <item>
-        <title>WEB開発</title>
-        <link>https://nakano1122.github.io/develop/</link>
+        <title>料理系SNS「meal share」</title>
+        <link>https://nakano1122.github.io/mealshare/</link>
         <pubDate>Wed, 14 Feb 2024 12:34:52 +0900</pubDate>
         
-        <guid>https://nakano1122.github.io/develop/</guid>
-        <description>&lt;img src="https://nakano1122.github.io/develop/luca-bravo-alS7ewQ41M8-unsplash1.jpg" alt="Featured image of post WEB開発" /&gt;&lt;h2 id=&#34;料理系-sns-meal-share&#34;&gt;料理系 SNS 「meal share」
-&lt;/h2&gt;&lt;blockquote&gt;
+        <guid>https://nakano1122.github.io/mealshare/</guid>
+        <description>&lt;blockquote&gt;
 &lt;p&gt;URL: &lt;a class=&#34;link&#34; href=&#34;https://mealshare-16763142a330.herokuapp.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://mealshare-16763142a330.herokuapp.com&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -40,7 +59,7 @@
 &lt;h3 id=&#34;開発経緯&#34;&gt;開発経緯
 &lt;/h3&gt;&lt;p&gt;オンラインプログラミングスクールでオリジナルの成果物を作ることになり、作成した。&lt;/p&gt;
 &lt;h3 id=&#34;開発期間&#34;&gt;開発期間
-&lt;/h3&gt;&lt;p&gt;2023/09 ～ 2023/12（2024/12 にデプロイ済み）&lt;/p&gt;
+&lt;/h3&gt;&lt;p&gt;2023/09 ～ 2023/12（2023/12 にデプロイ済み）&lt;/p&gt;
 &lt;h3 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール
 &lt;/h3&gt;&lt;p&gt;PHP, Laravel9, tailwindCSS, AWS(Cloud9)&lt;/p&gt;
 &lt;h3 id=&#34;開発時に意識したこと&#34;&gt;開発時に意識したこと
@@ -48,12 +67,12 @@
 </description>
         </item>
         <item>
-        <title>取得した資格</title>
-        <link>https://nakano1122.github.io/p/%E5%8F%96%E5%BE%97%E3%81%97%E3%81%9F%E8%B3%87%E6%A0%BC/</link>
+        <title>資格</title>
+        <link>https://nakano1122.github.io/p/%E8%B3%87%E6%A0%BC/</link>
         <pubDate>Wed, 14 Feb 2024 12:26:51 +0900</pubDate>
         
-        <guid>https://nakano1122.github.io/p/%E5%8F%96%E5%BE%97%E3%81%97%E3%81%9F%E8%B3%87%E6%A0%BC/</guid>
-        <description>&lt;img src="https://nakano1122.github.io/p/%E5%8F%96%E5%BE%97%E3%81%97%E3%81%9F%E8%B3%87%E6%A0%BC/helena-hertz-wWZzXlDpMog-unsplash.jpg" alt="Featured image of post 取得した資格" /&gt;&lt;p&gt;基本情報技術者試験合格（2023/09/14）&lt;/p&gt;
+        <guid>https://nakano1122.github.io/p/%E8%B3%87%E6%A0%BC/</guid>
+        <description>&lt;p&gt;基本情報技術者試験合格（2023/09/14）&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -62,7 +81,7 @@
         <pubDate>Wed, 14 Feb 2024 12:20:07 +0900</pubDate>
         
         <guid>https://nakano1122.github.io/p/toeic/</guid>
-        <description>&lt;img src="https://nakano1122.github.io/p/toeic/the-creative-exchange-d2zvqp3fpro-unsplash.jpg" alt="Featured image of post TOEIC" /&gt;&lt;h3 id=&#34;toeic-受験履歴&#34;&gt;TOEIC 受験履歴
+        <description>&lt;h3 id=&#34;toeic-受験履歴&#34;&gt;TOEIC 受験履歴
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;１回目：565 点&lt;/li&gt;
 &lt;li&gt;２回目：565 点&lt;/li&gt;

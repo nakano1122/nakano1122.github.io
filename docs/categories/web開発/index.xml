@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Web開発 on 中野 暁登</title>
+        <link>https://nakano1122.github.io/categories/web%E9%96%8B%E7%99%BA/</link>
+        <description>Recent content in Web開発 on 中野 暁登</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>ja</language>
+        <lastBuildDate>Sat, 31 Aug 2024 12:36:58 +0900</lastBuildDate><atom:link href="https://nakano1122.github.io/categories/web%E9%96%8B%E7%99%BA/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>美術館鑑賞アプリ</title>
+        <link>https://nakano1122.github.io/minpaku/</link>
+        <pubDate>Sat, 31 Aug 2024 12:36:58 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/minpaku/</guid>
+        <description>&lt;h2 id=&#34;アプリ概要&#34;&gt;アプリ概要
+&lt;/h2&gt;&lt;p&gt;開発中&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;URL:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;このアプリの強み&#34;&gt;このアプリの強み
+&lt;/h2&gt;&lt;h2 id=&#34;苦労したこと解決法&#34;&gt;苦労したこと＆解決法
+&lt;/h2&gt;&lt;h2 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール
+&lt;/h2&gt;&lt;p&gt;Flask, Vue.js, anime.js&lt;/p&gt;
+&lt;h2 id=&#34;開発期間&#34;&gt;開発期間
+&lt;/h2&gt;&lt;p&gt;2024/04 ～ 現在&lt;/p&gt;
+&lt;h2 id=&#34;論文&#34;&gt;論文
+&lt;/h2&gt;</description>
+        </item>
+        <item>
+        <title>シックスワン株式会社</title>
+        <link>https://nakano1122.github.io/internship/</link>
+        <pubDate>Thu, 29 Aug 2024 20:23:12 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/internship/</guid>
+        <description>&lt;h2 id=&#34;シックスワン株式会社&#34;&gt;シックスワン株式会社
+&lt;/h2&gt;&lt;h3 id=&#34;期間&#34;&gt;期間
+&lt;/h3&gt;&lt;p&gt;2024/07 ～ 現在&lt;/p&gt;
+&lt;h3 id=&#34;役職&#34;&gt;役職
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;システム開発（長期インターン）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;会社-hp&#34;&gt;会社 HP
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://six1.jp/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://six1.jp/&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>料理系SNS「meal share」</title>
+        <link>https://nakano1122.github.io/mealshare/</link>
+        <pubDate>Wed, 14 Feb 2024 12:34:52 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/mealshare/</guid>
+        <description>&lt;blockquote&gt;
+&lt;p&gt;URL: &lt;a class=&#34;link&#34; href=&#34;https://mealshare-16763142a330.herokuapp.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://mealshare-16763142a330.herokuapp.com&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;アプリの概要&#34;&gt;アプリの概要
+&lt;/h3&gt;&lt;p&gt;料理投稿を閲覧できる SNS です。料理投稿、投稿の閲覧が可能です。料理を閲覧する際の絞り込み機能にこだわっており、料理名による検索のみならず、投稿に付属するタグやいいね数などのランキングから検索することもができます。&lt;/p&gt;
+&lt;h3 id=&#34;開発経緯&#34;&gt;開発経緯
+&lt;/h3&gt;&lt;p&gt;オンラインプログラミングスクールでオリジナルの成果物を作ることになり、作成した。&lt;/p&gt;
+&lt;h3 id=&#34;開発期間&#34;&gt;開発期間
+&lt;/h3&gt;&lt;p&gt;2023/09 ～ 2023/12（2023/12 にデプロイ済み）&lt;/p&gt;
+&lt;h3 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール
+&lt;/h3&gt;&lt;p&gt;PHP, Laravel9, tailwindCSS, AWS(Cloud9)&lt;/p&gt;
+&lt;h3 id=&#34;開発時に意識したこと&#34;&gt;開発時に意識したこと
+&lt;/h3&gt;&lt;p&gt;投稿するユーザには閲覧者からレビューやいいねをもらうことで承認欲求を満たすこと、投稿を閲覧するユーザには献立を考える際のサポートになることを目標としており、多くのユーザに使用していただけるような工夫をしています。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

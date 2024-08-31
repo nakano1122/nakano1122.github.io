@@ -1,12 +1,12 @@
 ---
-title: "WEB開発"
-url: "develop"
+title: "料理系SNS「meal share」"
+url: "mealshare"
 date: 2024-02-14T12:34:52+09:00
-image: luca-bravo-alS7ewQ41M8-unsplash1.jpg
+image:
 draft: false
+categories: [Web開発]
+tags: [B2]
 ---
-
-## 料理系 SNS 「meal share」
 
 > URL: https://mealshare-16763142a330.herokuapp.com
 
@@ -20,7 +20,7 @@ draft: false
 
 ### 開発期間
 
-2023/09 ～ 2023/12（2024/12 にデプロイ済み）
+2023/09 ～ 2023/12（2023/12 にデプロイ済み）
 
 ### 使用言語及びツール
 

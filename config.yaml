@@ -1,7 +1,7 @@
 baseurl: https://nakano1122.github.io/
 languageCode: ja
 theme: hugo-theme-stack
-paginate: 3
+paginate: 5
 title: 中野暁登
 publishDir: docs
 
@@ -36,6 +36,7 @@ permalinks:
 params:
   mainSections:
     - post
+    - mealshare
   featuredImageField: image
   rssFullContent: true
   favicon: # e.g.: favicon placed in `static/favicon.ico` of your site folder, then set this field to `/favicon.ico` (`/` is necessary)
@@ -123,12 +124,6 @@ menu:
       url: https://x.com/EngiNakana32997
       params:
         icon: brand-x
-
-    - identifier: Qiita
-      name: Qiita
-      url: https://qiita.com/cafkaf
-      params:
-        icon: link
 
 related:
   includeNewer: true

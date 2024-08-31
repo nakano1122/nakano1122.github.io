@@ -1,11 +1,13 @@
 ---
-title: "インターンシップ"
-description:
+title: "シックスワン株式会社"
+description: 長期インターン
 url: "internship"
 date: 2024-08-29T20:23:12+09:00
-image: matt-le-SJSpo9hQf7s-unsplash.jpg
+image:
 math:
 license:
+categories: [インターンシップ, Web開発]
+tags: [B3]
 hidden: false
 comments: true
 draft: false

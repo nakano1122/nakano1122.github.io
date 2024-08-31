@@ -2,7 +2,9 @@
 title: "TOEIC"
 date: 2024-02-14T12:20:07+09:00
 draft: false
-image: the-creative-exchange-d2zvqp3fpro-unsplash.jpg
+image:
+categories: [TOEIC]
+tags:
 ---
 
 ### TOEIC 受験履歴

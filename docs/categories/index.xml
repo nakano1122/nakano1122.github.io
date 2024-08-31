@@ -5,6 +5,47 @@
         <link>https://nakano1122.github.io/categories/</link>
         <description>Recent content in Categories on 中野 暁登</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>ja</language><atom:link href="https://nakano1122.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+        <language>ja</language>
+        <lastBuildDate>Sat, 31 Aug 2024 12:36:58 +0900</lastBuildDate><atom:link href="https://nakano1122.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Web開発</title>
+        <link>https://nakano1122.github.io/categories/web%E9%96%8B%E7%99%BA/</link>
+        <pubDate>Sat, 31 Aug 2024 12:36:58 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/categories/web%E9%96%8B%E7%99%BA/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>研究</title>
+        <link>https://nakano1122.github.io/categories/%E7%A0%94%E7%A9%B6/</link>
+        <pubDate>Sat, 31 Aug 2024 12:36:58 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/categories/%E7%A0%94%E7%A9%B6/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>インターンシップ</title>
+        <link>https://nakano1122.github.io/categories/%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%83%E3%83%97/</link>
+        <pubDate>Thu, 29 Aug 2024 20:23:12 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/categories/%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%83%E3%83%97/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>資格</title>
+        <link>https://nakano1122.github.io/categories/%E8%B3%87%E6%A0%BC/</link>
+        <pubDate>Wed, 14 Feb 2024 12:26:51 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/categories/%E8%B3%87%E6%A0%BC/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>TOEIC</title>
+        <link>https://nakano1122.github.io/categories/toeic/</link>
+        <pubDate>Wed, 14 Feb 2024 12:20:07 +0900</pubDate>
+        
+        <guid>https://nakano1122.github.io/categories/toeic/</guid>
+        <description></description>
+        </item>
+        
     </channel>
 </rss>
