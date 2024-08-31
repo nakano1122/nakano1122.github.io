@@ -118,12 +118,16 @@ menu:
       url: https://github.com/nakano1122
       params:
         icon: brand-github
-
-    - identifier: X
-      name: X
-      url: https://x.com/EngiNakana32997
+    - identifier: atcoder
+      name: Atcoder
+      url: https://atcoder.jp/users/cafkaf
       params:
-        icon: brand-x
+        icon: code-circle-2
+    - identifier: qiita
+      name: Qiita
+      url: https://qiita.com/cafkaf
+      params:
+        icon: link
 
 related:
   includeNewer: true

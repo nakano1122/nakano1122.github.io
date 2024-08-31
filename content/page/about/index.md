@@ -5,7 +5,6 @@ aliases:
   - about-us
   - about-hugo
   - contact
-license: CC BY-NC-ND
 menu:
   main:
     weight: -90
