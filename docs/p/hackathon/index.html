@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="ja" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='長期インターン'>
-<title>シックスワン株式会社</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='TeckSummerCamp 最優秀賞を獲得した。
+URL: https://all-in-henna.vercel.app/
+開発規模 ハッカソン３日 （１日目 12 時にコード書き始め、３日目の 12 時にコードフリーズ）
+問題 Discord、Slack、GitHub の issue、etc&amp;hellip;。自分への連絡が分散して存在すると確認漏れや返信漏れにつながってしまう&amp;hellip;。 どうにかして１つにまとめることはできないか？ そこで、Discord、Slack、GitHub で自分がメンションされたメッセージを１つのアプリで管理することができるアプリを作成した。
+アプリ概要 各種サービスでのメッセージを、各種サービスの bot を使って常に監視。 メッセージを受信するとそのメッセージを取りに行ってこのアプリに集約する。
+担当箇所 私はバックエンドを担当した。バックエンドは主に以下の２つに分けられる。
+Discord で自分がメンションのついたメッセージが送信されるとそのメッセージの ID を DB に保存する その ID を使って Discord の API をたたいてメッセージ本文を取得する 自身が詰まったところ Discord API を使用するための OAuth 認証ができなかった（他のメンバーに任せた） '>
+<title>Hackathon</title>
 
-<link rel='canonical' href='https://nakano1122.github.io/internship/'>
+<link rel='canonical' href='https://nakano1122.github.io/p/hackathon/'>
 
-<link rel="stylesheet" href="/scss/style.min.f233f92f7faea3f967948d1a4dd61066204437a2f18f29c9b264955a269abdfe.css"><meta property='og:title' content='シックスワン株式会社'>
-<meta property='og:description' content='長期インターン'>
-<meta property='og:url' content='https://nakano1122.github.io/internship/'>
+<link rel="stylesheet" href="/scss/style.min.f233f92f7faea3f967948d1a4dd61066204437a2f18f29c9b264955a269abdfe.css"><meta property='og:title' content='Hackathon'>
+<meta property='og:description' content='TeckSummerCamp 最優秀賞を獲得した。
+URL: https://all-in-henna.vercel.app/
+開発規模 ハッカソン３日 （１日目 12 時にコード書き始め、３日目の 12 時にコードフリーズ）
+問題 Discord、Slack、GitHub の issue、etc&amp;hellip;。自分への連絡が分散して存在すると確認漏れや返信漏れにつながってしまう&amp;hellip;。 どうにかして１つにまとめることはできないか？ そこで、Discord、Slack、GitHub で自分がメンションされたメッセージを１つのアプリで管理することができるアプリを作成した。
+アプリ概要 各種サービスでのメッセージを、各種サービスの bot を使って常に監視。 メッセージを受信するとそのメッセージを取りに行ってこのアプリに集約する。
+担当箇所 私はバックエンドを担当した。バックエンドは主に以下の２つに分けられる。
+Discord で自分がメンションのついたメッセージが送信されるとそのメッセージの ID を DB に保存する その ID を使って Discord の API をたたいてメッセージ本文を取得する 自身が詰まったところ Discord API を使用するための OAuth 認証ができなかった（他のメンバーに任せた） '>
+<meta property='og:url' content='https://nakano1122.github.io/p/hackathon/'>
 <meta property='og:site_name' content='中野 暁登'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='B3' /><meta property='article:published_time' content='2024-08-29T20:23:12&#43;09:00'/><meta property='article:modified_time' content='2024-08-29T20:23:12&#43;09:00'/>
-<meta name="twitter:title" content="シックスワン株式会社">
-<meta name="twitter:description" content="長期インターン">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ハッカソン' /><meta property='article:published_time' content='2024-09-17T15:22:26&#43;09:00'/><meta property='article:modified_time' content='2024-09-17T15:22:26&#43;09:00'/>
+<meta name="twitter:title" content="Hackathon">
+<meta name="twitter:description" content="TeckSummerCamp 最優秀賞を獲得した。
+URL: https://all-in-henna.vercel.app/
+開発規模 ハッカソン３日 （１日目 12 時にコード書き始め、３日目の 12 時にコードフリーズ）
+問題 Discord、Slack、GitHub の issue、etc&amp;hellip;。自分への連絡が分散して存在すると確認漏れや返信漏れにつながってしまう&amp;hellip;。 どうにかして１つにまとめることはできないか？ そこで、Discord、Slack、GitHub で自分がメンションされたメッセージを１つのアプリで管理することができるアプリを作成した。
+アプリ概要 各種サービスでのメッセージを、各種サービスの bot を使って常に監視。 メッセージを受信するとそのメッセージを取りに行ってこのアプリに集約する。
+担当箇所 私はバックエンドを担当した。バックエンドは主に以下の２つに分けられる。
+Discord で自分がメンションのついたメッセージが送信されるとそのメッセージの ID を DB に保存する その ID を使って Discord の API をたたいてメッセージ本文を取得する 自身が詰まったところ Discord API を使用するための OAuth 認証ができなかった（他のメンバーに任せた） ">
     </head>
     <body class="
     article-page
@@ -254,11 +272,17 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#シックスワン株式会社">シックスワン株式会社</a>
+    <li>
       <ol>
-        <li><a href="#期間">期間</a></li>
-        <li><a href="#役職">役職</a></li>
-        <li><a href="#会社-hp">会社 HP</a></li>
+        <li><a href="#tecksummercamp">TeckSummerCamp</a>
+          <ol>
+            <li><a href="#開発規模">開発規模</a></li>
+            <li><a href="#問題">問題</a></li>
+            <li><a href="#アプリ概要">アプリ概要</a></li>
+            <li><a href="#担当箇所">担当箇所</a></li>
+            <li><a href="#自身が詰まったところ">自身が詰まったところ</a></li>
+          </ol>
+        </li>
       </ol>
     </li>
   </ol>
@@ -279,10 +303,6 @@
     
     <header class="article-category">
         
-            <a href="/categories/%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%83%E3%83%97/" >
-                インターンシップ
-            </a>
-        
             <a href="/categories/web%E9%96%8B%E7%99%BA/" >
                 Web開発
             </a>
@@ -292,13 +312,9 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/internship/">シックスワン株式会社</a>
+            <a href="/p/hackathon/">Hackathon</a>
         </h2>
     
-        
-        <h3 class="article-subtitle">
-            長期インターン
-        </h3>
         
     </div>
 
@@ -318,7 +334,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Aug 29, 2024</time>
+                <time class="article-time--published">Sep 17, 2024</time>
             </div>
         
 
@@ -334,16 +350,32 @@
     <section class="article-content">
     
     
-    <h2 id="シックスワン株式会社">シックスワン株式会社
-</h2><h3 id="期間">期間
-</h3><p>2024/07 ～ 現在</p>
-<h3 id="役職">役職
-</h3><ul>
-<li>システム開発（長期インターン）</li>
+    <h3 id="tecksummercamp">TeckSummerCamp
+</h3><p>最優秀賞を獲得した。</p>
+<blockquote>
+<p>URL: <a class="link" href="https://all-in-henna.vercel.app/"  target="_blank" rel="noopener"
+    >https://all-in-henna.vercel.app/</a></p>
+</blockquote>
+<h4 id="開発規模">開発規模
+</h4><p>ハッカソン３日
+（１日目 12 時にコード書き始め、３日目の 12 時にコードフリーズ）</p>
+<h4 id="問題">問題
+</h4><p>Discord、Slack、GitHub の issue、etc&hellip;。自分への連絡が分散して存在すると確認漏れや返信漏れにつながってしまう&hellip;。
+どうにかして１つにまとめることはできないか？
+そこで、Discord、Slack、GitHub で自分がメンションされたメッセージを１つのアプリで管理することができるアプリを作成した。</p>
+<h4 id="アプリ概要">アプリ概要
+</h4><p>各種サービスでのメッセージを、各種サービスの bot を使って常に監視。
+メッセージを受信するとそのメッセージを取りに行ってこのアプリに集約する。</p>
+<h4 id="担当箇所">担当箇所
+</h4><p>私はバックエンドを担当した。バックエンドは主に以下の２つに分けられる。</p>
+<ul>
+<li>Discord で自分がメンションのついたメッセージが送信されるとそのメッセージの ID を DB に保存する</li>
+<li>その ID を使って Discord の API をたたいてメッセージ本文を取得する</li>
 </ul>
-<h3 id="会社-hp">会社 HP
-</h3><p><a class="link" href="https://six1.jp/"  target="_blank" rel="noopener"
-    >https://six1.jp/</a></p>
+<h4 id="自身が詰まったところ">自身が詰まったところ
+</h4><ul>
+<li>Discord API を使用するための OAuth 認証ができなかった（他のメンバーに任せた）</li>
+</ul>
 
 </section>
 
@@ -352,7 +384,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/b3/">B3</a>
+            <a href="/tags/%E3%83%8F%E3%83%83%E3%82%AB%E3%82%BD%E3%83%B3/">ハッカソン</a>
         
     </section>
 
@@ -387,12 +419,12 @@
             
                 
 <article class="">
-    <a href="/p/techsummercamp/">
+    <a href="/internship/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">TechSummerCamp</h2>
+            <h2 class="article-title">シックスワン株式会社</h2>
         </div>
     </a>
 </article>
