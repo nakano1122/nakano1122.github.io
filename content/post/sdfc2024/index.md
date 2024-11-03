@@ -16,7 +16,7 @@ draft: false
 **浜松 de 五感を満たすおでかけ提案サービス「どこ行く？」**
 
 <div align="center">
-    <img src="/img/sdfc2024_capture1.png" width="250px" ><img src="/img/sdfc2024_capture2.png" width="250px" >
+    <img src="/img/sdfc2024_capture1.png" width="300px" ><img src="/img/sdfc2024_capture2.png" width="300px" >
 </div>
 
 ## アプリ概要
