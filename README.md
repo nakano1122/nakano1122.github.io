@@ -6,5 +6,3 @@
 - 個人開発
 - 資格（TOEICも含む）
 - 各種リンク（Atcoder, Qiita, GitHub）
-
-https://nakano1122.github.io/
