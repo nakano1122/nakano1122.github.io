@@ -6,7 +6,114 @@
         <description>Recent content in Posts on 中野 暁登</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>ja</language>
-        <lastBuildDate>Tue, 17 Sep 2024 15:22:26 +0900</lastBuildDate><atom:link href="https://nakano1122.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 03 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://nakano1122.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>SDSC2024</title>
+        <link>https://nakano1122.github.io/p/sdsc2024/</link>
+        <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://nakano1122.github.io/p/sdsc2024/</guid>
+        <description>&lt;h2 id=&#34;アプリ名&#34;&gt;アプリ名
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;浜松 de 五感を満たすおでかけ提案サービス「どこ行く？」&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://nakano1122.github.io/img/sdfc2024_capture1.png&#34; width=&#34;300px&#34; &gt;&lt;img src=&#34;https://nakano1122.github.io/img/sdfc2024_capture2.png&#34; width=&#34;300px&#34; &gt;&lt;/p&gt;
+&lt;h2 id=&#34;アプリ概要&#34;&gt;アプリ概要
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;公式 LINE で浜松市の観光スポットを推薦&lt;/li&gt;
+&lt;li&gt;公式 LINE 内で bot と会話をする中でユーザの好みを把握してパーソナライズ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;システム概要&#34;&gt;システム概要
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;LINE の公式 LINE でユーザとの対話を実現&lt;/li&gt;
+&lt;li&gt;LINE が提供する API である Messaging API を使用&lt;/li&gt;
+&lt;li&gt;観光スポットの検索は、チームメンバーがこれとは独立した API を開発した&lt;/li&gt;
+&lt;li&gt;Web サーバにデプロイはせず、&lt;a class=&#34;link&#34; href=&#34;https://ngrok.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ngrok&lt;/a&gt; で一時的に localhost を外部公開&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;開発チームメンバー&#34;&gt;開発チームメンバー
+&lt;/h3&gt;&lt;p&gt;自身含め３名&lt;/p&gt;
+&lt;h3 id=&#34;システム概要図&#34;&gt;システム概要図
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://nakano1122.github.io/img/system_summary.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;システム概要図&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;使用言語ツール&#34;&gt;使用言語・ツール
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://fastapi.tiangolo.com/ja/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;FastAPI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developers.line.biz/ja/docs/messaging-api/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LINE Messaging API&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/line/line-bot-sdk-python&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;line-bot-sdk-python&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;開発の振り返り&#34;&gt;開発の振り返り
+&lt;/h2&gt;&lt;h3 id=&#34;特に力を入れたところ&#34;&gt;特に力を入れたところ
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;質問文を何にするのか（どうすればスポットが絞り切れるのか）
+&lt;ul&gt;
+&lt;li&gt;回答結果によって質問文を分けることで、ユーザの嗜好に幅広く対応&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;開発環境の構築
+&lt;ul&gt;
+&lt;li&gt;コミット時にフォーマットとリンティングを行う（&lt;a class=&#34;link&#34; href=&#34;https://docs.astral.sh/ruff/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ruff&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;パッケージ管理として &lt;a class=&#34;link&#34; href=&#34;https://github.com/astral-sh/uv&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;uv&lt;/a&gt; を採用
+&lt;ul&gt;
+&lt;li&gt;速い&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.astral.sh/ruff/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ruff&lt;/a&gt;と互換性がある&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;苦戦したところ&#34;&gt;苦戦したところ
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;認証
+&lt;ul&gt;
+&lt;li&gt;curl でリクエストを送って秘密鍵・公開鍵を生成するのは今回が初めて&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/line/line-bot-sdk-python&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;line-bot-sdk&lt;/a&gt; の仕様への対応
+&lt;ul&gt;
+&lt;li&gt;各メッセージ形式（テキスト、選択式等）で用意されていたが記述することがどれも違うため苦戦。&lt;/li&gt;
+&lt;li&gt;実現したい表示形式の実現方法を ChatGPT との対話の中で明確化して、検索エンジンで検索して突破した。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>博物館鑑賞アプリ</title>
+        <link>https://nakano1122.github.io/minpaku/</link>
+        <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://nakano1122.github.io/minpaku/</guid>
+        <description>&lt;h2 id=&#34;アプリ概要&#34;&gt;アプリ概要
+&lt;/h2&gt;&lt;p&gt;開発中&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;URL:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;このアプリの強み&#34;&gt;このアプリの強み
+&lt;/h2&gt;&lt;h2 id=&#34;苦労したこと解決法&#34;&gt;苦労したこと＆解決法
+&lt;/h2&gt;&lt;h2 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール
+&lt;/h2&gt;&lt;p&gt;Flask, Vue.js, anime.js&lt;/p&gt;
+&lt;h2 id=&#34;開発期間&#34;&gt;開発期間
+&lt;/h2&gt;&lt;p&gt;2024/04 ～ 現在&lt;/p&gt;
+&lt;h2 id=&#34;論文&#34;&gt;論文
+&lt;/h2&gt;</description>
+        </item>
+        <item>
         <title>TechSummerCamp</title>
         <link>https://nakano1122.github.io/p/techsummercamp/</link>
         <pubDate>Tue, 17 Sep 2024 15:22:26 +0900</pubDate>
@@ -27,7 +134,7 @@
 &lt;/h4&gt;&lt;p&gt;Discord、Slack、GitHub で自分がメンションされたメッセージを１つのアプリで管理することができるアプリを作成した。&lt;/p&gt;
 &lt;h3 id=&#34;このアプリの仕組み&#34;&gt;このアプリの仕組み
 &lt;/h3&gt;&lt;p&gt;各種サービスでのメッセージを、各種サービスの bot を使って常に監視。
-メッセージを受信するとそのメッセージを取りに行ってこのアプリに集約する。&lt;/p&gt;
+メッセージ送信イベントを検知するとメッセージを取りに行ってこのアプリ上で表示する&lt;/p&gt;
 &lt;h3 id=&#34;担当箇所&#34;&gt;担当箇所
 &lt;/h3&gt;&lt;p&gt;バックエンドを担当。以下の２つを実装した。&lt;/p&gt;
 &lt;ul&gt;
@@ -36,29 +143,9 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;自身が詰まったところ&#34;&gt;自身が詰まったところ
 &lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;Discord API を使用するための OAuth 認証ができなかった（他のメンバーに任せた）&lt;/li&gt;
+&lt;li&gt;Discord API を使用するための OAuth 認証ができなかった（他のメンバーにお願いした）&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        </item>
-        <item>
-        <title>博物館鑑賞アプリ</title>
-        <link>https://nakano1122.github.io/minpaku/</link>
-        <pubDate>Sat, 31 Aug 2024 12:36:58 +0900</pubDate>
-        
-        <guid>https://nakano1122.github.io/minpaku/</guid>
-        <description>&lt;h2 id=&#34;アプリ概要&#34;&gt;アプリ概要
-&lt;/h2&gt;&lt;p&gt;開発中&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;URL:&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&#34;このアプリの強み&#34;&gt;このアプリの強み
-&lt;/h2&gt;&lt;h2 id=&#34;苦労したこと解決法&#34;&gt;苦労したこと＆解決法
-&lt;/h2&gt;&lt;h2 id=&#34;使用言語及びツール&#34;&gt;使用言語及びツール
-&lt;/h2&gt;&lt;p&gt;Flask, Vue.js, anime.js&lt;/p&gt;
-&lt;h2 id=&#34;開発期間&#34;&gt;開発期間
-&lt;/h2&gt;&lt;p&gt;2024/04 ～ 現在&lt;/p&gt;
-&lt;h2 id=&#34;論文&#34;&gt;論文
-&lt;/h2&gt;</description>
         </item>
         <item>
         <title>シックスワン株式会社</title>

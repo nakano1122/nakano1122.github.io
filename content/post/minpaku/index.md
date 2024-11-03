@@ -1,7 +1,7 @@
 ---
 title: "博物館鑑賞アプリ"
 description: 展示品をファンタジーキャラクターと一緒に鑑賞！
-date: 2024-08-31T12:36:58+09:00
+date: 2024-11-03
 url: "minpaku"
 image:
 math:
