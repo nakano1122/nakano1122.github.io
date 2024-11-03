@@ -24,6 +24,8 @@ draft: false
 
 ## システム概要
 
+### 構成
+
 - LINE の公式 LINE でユーザとの対話を実現
 - LINE が提供する API である Messaging API を使用
 - 観光スポットの検索は、チームメンバーがこれとは独立した API を開発した

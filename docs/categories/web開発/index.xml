@@ -21,7 +21,8 @@
 &lt;li&gt;公式 LINE 内で bot と会話をする中でユーザの好みを把握してパーソナライズ&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;システム概要&#34;&gt;システム概要
-&lt;/h2&gt;&lt;ul&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;構成&#34;&gt;構成
+&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;LINE の公式 LINE でユーザとの対話を実現&lt;/li&gt;
 &lt;li&gt;LINE が提供する API である Messaging API を使用&lt;/li&gt;
 &lt;li&gt;観光スポットの検索は、チームメンバーがこれとは独立した API を開発した&lt;/li&gt;
@@ -119,31 +120,56 @@
         <pubDate>Tue, 17 Sep 2024 15:22:26 +0900</pubDate>
         
         <guid>https://nakano1122.github.io/p/techsummercamp/</guid>
-        <description>&lt;p&gt;&lt;strong&gt;最優秀賞を獲得した。&lt;/strong&gt;&lt;/p&gt;
+        <description>&lt;h2 id=&#34;アプリ名&#34;&gt;アプリ名
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;「ALL IN」 ～すべての会話を１つの場所に。～&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;URL: &lt;a class=&#34;link&#34; href=&#34;https://all-in-henna.vercel.app/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://all-in-henna.vercel.app/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;開発規模&#34;&gt;開発規模
-&lt;/h3&gt;&lt;p&gt;ハッカソン３日
-（１日目 12 時にコード書き始め、３日目の 12 時にコードフリーズ）&lt;/p&gt;
-&lt;h3 id=&#34;背景&#34;&gt;背景
-&lt;/h3&gt;&lt;h4 id=&#34;問題&#34;&gt;問題
-&lt;/h4&gt;&lt;p&gt;Discord、Slack、GitHub の issue、etc&amp;hellip;。自分への連絡が分散して存在すると確認漏れや返信漏れにつながってしまう&amp;hellip;。&lt;/p&gt;
-&lt;h4 id=&#34;解決策の提案&#34;&gt;解決策の提案
-&lt;/h4&gt;&lt;p&gt;Discord、Slack、GitHub で自分がメンションされたメッセージを１つのアプリで管理することができるアプリを作成した。&lt;/p&gt;
-&lt;h3 id=&#34;このアプリの仕組み&#34;&gt;このアプリの仕組み
-&lt;/h3&gt;&lt;p&gt;各種サービスでのメッセージを、各種サービスの bot を使って常に監視。
-メッセージ送信イベントを検知するとメッセージを取りに行ってこのアプリ上で表示する&lt;/p&gt;
-&lt;h3 id=&#34;担当箇所&#34;&gt;担当箇所
-&lt;/h3&gt;&lt;p&gt;バックエンドを担当。以下の２つを実装した。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Discord で自分がメンションのついたメッセージが送信されるとそのメッセージの ID を DB に保存する&lt;/li&gt;
-&lt;li&gt;その ID を使って Discord の API をたたいてメッセージ本文を取得する&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;自身が詰まったところ&#34;&gt;自身が詰まったところ
+&lt;h2 id=&#34;要件定義&#34;&gt;要件定義
+&lt;/h2&gt;&lt;h3 id=&#34;想定する課題とそれに対する解決策&#34;&gt;想定する課題とそれに対する解決策
+&lt;/h3&gt;&lt;p&gt;Discord、Slack、GitHub の issue、etc&amp;hellip;。自分への連絡が分散して存在すると確認漏れや返信漏れにつながってしまう&amp;hellip;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;「自分に関係のある連絡だけでも１つのアプリで見れたらいいな。」&lt;/strong&gt; を叶えます。&lt;/p&gt;
+&lt;h2 id=&#34;システム概要&#34;&gt;システム概要
+&lt;/h2&gt;&lt;h3 id=&#34;構成&#34;&gt;構成
 &lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;Discord API を使用するための OAuth 認証ができなかった（他のメンバーにお願いした）&lt;/li&gt;
+&lt;li&gt;Discord、Slack、GitHub で自分がメンションされたメッセージを１つのアプリで管理&lt;/li&gt;
+&lt;li&gt;Webhook（各サービスの bot） で各種サービスでのメッセージを常に監視&lt;/li&gt;
+&lt;li&gt;メッセージ送信イベントを検知するとメッセージを取りに行ってこのアプリ上で表示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;開発チームメンバー&#34;&gt;開発チームメンバー
+&lt;/h3&gt;&lt;p&gt;自身含め８名&lt;/p&gt;
+&lt;h3 id=&#34;担当箇所&#34;&gt;担当箇所
+&lt;/h3&gt;&lt;p&gt;バックエンドを担当し、以下の２つを実装した。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Discord で自分がメンションのついたメッセージが送信されるとそのメッセージの ID を DB に保存&lt;/li&gt;
+&lt;li&gt;その ID を使って Discord の API をたたいてメッセージ本文を取得&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;開発の振り返り&#34;&gt;開発の振り返り
+&lt;/h2&gt;&lt;h3 id=&#34;苦戦したところ&#34;&gt;苦戦したところ
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Discord API の仕様の把握
+&lt;ul&gt;
+&lt;li&gt;外部 API を使うのは今回が初めて&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;supabase へのデータ登録
+&lt;ul&gt;
+&lt;li&gt;BaaS を使うのは今回が初めて&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Discord API の OAuth 認証
+&lt;ul&gt;
+&lt;li&gt;他のチームメンバーにお願いした&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;感想&#34;&gt;感想
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;１つのプロダクトをこれほどの短時間で作ったのは初めてだったので、スピード感に驚いた&lt;/li&gt;
+&lt;li&gt;使ったことのないツールを多く使い、開発はコードを書くだけではないと学んだ&lt;/li&gt;
+&lt;li&gt;CI/CD を組んでおり、インフラについても学ぶことができた&lt;/li&gt;
+&lt;li&gt;初めてのハッカソンで同世代の仲間と交流できて良い刺激をもらった&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>
