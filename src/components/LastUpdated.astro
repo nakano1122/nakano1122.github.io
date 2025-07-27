@@ -1,0 +1,119 @@
+---
+const currentDate = new Date();
+const lastUpdated = currentDate.toLocaleDateString('ja-JP', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric'
+});
+
+const lastUpdatedISO = currentDate.toISOString();
+---
+
+<div class="last-updated animate-fade-in">
+	<div class="update-icon">
+		<svg viewBox="0 0 24 24" fill="currentColor">
+			<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+		</svg>
+	</div>
+	<div class="update-content">
+		<span class="update-label">最終更新日</span>
+		<time datetime={lastUpdatedISO} class="update-date">
+			{lastUpdated}
+		</time>
+	</div>
+</div>
+
+<style>
+	.last-updated {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+		padding: var(--spacing-sm) var(--spacing-md);
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-sm);
+		transition: all 0.3s ease;
+		font-size: 0.875rem;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.last-updated::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-primary) 100%);
+	}
+
+	.last-updated:hover {
+		transform: translateY(-1px);
+		box-shadow: var(--shadow-md);
+		border-color: var(--color-primary);
+	}
+
+	.update-icon {
+		width: 20px;
+		height: 20px;
+		color: var(--color-accent);
+		flex-shrink: 0;
+		animation: rotate 10s linear infinite;
+	}
+
+	.update-icon svg {
+		width: 100%;
+		height: 100%;
+	}
+
+	.update-content {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.update-label {
+		color: var(--color-text-lighter);
+		font-size: 0.75rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+
+	.update-date {
+		color: var(--color-text);
+		font-weight: 600;
+		font-size: 0.875rem;
+	}
+
+	@keyframes rotate {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.last-updated {
+			font-size: 0.8rem;
+			padding: var(--spacing-xs) var(--spacing-sm);
+		}
+
+		.update-icon {
+			width: 16px;
+			height: 16px;
+		}
+
+		.update-label {
+			font-size: 0.7rem;
+		}
+
+		.update-date {
+			font-size: 0.8rem;
+		}
+	}
+</style>

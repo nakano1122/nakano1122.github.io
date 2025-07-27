@@ -1,0 +1,483 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="お問い合わせ - 中野太郎 Portfolio">
+	<main class="page-container">
+		<header class="page-header">
+			<h1 class="page-title">Contact</h1>
+			<p class="page-description">
+				お仕事のご依頼やご相談、その他お問い合わせがございましたら、お気軽にご連絡ください。
+			</p>
+		</header>
+
+		<div class="contact-content">
+			<div class="contact-grid">
+				<!-- Contact Information -->
+				<section class="contact-info-card">
+					<h2 class="card-title">連絡先情報</h2>
+					<div class="contact-methods">
+						<div class="contact-method">
+							<div class="contact-icon email-icon">
+								<svg viewBox="0 0 24 24" fill="currentColor">
+									<path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+								</svg>
+							</div>
+							<div class="contact-details">
+								<h3 class="contact-label">Email</h3>
+								<a href="mailto:nakano.taro@example.com" class="contact-value">nakano.taro@example.com</a>
+								<p class="contact-note">お仕事のご依頼・ご相談はこちらからお願いします</p>
+							</div>
+						</div>
+
+						<div class="contact-method">
+							<div class="contact-icon github-icon">
+								<svg viewBox="0 0 24 24" fill="currentColor">
+									<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+								</svg>
+							</div>
+							<div class="contact-details">
+								<h3 class="contact-label">GitHub</h3>
+								<a href="https://github.com/nakano1122" target="_blank" rel="noopener noreferrer" class="contact-value">github.com/nakano1122</a>
+								<p class="contact-note">開発実績とソースコードをご覧いただけます</p>
+							</div>
+						</div>
+
+						<div class="contact-method">
+							<div class="contact-icon linkedin-icon">
+								<svg viewBox="0 0 24 24" fill="currentColor">
+									<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+								</svg>
+							</div>
+							<div class="contact-details">
+								<h3 class="contact-label">LinkedIn</h3>
+								<a href="https://linkedin.com/in/nakano-taro" target="_blank" rel="noopener noreferrer" class="contact-value">linkedin.com/in/nakano-taro</a>
+								<p class="contact-note">プロフェッショナルなネットワーキングはこちら</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Response Time -->
+				<section class="response-card">
+					<h2 class="card-title">レスポンス時間</h2>
+					<div class="response-info">
+						<div class="response-item">
+							<div class="response-icon">⚡</div>
+							<div class="response-text">
+								<h3>メール</h3>
+								<p>通常24時間以内にお返事いたします</p>
+							</div>
+						</div>
+						<div class="response-item">
+							<div class="response-icon">💬</div>
+							<div class="response-text">
+								<h3>緊急のご連絡</h3>
+								<p>件名に「緊急」と記載してください</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Availability -->
+				<section class="availability-card">
+					<h2 class="card-title">対応可能な業務</h2>
+					<ul class="availability-list">
+						<li class="availability-item">
+							<span class="availability-icon">💻</span>
+							<span>Webアプリケーション開発</span>
+						</li>
+						<li class="availability-item">
+							<span class="availability-icon">🤖</span>
+							<span>機械学習・AI システム開発</span>
+						</li>
+						<li class="availability-item">
+							<span class="availability-icon">📱</span>
+							<span>モバイルアプリ開発</span>
+						</li>
+						<li class="availability-item">
+							<span class="availability-icon">🔍</span>
+							<span>技術コンサルティング</span>
+						</li>
+						<li class="availability-item">
+							<span class="availability-icon">📚</span>
+							<span>研究・論文執筆</span>
+						</li>
+					</ul>
+				</section>
+
+				<!-- Preferred Tools -->
+				<section class="tools-card">
+					<h2 class="card-title">よく使用する技術</h2>
+					<div class="tools-grid">
+						<div class="tool-category">
+							<h3>Frontend</h3>
+							<div class="tool-tags">
+								<span class="tool-tag">React</span>
+								<span class="tool-tag">TypeScript</span>
+								<span class="tool-tag">Next.js</span>
+							</div>
+						</div>
+						<div class="tool-category">
+							<h3>Backend</h3>
+							<div class="tool-tags">
+								<span class="tool-tag">Node.js</span>
+								<span class="tool-tag">Python</span>
+								<span class="tool-tag">Go</span>
+							</div>
+						</div>
+						<div class="tool-category">
+							<h3>AI/ML</h3>
+							<div class="tool-tags">
+								<span class="tool-tag">TensorFlow</span>
+								<span class="tool-tag">PyTorch</span>
+								<span class="tool-tag">scikit-learn</span>
+							</div>
+						</div>
+						<div class="tool-category">
+							<h3>Infrastructure</h3>
+							<div class="tool-tags">
+								<span class="tool-tag">AWS</span>
+								<span class="tool-tag">Docker</span>
+								<span class="tool-tag">Kubernetes</span>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		
+		<nav class="page-navigation">
+			<a href="/" class="nav-button nav-button-primary">ホームに戻る →</a>
+		</nav>
+	</main>
+</Layout>
+
+<style>
+	.page-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: var(--spacing-xl);
+		min-height: 100vh;
+	}
+
+
+	.page-header {
+		margin-bottom: var(--spacing-3xl);
+		text-align: center;
+	}
+
+	.page-title {
+		font-size: 2.5rem;
+		font-weight: 700;
+		color: var(--color-text);
+		margin-bottom: var(--spacing-lg);
+		position: relative;
+	}
+
+	.page-title::after {
+		content: '';
+		position: absolute;
+		bottom: -8px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 60px;
+		height: 4px;
+		background: var(--color-primary);
+		border-radius: 2px;
+	}
+
+	.page-description {
+		font-size: 1.125rem;
+		color: var(--color-text-light);
+		max-width: 600px;
+		margin: 0 auto;
+		line-height: 1.6;
+	}
+
+	.contact-content {
+		margin-bottom: var(--spacing-3xl);
+	}
+
+	.contact-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-xl);
+	}
+
+	.contact-info-card {
+		grid-column: 1 / -1;
+	}
+
+	.contact-info-card,
+	.response-card,
+	.availability-card,
+	.tools-card {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-xl);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.card-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: var(--color-text);
+		margin-bottom: var(--spacing-lg);
+		position: relative;
+		padding-left: var(--spacing-md);
+	}
+
+	.card-title::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 3px;
+		height: 18px;
+		background: var(--color-primary);
+		border-radius: 2px;
+	}
+
+	/* Contact Methods */
+	.contact-methods {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xl);
+	}
+
+	.contact-method {
+		display: flex;
+		gap: var(--spacing-lg);
+		padding: var(--spacing-lg);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-md);
+	}
+
+	.contact-icon {
+		width: 48px;
+		height: 48px;
+		border-radius: var(--radius-md);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+
+	.contact-icon svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	.email-icon {
+		background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+		color: white;
+	}
+
+	.github-icon {
+		background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+		color: white;
+	}
+
+	.linkedin-icon {
+		background: linear-gradient(135deg, #0077b5 0%, #0a66c2 100%);
+		color: white;
+	}
+
+	.contact-details {
+		flex: 1;
+	}
+
+	.contact-label {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--color-text);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.contact-value {
+		font-size: 1.125rem;
+		color: var(--color-primary);
+		text-decoration: none;
+		font-weight: 500;
+		display: block;
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.contact-value:hover {
+		text-decoration: underline;
+	}
+
+	.contact-note {
+		font-size: 0.875rem;
+		color: var(--color-text-lighter);
+		margin: 0;
+	}
+
+	/* Response Info */
+	.response-info {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-lg);
+	}
+
+	.response-item {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-md);
+		padding: var(--spacing-md);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-md);
+	}
+
+	.response-icon {
+		font-size: 1.5rem;
+	}
+
+	.response-text h3 {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--color-text);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.response-text p {
+		font-size: 0.875rem;
+		color: var(--color-text-light);
+		margin: 0;
+	}
+
+	/* Availability */
+	.availability-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+	}
+
+	.availability-item {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-md);
+		padding: var(--spacing-md);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-md);
+		font-weight: 500;
+		color: var(--color-text);
+	}
+
+	.availability-icon {
+		font-size: 1.25rem;
+	}
+
+	/* Tools */
+	.tools-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-lg);
+	}
+
+	.tool-category h3 {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--color-text);
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.tool-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-xs);
+	}
+
+	.tool-tag {
+		background: var(--color-bg-secondary);
+		color: var(--color-text);
+		padding: var(--spacing-xs) var(--spacing-sm);
+		border-radius: var(--radius-sm);
+		font-size: 0.875rem;
+		font-weight: 500;
+		border: 1px solid var(--color-border);
+	}
+
+	/* Navigation */
+	.page-navigation {
+		display: flex;
+		justify-content: flex-end;
+		margin-top: var(--spacing-3xl);
+		padding-top: var(--spacing-xl);
+		border-top: 1px solid var(--color-border);
+	}
+
+	.nav-button {
+		display: inline-flex;
+		align-items: center;
+		padding: var(--spacing-md) var(--spacing-xl);
+		border-radius: var(--radius-lg);
+		text-decoration: none;
+		font-weight: 500;
+		transition: all 0.2s ease;
+	}
+
+	.nav-button-primary {
+		background: var(--color-primary);
+		color: white;
+	}
+
+	.nav-button-primary:hover {
+		background: var(--color-primary-dark);
+		transform: translateX(4px);
+	}
+
+	.nav-button-secondary {
+		background: var(--color-bg-secondary);
+		color: var(--color-text-light);
+		border: 1px solid var(--color-border);
+	}
+
+	.nav-button-secondary:hover {
+		background: var(--color-border);
+		transform: translateX(-4px);
+	}
+
+	@media (max-width: 768px) {
+		.page-container {
+			padding: var(--spacing-lg);
+		}
+
+		.page-title {
+			font-size: 2rem;
+		}
+
+		.page-description {
+			font-size: 1rem;
+		}
+
+		.contact-grid {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-lg);
+		}
+
+		.contact-method {
+			flex-direction: column;
+			text-align: center;
+		}
+
+		.tools-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.page-navigation {
+			flex-direction: column;
+			gap: var(--spacing-md);
+		}
+
+		.nav-button {
+			justify-content: center;
+		}
+	}
+</style>

@@ -1,0 +1,304 @@
+---
+interface PersonalInfoData {
+	name: string;
+	affiliation: string;
+	grade: string;
+	github: string;
+	atcoder: string;
+	toeic: number;
+}
+
+const personalData: PersonalInfoData = {
+	name: "中野 太郎",
+	affiliation: "東京大学大学院情報理工学系研究科",
+	grade: "修士2年",
+	github: "nakano1122",
+	atcoder: "nakano_competitive",
+	toeic: 950
+};
+---
+
+<section class="personal-info section">
+	<div class="container">
+		<h2 class="section-title">Personal Information</h2>
+		<div class="personal-card animate-slide-up">
+			<div class="profile-header">
+				<div class="avatar-container">
+					<div class="avatar">
+						<span class="avatar-text">{personalData.name.charAt(0)}</span>
+					</div>
+					<div class="status-indicator"></div>
+				</div>
+				<div class="profile-text">
+					<h3 class="name text-gradient">{personalData.name}</h3>
+					<p class="affiliation">{personalData.affiliation}</p>
+					<p class="grade">{personalData.grade}</p>
+				</div>
+			</div>
+			
+			<div class="info-grid">
+				<div class="info-item">
+					<div class="info-icon github-icon">
+						<svg viewBox="0 0 24 24" fill="currentColor">
+							<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+						</svg>
+					</div>
+					<div class="info-content">
+						<span class="info-label">GitHub</span>
+						<a href={`https://github.com/${personalData.github}`} class="info-value" target="_blank" rel="noopener noreferrer">
+							@{personalData.github}
+						</a>
+					</div>
+				</div>
+
+				<div class="info-item">
+					<div class="info-icon atcoder-icon">
+						<svg viewBox="0 0 24 24" fill="currentColor">
+							<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+						</svg>
+					</div>
+					<div class="info-content">
+						<span class="info-label">AtCoder</span>
+						<a href={`https://atcoder.jp/users/${personalData.atcoder}`} class="info-value" target="_blank" rel="noopener noreferrer">
+							@{personalData.atcoder}
+						</a>
+					</div>
+				</div>
+
+				<div class="info-item">
+					<div class="info-icon toeic-icon">
+						<svg viewBox="0 0 24 24" fill="currentColor">
+							<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6L11 13.64 7.36 10l1.27-1.27L11 11.1l4.37-4.37L16.64 8z"/>
+						</svg>
+					</div>
+					<div class="info-content">
+						<span class="info-label">TOEIC Score</span>
+						<span class="info-value score">{personalData.toeic}点</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.personal-info {
+		background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+	}
+
+	.personal-card {
+		background: var(--color-bg-card);
+		border-radius: var(--radius-xl);
+		padding: var(--spacing-2xl);
+		box-shadow: var(--shadow-xl);
+		border: 1px solid var(--color-border);
+		max-width: 800px;
+		margin: 0 auto;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.personal-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+	}
+
+	.profile-header {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-xl);
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.avatar-container {
+		position: relative;
+	}
+
+	.avatar {
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: var(--shadow-lg);
+		position: relative;
+	}
+
+	.avatar-text {
+		font-size: 2rem;
+		font-weight: 700;
+		color: white;
+	}
+
+	.status-indicator {
+		position: absolute;
+		bottom: 4px;
+		right: 4px;
+		width: 16px;
+		height: 16px;
+		background: var(--color-success);
+		border-radius: 50%;
+		border: 3px solid var(--color-bg-card);
+		animation: pulse 2s infinite;
+	}
+
+	@keyframes pulse {
+		0% {
+			box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+		}
+		70% {
+			box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+		}
+		100% {
+			box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+		}
+	}
+
+	.profile-text {
+		flex: 1;
+	}
+
+	.name {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.affiliation {
+		font-size: 1.1rem;
+		color: var(--color-text-light);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.grade {
+		font-size: 1rem;
+		color: var(--color-text-lighter);
+		padding: var(--spacing-xs) var(--spacing-sm);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-md);
+		display: inline-block;
+	}
+
+	.info-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: var(--spacing-lg);
+	}
+
+	.info-item {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-md);
+		padding: var(--spacing-lg);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-lg);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.info-item:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.info-icon {
+		width: 48px;
+		height: 48px;
+		border-radius: var(--radius-md);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+
+	.info-icon svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	.github-icon {
+		background: linear-gradient(135deg, #24292e 0%, #0d1117 100%);
+		color: white;
+	}
+
+	.atcoder-icon {
+		background: linear-gradient(135deg, #ff6b35 0%, #f7941d 100%);
+		color: white;
+	}
+
+	.toeic-icon {
+		background: linear-gradient(135deg, var(--color-success) 0%, #059669 100%);
+		color: white;
+	}
+
+	.info-content {
+		flex: 1;
+	}
+
+	.info-label {
+		display: block;
+		font-size: 0.875rem;
+		color: var(--color-text-lighter);
+		margin-bottom: var(--spacing-xs);
+		font-weight: 500;
+	}
+
+	.info-value {
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--color-text);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.info-value:hover {
+		color: var(--color-primary);
+	}
+
+	.score {
+		background: linear-gradient(135deg, var(--color-success) 0%, var(--color-accent) 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		font-weight: 700;
+	}
+
+	@media (max-width: 768px) {
+		.personal-card {
+			padding: var(--spacing-xl);
+		}
+
+		.profile-header {
+			flex-direction: column;
+			text-align: center;
+			gap: var(--spacing-lg);
+		}
+
+		.name {
+			font-size: 1.75rem;
+		}
+
+		.info-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.info-item {
+			padding: var(--spacing-md);
+		}
+
+		.avatar {
+			width: 70px;
+			height: 70px;
+		}
+
+		.avatar-text {
+			font-size: 1.75rem;
+		}
+	}
+</style>

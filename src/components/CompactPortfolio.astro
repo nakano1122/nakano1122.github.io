@@ -1,0 +1,436 @@
+---
+interface ContactInfo {
+	github: string;
+	email: string;
+	linkedin?: string;
+}
+
+const contactInfo: ContactInfo = {
+	github: "nakano1122",
+	email: "nakano.taro@example.com",
+	linkedin: "nakano-taro"
+};
+
+const quickStats = [
+	{ label: "経験年数", value: "3+" },
+	{ label: "プロジェクト", value: "15+" },
+	{ label: "論文発表", value: "3" },
+	{ label: "インターン", value: "3社" }
+];
+
+const technologies = [
+	"React", "TypeScript", "Python", "Go", "AWS", "Docker"
+];
+
+const highlights = [
+	{
+		title: "技育CAMPハッカソン 最優秀賞",
+		date: "2023.12",
+		type: "award"
+	},
+	{
+		title: "株式会社メルカリ インターン",
+		date: "2023.08-09",
+		type: "experience"
+	},
+	{
+		title: "深層学習を用いた感情分析 論文発表",
+		date: "2023.03",
+		type: "research"
+	}
+];
+---
+
+<main class="portfolio-container">
+	<!-- Header Section -->
+	<header class="portfolio-header">
+		<div class="profile-section">
+			<div class="avatar">
+				<span class="avatar-initial">中</span>
+			</div>
+			<div class="profile-info">
+				<h1 class="name">中野 太郎</h1>
+				<p class="title">Software Engineer & Researcher</p>
+				<p class="affiliation">東京大学大学院 情報理工学系研究科 修士2年</p>
+			</div>
+		</div>
+		
+		<nav class="navigation">
+			<a href="/development" class="nav-link">開発経験</a>
+			<a href="/research" class="nav-link">研究</a>
+			<a href="/internship" class="nav-link">インターン</a>
+			<a href="/contact" class="nav-link nav-link-primary">Contact</a>
+		</nav>
+	</header>
+
+	<!-- Main Content Grid -->
+	<div class="content-grid">
+		<!-- Stats Section -->
+		<section class="stats-card">
+			<h2 class="card-title">実績</h2>
+			<div class="stats-grid">
+				{quickStats.map((stat) => (
+					<div class="stat-item">
+						<div class="stat-value">{stat.value}</div>
+						<div class="stat-label">{stat.label}</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- Skills Section -->
+		<section class="skills-card">
+			<h2 class="card-title">主要技術</h2>
+			<div class="tech-list">
+				{technologies.map((tech) => (
+					<span class="tech-tag">{tech}</span>
+				))}
+			</div>
+			<a href="/development#technologies" class="view-more">すべて見る →</a>
+		</section>
+
+		<!-- Recent Highlights -->
+		<section class="highlights-card">
+			<h2 class="card-title">最近のハイライト</h2>
+			<div class="highlights-list">
+				{highlights.map((highlight) => (
+					<div class="highlight-item">
+						<div class="highlight-content">
+							<h3 class="highlight-title">{highlight.title}</h3>
+							<span class="highlight-date">{highlight.date}</span>
+						</div>
+						<span class={`highlight-type highlight-type-${highlight.type}`}>
+							{highlight.type === 'award' ? '🏆' : 
+							 highlight.type === 'experience' ? '💼' : 
+							 highlight.type === 'research' ? '📚' : '📄'}
+						</span>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- Contact Section -->
+		<section class="contact-card">
+			<h2 class="card-title">連絡先</h2>
+			<div class="contact-info">
+				<a href={`https://github.com/${contactInfo.github}`} class="contact-link" target="_blank" rel="noopener noreferrer">
+					<svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+					</svg>
+					<span>GitHub</span>
+				</a>
+				<a href={`mailto:${contactInfo.email}`} class="contact-link">
+					<svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+					</svg>
+					<span>Email</span>
+				</a>
+			</div>
+		</section>
+	</div>
+
+	<!-- Footer -->
+	<footer class="portfolio-footer">
+		<p class="last-updated">最終更新: {new Date().toLocaleDateString('ja-JP')}</p>
+	</footer>
+</main>
+
+<style>
+	.portfolio-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: var(--spacing-xl);
+		font-family: 'Inter', 'Noto Sans JP', sans-serif;
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Header */
+	.portfolio-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: var(--spacing-2xl);
+		padding-bottom: var(--spacing-lg);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.profile-section {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-lg);
+	}
+
+	.avatar {
+		width: 64px;
+		height: 64px;
+		background: var(--color-primary);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		font-weight: 600;
+		font-size: 1.5rem;
+	}
+
+	.name {
+		font-size: 1.75rem;
+		font-weight: 700;
+		color: var(--color-text);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.title {
+		font-size: 1rem;
+		color: var(--color-primary);
+		font-weight: 500;
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.affiliation {
+		font-size: 0.875rem;
+		color: var(--color-text-light);
+	}
+
+	.navigation {
+		display: flex;
+		gap: var(--spacing-lg);
+		align-items: center;
+	}
+
+	.nav-link {
+		color: var(--color-text-light);
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.2s ease;
+		padding: var(--spacing-sm) var(--spacing-md);
+		border-radius: var(--radius-md);
+	}
+
+	.nav-link:hover {
+		color: var(--color-primary);
+	}
+
+	.nav-link-primary {
+		background: var(--color-primary);
+		color: white;
+	}
+
+	.nav-link-primary:hover {
+		background: var(--color-primary-dark);
+		color: white;
+	}
+
+	/* Content Grid */
+	.content-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-xl);
+		flex: 1;
+		align-content: start;
+	}
+
+	.stats-card,
+	.skills-card,
+	.highlights-card,
+	.contact-card {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-xl);
+		box-shadow: var(--shadow-sm);
+		transition: box-shadow 0.2s ease;
+	}
+
+	.stats-card:hover,
+	.skills-card:hover,
+	.highlights-card:hover,
+	.contact-card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.card-title {
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: var(--color-text);
+		margin-bottom: var(--spacing-lg);
+		position: relative;
+		padding-left: var(--spacing-md);
+	}
+
+	.card-title::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 3px;
+		height: 16px;
+		background: var(--color-primary);
+		border-radius: 2px;
+	}
+
+	/* Stats */
+	.stats-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-lg);
+	}
+
+	.stat-item {
+		text-align: center;
+	}
+
+	.stat-value {
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--color-primary);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.stat-label {
+		font-size: 0.875rem;
+		color: var(--color-text-light);
+	}
+
+	/* Skills */
+	.tech-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-sm);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.tech-tag {
+		background: var(--color-bg-secondary);
+		color: var(--color-text);
+		padding: var(--spacing-xs) var(--spacing-sm);
+		border-radius: var(--radius-sm);
+		font-size: 0.875rem;
+		font-weight: 500;
+		border: 1px solid var(--color-border);
+	}
+
+	.view-more {
+		color: var(--color-primary);
+		text-decoration: none;
+		font-size: 0.875rem;
+		font-weight: 500;
+	}
+
+	/* Highlights */
+	.highlights-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+	}
+
+	.highlight-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: var(--spacing-md);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-md);
+	}
+
+	.highlight-title {
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--color-text);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.highlight-date {
+		font-size: 0.75rem;
+		color: var(--color-text-lighter);
+	}
+
+	.highlight-type {
+		font-size: 1.25rem;
+	}
+
+	/* Contact */
+	.contact-info {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+	}
+
+	.contact-link {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+		color: var(--color-text-light);
+		text-decoration: none;
+		padding: var(--spacing-sm);
+		border-radius: var(--radius-md);
+		transition: all 0.2s ease;
+	}
+
+	.contact-link:hover {
+		background: var(--color-bg-secondary);
+		color: var(--color-primary);
+	}
+
+	.contact-icon {
+		width: 20px;
+		height: 20px;
+	}
+
+	/* Footer */
+	.portfolio-footer {
+		margin-top: var(--spacing-2xl);
+		padding-top: var(--spacing-lg);
+		border-top: 1px solid var(--color-border);
+		text-align: center;
+	}
+
+	.last-updated {
+		font-size: 0.875rem;
+		color: var(--color-text-lighter);
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.portfolio-container {
+			padding: var(--spacing-lg);
+		}
+
+		.portfolio-header {
+			flex-direction: column;
+			gap: var(--spacing-lg);
+			text-align: center;
+		}
+
+		.profile-section {
+			flex-direction: column;
+			text-align: center;
+		}
+
+		.navigation {
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
+		.content-grid {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-lg);
+		}
+
+		.stats-grid {
+			grid-template-columns: repeat(4, 1fr);
+			gap: var(--spacing-sm);
+		}
+
+		.stat-value {
+			font-size: 1.5rem;
+		}
+
+		.stat-label {
+			font-size: 0.75rem;
+		}
+	}
+</style>
