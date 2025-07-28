@@ -1,12 +1,50 @@
 ---
-const currentDate = new Date();
-const lastUpdated = currentDate.toLocaleDateString('ja-JP', {
-	year: 'numeric',
-	month: 'long',
-	day: 'numeric'
-});
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-const lastUpdatedISO = currentDate.toISOString();
+// Markdownファイルを直接読み込み
+const lastUpdatedPath = join(process.cwd(), 'src/data/last-updated.md');
+const markdownContent = readFileSync(lastUpdatedPath, 'utf-8');
+
+// Markdownから更新日を抽出
+function parseLastUpdated(content: string) {
+	const lines = content.split('\n');
+	let lastUpdated = '';
+	
+	lines.forEach(line => {
+		if (line.includes('最終更新日:')) {
+			lastUpdated = line.replace('最終更新日:', '').trim();
+		}
+	});
+	
+	// 日付を解析してISOフォーマットに変換
+	if (lastUpdated) {
+		const dateMatch = lastUpdated.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+		if (dateMatch) {
+			const year = dateMatch[1];
+			const month = dateMatch[2].padStart(2, '0');
+			const day = dateMatch[3].padStart(2, '0');
+			const isoDate = `${year}-${month}-${day}T00:00:00.000Z`;
+			return {
+				displayDate: lastUpdated,
+				isoDate: isoDate
+			};
+		}
+	}
+	
+	// フォールバック: 現在の日付
+	const currentDate = new Date();
+	return {
+		displayDate: currentDate.toLocaleDateString('ja-JP', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		}),
+		isoDate: currentDate.toISOString()
+	};
+}
+
+const { displayDate: lastUpdated, isoDate: lastUpdatedISO } = parseLastUpdated(markdownContent);
 ---
 
 <div class="last-updated animate-fade-in">

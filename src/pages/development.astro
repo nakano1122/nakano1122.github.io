@@ -3,125 +3,101 @@ import Layout from '../layouts/Layout.astro';
 import DevelopmentExperience from '../components/DevelopmentExperience.astro';
 ---
 
-<Layout title="開発経験 - 中野太郎 Portfolio">
-	<main class="page-container">
-		<header class="page-header">
-			<h1 class="page-title">Development Experience</h1>
-			<p class="page-description">
-				ソフトウェア開発における豊富な経験と実績をご紹介します。
-				受賞歴、技術スタック、個人開発プロジェクトの詳細をご覧いただけます。
-			</p>
-		</header>
+<Layout title="開発経験 - 中野暁登 Portfolio">
+	<div class="page-content">
+		<section class="page-hero">
+			<div class="hero-container">
+				<h1 class="page-title">アプリ開発経験</h1>
+				<p class="page-subtitle">
+					ソフトウェア開発における豊富な経験と実績をご紹介します。
+				</p>
+			</div>
+		</section>
 
-		<DevelopmentExperience />
-		
-		<nav class="page-navigation">
-			<a href="/research" class="nav-button nav-button-primary">研究歴を見る →</a>
-		</nav>
-	</main>
+		<main class="content-container">
+			<DevelopmentExperience />
+		</main>
+	</div>
 </Layout>
 
 <style>
-	.page-container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: var(--spacing-xl);
-		min-height: 100vh;
+	.page-content {
+		min-height: calc(100vh - 80px);
+		display: flex;
+		flex-direction: column;
 	}
 
-
-	.page-header {
-		margin-bottom: var(--spacing-3xl);
+	.page-hero {
+		background: var(--gradient-dark);
+		padding: var(--spacing-4xl) 0;
 		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.page-hero::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: 
+			radial-gradient(circle at 30% 70%, rgba(139, 124, 246, 0.1) 0%, transparent 50%),
+			radial-gradient(circle at 70% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+		pointer-events: none;
+	}
+
+	.hero-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 var(--spacing-xl);
+		position: relative;
+		z-index: 1;
 	}
 
 	.page-title {
-		font-size: 2.5rem;
+		font-size: 3rem;
 		font-weight: 700;
 		color: var(--color-text);
 		margin-bottom: var(--spacing-lg);
-		position: relative;
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
-	.page-title::after {
-		content: '';
-		position: absolute;
-		bottom: -8px;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 60px;
-		height: 4px;
-		background: var(--color-primary);
-		border-radius: 2px;
-	}
-
-	.page-description {
-		font-size: 1.125rem;
+	.page-subtitle {
+		font-size: 1.25rem;
 		color: var(--color-text-light);
 		max-width: 600px;
 		margin: 0 auto;
 		line-height: 1.6;
 	}
 
-	.page-navigation {
-		display: flex;
-		justify-content: flex-end;
-		margin-top: var(--spacing-3xl);
-		padding-top: var(--spacing-xl);
-		border-top: 1px solid var(--color-border);
+	.content-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: var(--spacing-4xl) var(--spacing-xl);
+		flex: 1;
 	}
 
-	.nav-button {
-		display: inline-flex;
-		align-items: center;
-		padding: var(--spacing-md) var(--spacing-xl);
-		border-radius: var(--radius-lg);
-		text-decoration: none;
-		font-weight: 500;
-		transition: all 0.2s ease;
-	}
-
-	.nav-button-primary {
-		background: var(--color-primary);
-		color: white;
-	}
-
-	.nav-button-primary:hover {
-		background: var(--color-primary-dark);
-		transform: translateX(4px);
-	}
-
-	.nav-button-secondary {
-		background: var(--color-bg-secondary);
-		color: var(--color-text-light);
-		border: 1px solid var(--color-border);
-	}
-
-	.nav-button-secondary:hover {
-		background: var(--color-border);
-		transform: translateX(-4px);
-	}
 
 	@media (max-width: 768px) {
-		.page-container {
-			padding: var(--spacing-lg);
+		.hero-container {
+			padding: 0 var(--spacing-lg);
 		}
 
 		.page-title {
-			font-size: 2rem;
+			font-size: 2.25rem;
 		}
 
-		.page-description {
-			font-size: 1rem;
+		.page-subtitle {
+			font-size: 1.125rem;
 		}
 
-		.page-navigation {
-			flex-direction: column;
-			gap: var(--spacing-md);
-		}
-
-		.nav-button {
-			justify-content: center;
+		.content-container {
+			padding: var(--spacing-3xl) var(--spacing-lg);
 		}
 	}
 </style>

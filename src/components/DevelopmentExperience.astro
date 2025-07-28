@@ -1,364 +1,501 @@
 ---
-interface Award {
-	title: string;
-	event: string;
-	date: string;
-	rank: string;
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Markdownファイルを直接読み込み
+const developmentExperiencePath = join(process.cwd(), 'src/data/development-experience.md');
+const markdownContent = readFileSync(developmentExperiencePath, 'utf-8');
+
+// セクション別にパース（簡易的な実装）
+function parseMarkdownSections(content: string) {
+	const sections = content.split('## ');
+	const awards = [];
+	const technologies = [];
+	const projects = [];
+	
+	sections.forEach(section => {
+		if (section.includes('受賞歴')) {
+			const lines = section.split('\n').filter(line => line.trim().startsWith('-'));
+			lines.forEach(line => {
+				const match = line.match(/\*\*(.*?)\*\*:\s*(.*?)\s*\((.*?)\)/);
+				if (match) {
+					awards.push({
+						title: match[1],
+						event: match[2],
+						date: match[3],
+						rank: match[2].includes('最優秀') ? '1st' : match[2].includes('企業') ? 'Special' : '1st'
+					});
+				}
+			});
+		}
+		
+		if (section.includes('使用技術')) {
+			const lines = section.split('\n').filter(line => line.trim().startsWith('-'));
+			lines.forEach(line => {
+				const match = line.match(/\*\*(.*?)\*\*:\s*(.*)/);
+				if (match) {
+					const category = match[1];
+					const items = match[2].split(',').map(item => item.trim());
+					let color = '#8b7cf6';
+					
+					if (category.includes('フロントエンド')) color = '#61dafb';
+					else if (category.includes('バックエンド')) color = '#68d391';
+					else if (category.includes('インフラ')) color = '#fbb6ce';
+					else if (category.includes('モバイル')) color = '#a78bfa';
+					
+					technologies.push({
+						category,
+						items,
+						color
+					});
+				}
+			});
+		}
+		
+		if (section.includes('個人開発プロジェクト')) {
+			// 個人開発プロジェクトの解析（番号付きリスト対応）
+			const projectMatches = section.match(/\d+\.\s*\*\*(.*?)\*\*\s*-\s*(.*?)(?=\n|$)/g);
+			if (projectMatches) {
+				projectMatches.forEach(match => {
+					const parts = match.match(/\d+\.\s*\*\*(.*?)\*\*\s*-\s*(.*)/);
+					if (parts) {
+						projects.push({
+							name: parts[1],
+							description: parts[2],
+							tech: "詳細は準備中",
+							metrics: "準備中"
+						});
+					}
+				});
+			}
+		}
+	});
+	
+	return { awards, technologies, projects };
 }
 
-interface Technology {
-	category: string;
-	items: string[];
-	color: string;
-}
+const { awards, technologies, projects } = parseMarkdownSections(markdownContent);
 
-interface Project {
-	name: string;
-	description: string;
-	tech: string;
-	metrics: string;
-}
-
-const awards: Award[] = [
-	{
-		title: "技育CAMPハッカソン",
-		event: "最優秀賞",
-		date: "2023年12月",
-		rank: "1st"
-	},
-	{
-		title: "サポーターズハッカソン",
-		event: "企業賞",
-		date: "2023年8月",
-		rank: "Special"
-	},
-	{
-		title: "学内プログラミングコンテスト",
-		event: "1位",
-		date: "2023年6月",
-		rank: "1st"
-	}
-];
-
-const technologies: Technology[] = [
-	{
-		category: "Frontend",
-		items: ["React", "Vue.js", "TypeScript", "Next.js", "Astro"],
-		color: "#61dafb"
-	},
-	{
-		category: "Backend",
-		items: ["Node.js", "Python", "Go", "PostgreSQL", "MongoDB"],
-		color: "#68d391"
-	},
-	{
-		category: "Infrastructure",
-		items: ["AWS", "Docker", "Kubernetes", "Terraform"],
-		color: "#fbb6ce"
-	},
-	{
-		category: "Mobile",
-		items: ["React Native", "Flutter"],
-		color: "#a78bfa"
-	}
-];
-
-const projects: Project[] = [
-	{
-		name: "TaskFlow",
-		description: "チーム向けタスク管理アプリ",
-		tech: "React + Node.js + PostgreSQL",
-		metrics: "500+ アクティブユーザー"
-	},
-	{
-		name: "CodeShare",
-		description: "プログラマー向けコードスニペット共有プラットフォーム",
-		tech: "Next.js + Supabase",
-		metrics: "月間PV: 10,000+"
-	},
-	{
-		name: "StudyBot",
-		description: "学習支援AIチャットボット",
-		tech: "Python + OpenAI API + Discord Bot",
-		metrics: "大学内で100+ ユーザー利用"
-	}
-];
+const finalProjects = projects;
 ---
 
 <section class="development-experience section">
 	<div class="container">
 		<h2 class="section-title">Development Experience</h2>
 
-		<!-- Awards Section -->
-		<div class="subsection animate-slide-up">
-			<h3 class="subsection-title">
-				<span class="icon-wrapper">🏆</span>
-				受賞歴
-			</h3>
-			<div class="awards-grid">
-				{awards.map((award, index) => (
-					<div class="award-card" style={`animation-delay: ${index * 0.1}s`}>
-						<div class="award-rank">
-							<span class="rank-badge">{award.rank}</span>
-						</div>
-						<div class="award-content">
-							<h4 class="award-title">{award.title}</h4>
-							<p class="award-event">{award.event}</p>
-							<span class="award-date">{award.date}</span>
-						</div>
-					</div>
-				))}
-			</div>
-		</div>
-
-		<!-- Technologies Section -->
-		<div class="subsection animate-slide-up">
-			<h3 class="subsection-title">
-				<span class="icon-wrapper">⚡</span>
-				技術スタック
-			</h3>
-			<div class="tech-grid">
-				{technologies.map((tech, index) => (
-					<div class="tech-category" style={`animation-delay: ${index * 0.1}s`}>
-						<div class="tech-header">
-							<div class="tech-icon" style={`background-color: ${tech.color}20; border-color: ${tech.color}`}>
-								<div class="tech-dot" style={`background-color: ${tech.color}`}></div>
+		<!-- Awards and Technologies Section -->
+		<div class="awards-tech-container animate-slide-up">
+			<!-- Awards Section -->
+			{awards.length > 0 && (
+				<div class="awards-section">
+					<h3 class="subsection-title">
+						<span class="icon-wrapper">🏆</span>
+						受賞歴
+					</h3>
+					<div class="awards-list">
+						{awards.map((award, index) => (
+							<div class="award-card" style={`animation-delay: ${index * 0.1}s`}>
+								<div class="award-rank">
+									<span class="rank-badge">{award.rank}</span>
+								</div>
+								<div class="award-content">
+									<h4 class="award-title">{award.title}</h4>
+									<p class="award-event">{award.event}</p>
+									<span class="award-date">{award.date}</span>
+								</div>
 							</div>
-							<h4 class="tech-title">{tech.category}</h4>
-						</div>
-						<div class="tech-items">
-							{tech.items.map((item) => (
-								<span class="tech-item">{item}</span>
-							))}
-						</div>
+						))}
 					</div>
-				))}
-			</div>
+				</div>
+			)}
+
+			<!-- Technologies Section -->
+			{technologies.length > 0 && (
+				<div class="tech-section">
+					<h3 class="subsection-title">
+						<span class="icon-wrapper">⚡</span>
+						技術スタック
+					</h3>
+					<div class="tech-grid">
+						{technologies.map((tech, index) => (
+							<div class="tech-category" style={`animation-delay: ${index * 0.1}s`}>
+								<div class="tech-header">
+									<div class="tech-icon" style={`background-color: ${tech.color}20; border-color: ${tech.color}`}>
+										<div class="tech-dot" style={`background-color: ${tech.color}`}></div>
+									</div>
+									<h4 class="tech-title">{tech.category}</h4>
+								</div>
+								<div class="tech-items">
+									{tech.items.map((item) => (
+										<span class="tech-item">{item}</span>
+									))}
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
 		</div>
 
 		<!-- Projects Section -->
-		<div class="subsection animate-slide-up">
-			<h3 class="subsection-title">
-				<span class="icon-wrapper">🚀</span>
-				個人開発プロジェクト
-			</h3>
-			<div class="projects-grid">
-				{projects.map((project, index) => (
-					<div class="project-card" style={`animation-delay: ${index * 0.15}s`}>
-						<div class="project-header">
-							<h4 class="project-name text-gradient">{project.name}</h4>
-							<div class="project-metrics">{project.metrics}</div>
+		{finalProjects.length > 0 && (
+			<div class="projects-subsection animate-slide-up">
+				<h3 class="subsection-title">
+					<span class="icon-wrapper">🚀</span>
+					個人開発プロジェクト
+				</h3>
+				<div class="projects-grid">
+					{finalProjects.map((project, index) => (
+						<div class="project-card" style={`animation-delay: ${index * 0.15}s`}>
+							<div class="project-header">
+								<h4 class="project-name text-gradient">{project.name}</h4>
+								<div class="project-metrics">{project.metrics}</div>
+							</div>
+							<p class="project-description">{project.description}</p>
+							<div class="project-tech">
+								<span class="tech-label">Tech Stack:</span>
+								<span class="tech-value">{project.tech}</span>
+							</div>
 						</div>
-						<p class="project-description">{project.description}</p>
-						<div class="project-tech">
-							<span class="tech-label">Tech Stack:</span>
-							<span class="tech-value">{project.tech}</span>
-						</div>
-					</div>
-				))}
+					))}
+				</div>
 			</div>
-		</div>
+		)}
+
 	</div>
 </section>
 
 <style>
 	.development-experience {
 		background: var(--color-bg);
+		padding: var(--spacing-5xl) 0;
+		width: 100%;
+		min-height: 100vh;
 	}
 
-	.subsection {
-		margin-bottom: var(--spacing-3xl);
+	.container {
+		max-width: none;
+		width: 100%;
+		padding: 0 var(--spacing-2xl);
 	}
 
-	.subsection:last-child {
-		margin-bottom: 0;
-	}
-
-	.subsection-title {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-md);
-		font-size: 1.75rem;
-		font-weight: 600;
-		margin-bottom: var(--spacing-xl);
-		color: var(--color-text);
-	}
-
-	.icon-wrapper {
-		font-size: 2rem;
-		padding: var(--spacing-sm);
-		background: var(--color-bg-secondary);
-		border-radius: var(--radius-md);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	/* Awards Styles */
-	.awards-grid {
+	.awards-tech-container {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: var(--spacing-lg);
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-5xl);
+		margin-bottom: var(--spacing-6xl);
+		width: 100%;
+		max-width: 1600px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
-	.award-card {
+	.awards-section,
+	.tech-section {
 		background: var(--color-bg-card);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
-		box-shadow: var(--shadow-md);
+		border-radius: var(--radius-2xl);
+		padding: var(--spacing-4xl);
+		box-shadow: var(--shadow-xl);
 		border: 1px solid var(--color-border);
-		display: flex;
-		gap: var(--spacing-lg);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-		animation: slideUp 0.6s ease-out both;
+		backdrop-filter: blur(10px);
 		position: relative;
 		overflow: hidden;
+		min-height: 600px;
+		width: 100%;
 	}
 
-	.award-card:hover {
-		transform: translateY(-4px);
-		box-shadow: var(--shadow-xl);
-	}
-
-	.award-card::before {
+	.awards-section::before,
+	.tech-section::before {
 		content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 3px;
-		background: linear-gradient(90deg, var(--color-warning) 0%, var(--color-primary) 100%);
+		height: 6px;
+		background: var(--gradient-primary);
+	}
+
+	.projects-subsection {
+		margin-bottom: var(--spacing-4xl);
+		width: 100%;
+		max-width: 1600px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.subsection-title {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-lg);
+		font-size: 1.5rem;
+		font-weight: 700;
+		margin-bottom: var(--spacing-2xl);
+		color: var(--color-text);
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+
+	.icon-wrapper {
+		font-size: 1.75rem;
+		width: 56px;
+		height: 56px;
+		background: var(--gradient-primary);
+		border-radius: var(--radius-xl);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: var(--shadow-glow);
+		flex-shrink: 0;
+	}
+
+	/* Awards Styles */
+	.awards-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xl);
+	}
+
+	.award-card {
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-xl);
+		padding: var(--spacing-2xl);
+		box-shadow: var(--shadow-md);
+		border: 1px solid var(--color-border);
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-xl);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.award-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-lg);
+		border-color: var(--color-primary-solid);
+	}
+
+	.award-card::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 4px;
+		background: var(--gradient-primary);
 	}
 
 	.award-rank {
+		position: relative;
 		flex-shrink: 0;
 	}
 
 	.rank-badge {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 60px;
-		height: 60px;
-		background: linear-gradient(135deg, var(--color-warning) 0%, var(--color-primary) 100%);
+		width: 64px;
+		height: 64px;
+		background: var(--gradient-primary);
 		color: white;
-		border-radius: 50%;
-		font-weight: 700;
+		border-radius: var(--radius-xl);
+		font-weight: 800;
 		font-size: 0.875rem;
+		box-shadow: var(--shadow-glow);
+		position: relative;
+	}
+
+	.rank-badge::after {
+		content: '';
+		position: absolute;
+		top: -2px;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+		background: var(--gradient-primary);
+		border-radius: var(--radius-xl);
+		z-index: -1;
+		opacity: 0.3;
+		filter: blur(8px);
 	}
 
 	.award-content {
 		flex: 1;
+		min-width: 0;
 	}
 
 	.award-title {
-		font-size: 1.25rem;
-		font-weight: 600;
+		font-size: 1.125rem;
+		font-weight: 700;
 		margin-bottom: var(--spacing-xs);
 		color: var(--color-text);
+		line-height: 1.3;
 	}
 
 	.award-event {
-		font-size: 1rem;
+		font-size: 0.875rem;
 		color: var(--color-text-light);
 		margin-bottom: var(--spacing-sm);
+		font-weight: 500;
 	}
 
 	.award-date {
-		font-size: 0.875rem;
-		color: var(--color-text-lighter);
+		display: inline-block;
+		font-size: 0.75rem;
+		color: var(--color-primary-solid);
 		padding: var(--spacing-xs) var(--spacing-sm);
-		background: var(--color-bg-secondary);
-		border-radius: var(--radius-sm);
+		background: rgba(139, 124, 246, 0.1);
+		border: 1px solid rgba(139, 124, 246, 0.2);
+		border-radius: var(--radius-full);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
 	}
 
 	/* Technology Styles */
 	.tech-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: var(--spacing-lg);
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xl);
 	}
 
 	.tech-category {
-		background: var(--color-bg-card);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
-		box-shadow: var(--shadow-md);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-xl);
+		padding: var(--spacing-2xl);
 		border: 1px solid var(--color-border);
-		transition: transform 0.3s ease;
-		animation: slideUp 0.6s ease-out both;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		overflow: hidden;
 	}
 
 	.tech-category:hover {
 		transform: translateY(-2px);
+		box-shadow: var(--shadow-lg);
+		border-color: var(--color-primary-solid);
+	}
+
+	.tech-category::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 4px;
+		background: linear-gradient(180deg, var(--color-primary-solid) 0%, var(--color-secondary-solid) 100%);
 	}
 
 	.tech-header {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-md);
-		margin-bottom: var(--spacing-lg);
+		gap: var(--spacing-lg);
+		margin-bottom: var(--spacing-xl);
 	}
 
 	.tech-icon {
-		width: 48px;
-		height: 48px;
-		border-radius: var(--radius-md);
-		border: 2px solid;
+		width: 56px;
+		height: 56px;
+		border-radius: var(--radius-xl);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		position: relative;
+		flex-shrink: 0;
+		box-shadow: var(--shadow-md);
 	}
 
 	.tech-dot {
-		width: 12px;
-		height: 12px;
+		width: 16px;
+		height: 16px;
 		border-radius: 50%;
+		box-shadow: var(--shadow-sm);
 	}
 
 	.tech-title {
-		font-size: 1.25rem;
-		font-weight: 600;
+		font-size: 1.125rem;
+		font-weight: 700;
 		color: var(--color-text);
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
 	}
 
 	.tech-items {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--spacing-xs);
+		gap: var(--spacing-sm);
 	}
 
 	.tech-item {
-		padding: var(--spacing-xs) var(--spacing-sm);
-		background: var(--color-bg-secondary);
-		border-radius: var(--radius-sm);
+		padding: var(--spacing-sm) var(--spacing-md);
+		background: var(--color-bg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-full);
 		font-size: 0.875rem;
 		color: var(--color-text-light);
-		transition: all 0.2s ease;
+		font-weight: 500;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.tech-item::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: var(--gradient-primary);
+		transition: left 0.3s ease;
+		z-index: -1;
 	}
 
 	.tech-item:hover {
-		background: var(--color-primary);
 		color: white;
-		transform: scale(1.05);
+		border-color: var(--color-primary-solid);
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.tech-item:hover::before {
+		left: 0;
 	}
 
 	/* Projects Styles */
+	.projects-subsection {
+		background: var(--color-bg-card);
+		border-radius: var(--radius-2xl);
+		padding: var(--spacing-4xl);
+		box-shadow: var(--shadow-xl);
+		border: 1px solid var(--color-border);
+		backdrop-filter: blur(10px);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.projects-subsection::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 6px;
+		background: var(--gradient-primary);
+	}
+
 	.projects-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-		gap: var(--spacing-xl);
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+		gap: var(--spacing-3xl);
+		width: 100%;
 	}
 
 	.project-card {
-		background: var(--color-bg-card);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
-		box-shadow: var(--shadow-md);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-xl);
+		padding: var(--spacing-2xl);
 		border: 1px solid var(--color-border);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-		animation: slideUp 0.6s ease-out both;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
 		overflow: hidden;
 	}
@@ -366,91 +503,296 @@ const projects: Project[] = [
 	.project-card:hover {
 		transform: translateY(-4px);
 		box-shadow: var(--shadow-xl);
+		border-color: var(--color-primary-solid);
 	}
 
 	.project-card::before {
 		content: '';
 		position: absolute;
-		top: 0;
 		left: 0;
-		right: 0;
-		height: 3px;
-		background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+		top: 0;
+		bottom: 0;
+		width: 4px;
+		background: var(--gradient-primary);
 	}
 
 	.project-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		margin-bottom: var(--spacing-md);
-		gap: var(--spacing-md);
+		margin-bottom: var(--spacing-lg);
+		gap: var(--spacing-lg);
 	}
 
 	.project-name {
-		font-size: 1.5rem;
-		font-weight: 700;
+		font-size: 1.375rem;
+		font-weight: 800;
 		margin: 0;
+		line-height: 1.2;
 	}
 
 	.project-metrics {
-		background: linear-gradient(135deg, var(--color-success) 0%, var(--color-accent) 100%);
+		background: var(--gradient-primary);
 		color: white;
-		padding: var(--spacing-xs) var(--spacing-sm);
-		border-radius: var(--radius-sm);
+		padding: var(--spacing-sm) var(--spacing-md);
+		border-radius: var(--radius-full);
 		font-size: 0.75rem;
-		font-weight: 600;
+		font-weight: 700;
 		white-space: nowrap;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		box-shadow: var(--shadow-glow);
 	}
 
 	.project-description {
 		color: var(--color-text-light);
-		margin-bottom: var(--spacing-lg);
-		line-height: 1.6;
+		margin-bottom: var(--spacing-xl);
+		line-height: 1.7;
+		font-size: 1rem;
 	}
 
 	.project-tech {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-xs);
+		background: var(--color-bg);
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-lg);
+		border: 1px solid var(--color-border);
+		position: relative;
+	}
+
+	.project-tech::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background: var(--gradient-primary);
+		border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 	}
 
 	.tech-label {
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: var(--color-text-lighter);
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: var(--color-primary-solid);
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		margin-bottom: var(--spacing-sm);
+		display: block;
 	}
 
 	.tech-value {
 		font-size: 0.875rem;
-		color: var(--color-text-light);
-		padding: var(--spacing-sm);
-		background: var(--color-bg-secondary);
-		border-radius: var(--radius-sm);
-		border-left: 3px solid var(--color-primary);
+		color: var(--color-text);
+		font-weight: 500;
+		line-height: 1.5;
 	}
 
+
+	/* 大画面対応 */
+	@media (min-width: 1600px) {
+		.container {
+			padding: 0 var(--spacing-4xl);
+		}
+
+		.awards-tech-container {
+			gap: var(--spacing-6xl);
+		}
+
+		.awards-section,
+		.tech-section {
+			padding: var(--spacing-5xl);
+			min-height: 700px;
+		}
+
+		.projects-subsection {
+			padding: var(--spacing-5xl);
+		}
+
+		.projects-grid {
+			grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+			gap: var(--spacing-4xl);
+		}
+	}
+
+	/* ノートPC対応 */
+	@media (max-width: 1400px) {
+		.awards-tech-container {
+			max-width: 1200px;
+			gap: var(--spacing-4xl);
+		}
+
+		.projects-subsection {
+			max-width: 1200px;
+		}
+
+		.projects-grid {
+			grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+			gap: var(--spacing-2xl);
+		}
+	}
+
+	/* 小さなノートPC対応 */
+	@media (max-width: 1024px) {
+		.container {
+			padding: 0 var(--spacing-xl);
+		}
+
+		.awards-tech-container {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-4xl);
+			max-width: 800px;
+		}
+
+		.awards-section,
+		.tech-section {
+			padding: var(--spacing-3xl);
+			min-height: auto;
+		}
+
+		.projects-subsection {
+			padding: var(--spacing-3xl);
+			max-width: 800px;
+		}
+
+		.projects-grid {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-2xl);
+		}
+
+		.award-card {
+			padding: var(--spacing-xl);
+			gap: var(--spacing-lg);
+		}
+
+		.tech-category {
+			padding: var(--spacing-xl);
+		}
+
+		.project-card {
+			padding: var(--spacing-xl);
+		}
+	}
+
+	/* タブレット対応 */
 	@media (max-width: 768px) {
+		.development-experience {
+			padding: var(--spacing-3xl) 0;
+		}
+
+		.container {
+			padding: 0 var(--spacing-lg);
+		}
+
+		.awards-tech-container {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-3xl);
+			margin-bottom: var(--spacing-4xl);
+			max-width: none;
+		}
+
+		.awards-section,
+		.tech-section,
+		.projects-subsection {
+			padding: var(--spacing-2xl);
+			max-width: none;
+		}
+
 		.subsection-title {
+			font-size: 1.25rem;
+			gap: var(--spacing-md);
+		}
+
+		.icon-wrapper {
+			width: 48px;
+			height: 48px;
 			font-size: 1.5rem;
 		}
 
-		.awards-grid,
-		.tech-grid,
 		.projects-grid {
 			grid-template-columns: 1fr;
+			gap: var(--spacing-xl);
 		}
 
 		.award-card {
 			padding: var(--spacing-lg);
+			gap: var(--spacing-md);
+			flex-direction: column;
+			text-align: center;
+		}
+
+		.rank-badge {
+			width: 56px;
+			height: 56px;
 		}
 
 		.project-header {
 			flex-direction: column;
 			align-items: flex-start;
+			gap: var(--spacing-md);
 		}
 
 		.project-metrics {
 			align-self: flex-start;
+		}
+
+		.project-name {
+			font-size: 1.25rem;
+		}
+
+		.tech-category {
+			padding: var(--spacing-lg);
+		}
+
+		.tech-header {
+			gap: var(--spacing-md);
+		}
+
+		.tech-icon {
+			width: 48px;
+			height: 48px;
+		}
+
+		.tech-dot {
+			width: 14px;
+			height: 14px;
+		}
+
+		.project-card {
+			padding: var(--spacing-lg);
+		}
+	}
+
+	/* モバイル対応 */
+	@media (max-width: 480px) {
+		.container {
+			padding: 0 var(--spacing-md);
+		}
+
+		.awards-section,
+		.tech-section,
+		.projects-subsection {
+			padding: var(--spacing-xl);
+		}
+
+		.award-card {
+			padding: var(--spacing-md);
+		}
+
+		.tech-category {
+			padding: var(--spacing-md);
+		}
+
+		.project-card {
+			padding: var(--spacing-md);
+		}
+
+		.tech-items {
+			gap: var(--spacing-xs);
+		}
+
+		.tech-item {
+			font-size: 0.75rem;
+			padding: var(--spacing-xs) var(--spacing-sm);
 		}
 	}
 </style>

@@ -1,21 +1,57 @@
 ---
-interface PersonalInfoData {
-	name: string;
-	affiliation: string;
-	grade: string;
-	github: string;
-	atcoder: string;
-	toeic: number;
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Markdownファイルを直接読み込み
+const personalInfoPath = join(process.cwd(), 'src/data/personal-info.md');
+const markdownContent = readFileSync(personalInfoPath, 'utf-8');
+
+// Markdownから個人情報を抽出
+function parsePersonalInfo(content: string) {
+	const lines = content.split('\n');
+	const personalData = {
+		name: '',
+		affiliation: '',
+		grade: '',
+		github: '',
+		atcoder: '',
+		toeic: 0
+	};
+
+	lines.forEach(line => {
+		if (line.includes('**氏名**:')) {
+			personalData.name = line.replace('- **氏名**:', '').trim();
+		}
+		if (line.includes('**所属**:')) {
+			personalData.affiliation = line.replace('- **所属**:', '').trim();
+		}
+		if (line.includes('**学年**:')) {
+			personalData.grade = line.replace('- **学年**:', '').trim();
+		}
+		if (line.includes('**GitHub**:')) {
+			const match = line.match(/\[@(.*?)\]/);
+			if (match) {
+				personalData.github = match[1];
+			}
+		}
+		if (line.includes('**AtCoder**:')) {
+			const match = line.match(/\[@(.*?)\]/);
+			if (match) {
+				personalData.atcoder = match[1];
+			}
+		}
+		if (line.includes('**TOEIC**:')) {
+			const match = line.match(/(\d+)\s*点/);
+			if (match) {
+				personalData.toeic = parseInt(match[1]);
+			}
+		}
+	});
+
+	return personalData;
 }
 
-const personalData: PersonalInfoData = {
-	name: "中野 太郎",
-	affiliation: "東京大学大学院情報理工学系研究科",
-	grade: "修士2年",
-	github: "nakano1122",
-	atcoder: "nakano_competitive",
-	toeic: 950
-};
+const personalData = parsePersonalInfo(markdownContent);
 ---
 
 <section class="personal-info section">
@@ -92,7 +128,6 @@ const personalData: PersonalInfoData = {
 		padding: var(--spacing-2xl);
 		box-shadow: var(--shadow-xl);
 		border: 1px solid var(--color-border);
-		max-width: 800px;
 		margin: 0 auto;
 		position: relative;
 		overflow: hidden;
@@ -269,6 +304,23 @@ const personalData: PersonalInfoData = {
 		font-weight: 700;
 	}
 
+	/* ノートPC対応 */
+	@media (max-width: 1024px) {
+		.personal-card {
+			padding: var(--spacing-xl);
+		}
+
+		.info-grid {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-md);
+		}
+
+		.info-item {
+			padding: var(--spacing-md);
+		}
+	}
+
+	/* タブレット対応 */
 	@media (max-width: 768px) {
 		.personal-card {
 			padding: var(--spacing-xl);

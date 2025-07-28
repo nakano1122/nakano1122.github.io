@@ -1,49 +1,63 @@
 ---
-interface Publication {
-	title: string;
-	conference: string;
-	date: string;
-	type: 'journal' | 'conference' | 'report';
-	status: 'published' | 'accepted' | 'submitted';
-	description?: string;
-	authors?: string[];
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Markdownファイルを直接読み込み
+const researchHistoryPath = join(process.cwd(), 'src/data/research-history.md');
+const markdownContent = readFileSync(researchHistoryPath, 'utf-8');
+
+// セクション別にパース
+function parseResearchMarkdown(content: string) {
+	const publications = [];
+	
+	// 発表論文セクションを抽出
+	const sections = content.split('## ');
+	
+	sections.forEach(section => {
+		if (section.includes('発表論文')) {
+			const lines = section.split('\n').filter(line => line.trim().match(/^\d+\./));
+			lines.forEach(line => {
+				// 番号付きリストから論文情報を抽出
+				const match = line.match(/\d+\.\s*\*\*(.*?)\*\*\s*-?\s*(.*?)(?=\s*$|\s*-\s*)/);
+				if (match) {
+					const title = match[1].replace(/"/g, '');
+					const details = match[2] || '';
+					
+					// 会議名と賞を抽出
+					let conference = details;
+					let award = '';
+					
+					if (details.includes('学生プレゼンテーション賞')) {
+						award = '学生プレゼンテーション賞';
+						conference = details.replace('学生プレゼンテーション賞', '').trim();
+					}
+					
+					publications.push({
+						title,
+						conference,
+						date: "2025年3月", // デフォルト値
+						type: "conference",
+						status: "published",
+						description: award ? `受賞: ${award}` : undefined,
+						authors: ["中野 暁登"]
+					});
+				}
+			});
+		}
+	});
+	
+	return publications;
 }
 
-const publications: Publication[] = [
-	{
-		title: "深層学習を用いた自然言語処理における感情分析の高精度化",
-		conference: "情報処理学会第85回全国大会",
-		date: "2023年3月",
-		type: "conference",
-		status: "published",
-		description: "BERTベースのモデルに感情特徴抽出レイヤーを追加し、従来手法より15%の精度向上を実現",
-		authors: ["中野太郎", "山田花子", "佐藤次郎"]
-	},
-	{
-		title: "グラフニューラルネットワークによるソーシャルネットワーク分析",
-		conference: "人工知能学会全国大会",
-		date: "2023年6月",
-		type: "conference",
-		status: "published",
-		description: "GCNを用いてソーシャルネットワークの影響力予測を行い、既存手法を20%上回る性能を達成",
-		authors: ["中野太郎", "田中三郎"]
-	},
-	{
-		title: "機械学習を活用したリアルタイム異常検知システムの提案",
-		conference: "電子情報通信学会信学技報",
-		date: "2024年1月",
-		type: "report",
-		status: "published",
-		description: "時系列データに対するTransformerベースの異常検知モデルを提案し、実用的な性能を実証",
-		authors: ["中野太郎", "研究室指導教員"]
-	}
-];
+const publications = parseResearchMarkdown(markdownContent);
+
+const finalPublications = publications;
 
 const getTypeColor = (type: string) => {
 	switch (type) {
-		case 'journal': return 'var(--color-primary)';
-		case 'conference': return 'var(--color-secondary)';
-		case 'report': return 'var(--color-accent)';
+		case 'journal': return 'var(--color-primary-solid)';
+		case 'conference': return 'var(--color-secondary-solid)';
+		case 'report': return 'var(--color-accent-solid)';
 		default: return 'var(--color-text-light)';
 	}
 };
@@ -84,77 +98,80 @@ const getStatusIcon = (status: string) => {
 			</div>
 		</div>
 
-		<div class="publications-section">
-			<h3 class="subsection-title">
-				<span class="icon-wrapper">📚</span>
-				発表論文・研究報告
-			</h3>
-			
-			<div class="publications-timeline">
-				{publications.map((publication, index) => (
-					<div class="publication-item animate-slide-up" style={`animation-delay: ${index * 0.15}s`}>
-						<div class="timeline-connector">
-							<div class="timeline-dot" style={`background-color: ${getTypeColor(publication.type)}`}></div>
-							{index < publications.length - 1 && <div class="timeline-line"></div>}
-						</div>
-						
-						<div class="publication-card">
-							<div class="publication-header">
-								<div class="publication-meta">
-									<span class="publication-type" style={`background-color: ${getTypeColor(publication.type)}20; color: ${getTypeColor(publication.type)}`}>
-										{getTypeLabel(publication.type)}
-									</span>
-									<span class="publication-status">
-										{getStatusIcon(publication.status)}
-									</span>
-									<span class="publication-date">{publication.date}</span>
-								</div>
+		{finalPublications.length > 0 && (
+			<div class="publications-section">
+				<h3 class="subsection-title">
+					<span class="icon-wrapper">📚</span>
+					発表論文・研究報告
+				</h3>
+				
+				<div class="publications-timeline">
+					{finalPublications.map((publication, index) => (
+						<div class="publication-item animate-slide-up" style={`animation-delay: ${index * 0.15}s`}>
+							<div class="timeline-connector">
+								<div class="timeline-dot" style={`background-color: ${getTypeColor(publication.type)}`}></div>
+								{index < finalPublications.length - 1 && <div class="timeline-line"></div>}
 							</div>
 							
-							<div class="publication-content">
-								<h4 class="publication-title">{publication.title}</h4>
-								<p class="publication-conference">{publication.conference}</p>
-								
-								{publication.description && (
-									<p class="publication-description">{publication.description}</p>
-								)}
-								
-								{publication.authors && (
-									<div class="publication-authors">
-										<span class="authors-label">著者:</span>
-										<div class="authors-list">
-											{publication.authors.map((author, authorIndex) => (
-												<span class={`author ${author === '中野太郎' ? 'author-self' : ''}`}>
-													{author}
-													{authorIndex < publication.authors.length - 1 && ', '}
-												</span>
-											))}
-										</div>
+							<div class="publication-card">
+								<div class="publication-header">
+									<div class="publication-meta">
+										<span class="publication-type" style={`background-color: ${getTypeColor(publication.type)}20; color: ${getTypeColor(publication.type)}`}>
+											{getTypeLabel(publication.type)}
+										</span>
+										<span class="publication-status">
+											{getStatusIcon(publication.status)}
+										</span>
+										<span class="publication-date">{publication.date}</span>
 									</div>
-								)}
+								</div>
+								
+								<div class="publication-content">
+									<h4 class="publication-title">{publication.title}</h4>
+									<p class="publication-conference">{publication.conference}</p>
+									
+									{publication.description && (
+										<p class="publication-description">{publication.description}</p>
+									)}
+									
+									{publication.authors && (
+										<div class="publication-authors">
+											<span class="authors-label">著者:</span>
+											<div class="authors-list">
+												{publication.authors.map((author, authorIndex) => (
+													<span class={`author ${author.includes('中野') ? 'author-self' : ''}`}>
+														{author}
+														{authorIndex < publication.authors.length - 1 && ', '}
+													</span>
+												))}
+											</div>
+										</div>
+									)}
+								</div>
 							</div>
 						</div>
-					</div>
-				))}
+					))}
+				</div>
 			</div>
-		</div>
+		)}
 
 		<div class="research-stats animate-slide-up">
 			<div class="stats-grid">
 				<div class="stat-item">
-					<div class="stat-number">3</div>
+					<div class="stat-number">{finalPublications.length}</div>
 					<div class="stat-label">発表論文数</div>
 				</div>
 				<div class="stat-item">
-					<div class="stat-number">2</div>
+					<div class="stat-number">{finalPublications.filter(p => p.type === 'conference').length}</div>
 					<div class="stat-label">学会発表</div>
 				</div>
 				<div class="stat-item">
-					<div class="stat-number">1</div>
+					<div class="stat-number">{finalPublications.filter(p => p.type === 'report').length}</div>
 					<div class="stat-label">技術報告</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 </section>
 
@@ -176,14 +193,13 @@ const getStatusIcon = (status: string) => {
 		display: flex;
 		align-items: center;
 		gap: var(--spacing-xl);
-		max-width: 800px;
 		margin: 0 auto;
 	}
 
 	.intro-icon {
 		font-size: 3rem;
 		padding: var(--spacing-lg);
-		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+		background: var(--gradient-primary);
 		border-radius: var(--radius-lg);
 		display: flex;
 		align-items: center;
@@ -230,7 +246,6 @@ const getStatusIcon = (status: string) => {
 
 	.publications-timeline {
 		position: relative;
-		max-width: 900px;
 		margin: 0 auto;
 	}
 
@@ -293,7 +308,7 @@ const getStatusIcon = (status: string) => {
 		left: 0;
 		right: 0;
 		height: 3px;
-		background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+		background: var(--gradient-primary);
 	}
 
 	.publication-header {
@@ -348,7 +363,7 @@ const getStatusIcon = (status: string) => {
 		padding: var(--spacing-md);
 		background: var(--color-bg-secondary);
 		border-radius: var(--radius-md);
-		border-left: 4px solid var(--color-primary);
+		border-left: 4px solid var(--color-primary-solid);
 	}
 
 	.publication-authors {
@@ -377,7 +392,7 @@ const getStatusIcon = (status: string) => {
 	}
 
 	.author-self {
-		color: var(--color-primary);
+		color: var(--color-primary-solid);
 		font-weight: 600;
 	}
 
@@ -389,7 +404,6 @@ const getStatusIcon = (status: string) => {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 		gap: var(--spacing-lg);
-		max-width: 600px;
 		margin: 0 auto;
 	}
 
@@ -410,7 +424,7 @@ const getStatusIcon = (status: string) => {
 	.stat-number {
 		font-size: 2.5rem;
 		font-weight: 700;
-		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+		background: var(--gradient-primary);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
@@ -423,6 +437,30 @@ const getStatusIcon = (status: string) => {
 		font-size: 0.875rem;
 	}
 
+
+	/* ノートPC対応 */
+	@media (max-width: 1024px) {
+		.intro-card {
+			padding: var(--spacing-xl);
+			gap: var(--spacing-lg);
+		}
+
+
+		.publication-card {
+			padding: var(--spacing-lg);
+		}
+
+		.stats-grid {
+			grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+			gap: var(--spacing-md);
+		}
+
+		.stat-item {
+			padding: var(--spacing-lg);
+		}
+	}
+
+	/* タブレット対応 */
 	@media (max-width: 768px) {
 		.intro-card {
 			flex-direction: column;

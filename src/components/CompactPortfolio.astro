@@ -1,67 +1,172 @@
 ---
-interface ContactInfo {
-	github: string;
-	email: string;
-	linkedin?: string;
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Markdownファイルを直接読み込み
+const personalInfoPath = join(process.cwd(), 'src/data/personal-info.md');
+const developmentExperiencePath = join(process.cwd(), 'src/data/development-experience.md');
+const researchHistoryPath = join(process.cwd(), 'src/data/research-history.md');
+const internshipHistoryPath = join(process.cwd(), 'src/data/internship-history.md');
+const lastUpdatedPath = join(process.cwd(), 'src/data/last-updated.md');
+
+const personalInfoContent = readFileSync(personalInfoPath, 'utf-8');
+const developmentExperienceContent = readFileSync(developmentExperiencePath, 'utf-8');
+const researchHistoryContent = readFileSync(researchHistoryPath, 'utf-8');
+const internshipHistoryContent = readFileSync(internshipHistoryPath, 'utf-8');
+const lastUpdatedContent = readFileSync(lastUpdatedPath, 'utf-8');
+
+// Markdownから個人情報を抽出
+function parsePersonalInfo(content: string) {
+	const lines = content.split('\n');
+	const personalData = {
+		name: '',
+		affiliation: '',
+		grade: '',
+		github: '',
+		atcoder: '',
+		toeic: 0
+	};
+
+	lines.forEach(line => {
+		if (line.includes('**氏名**:')) {
+			personalData.name = line.replace('- **氏名**:', '').trim();
+		}
+		if (line.includes('**所属**:')) {
+			personalData.affiliation = line.replace('- **所属**:', '').trim();
+		}
+		if (line.includes('**学年**:')) {
+			personalData.grade = line.replace('- **学年**:', '').trim();
+		}
+		if (line.includes('**GitHub**:')) {
+			const match = line.match(/\[@(.*?)\]/);
+			if (match) {
+				personalData.github = match[1];
+			}
+		}
+		if (line.includes('**AtCoder**:')) {
+			const match = line.match(/\[@(.*?)\]/);
+			if (match) {
+				personalData.atcoder = match[1];
+			}
+		}
+		if (line.includes('**TOEIC**:')) {
+			const match = line.match(/(\d+)\s*点/);
+			if (match) {
+				personalData.toeic = parseInt(match[1]);
+			}
+		}
+	});
+
+	return personalData;
 }
 
-const contactInfo: ContactInfo = {
-	github: "nakano1122",
-	email: "nakano.taro@example.com",
-	linkedin: "nakano-taro"
-};
+// 開発経験から受賞歴と技術を抽出
+function parseDevelopmentExperience(content: string) {
+	const lines = content.split('\n');
+	const awards = [];
+	const technologies = [];
+	
+	let currentSection = '';
+	
+	lines.forEach(line => {
+		if (line.includes('## 受賞歴')) {
+			currentSection = 'awards';
+		} else if (line.includes('## 使用技術')) {
+			currentSection = 'tech';
+		} else if (line.includes('## 個人開発')) {
+			currentSection = 'projects';
+		} else if (currentSection === 'awards' && line.includes('**') && line.includes('最優秀賞')) {
+			const match = line.match(/\*\*(.*?)\*\*.*\((.*?)\)/);
+			if (match) {
+				awards.push({
+					title: match[1],
+					date: match[2]
+				});
+			}
+		} else if (currentSection === 'tech' && line.includes('**') && line.includes(':')) {
+			const match = line.match(/\*\*(.*?)\*\*:\s*(.*)/);
+			if (match) {
+				const techs = match[2].split(',').map(t => t.trim());
+				technologies.push(...techs);
+			}
+		}
+	});
+	
+	return { awards, technologies };
+}
 
+// 研究歴から論文数を抽出
+function parseResearchHistory(content: string) {
+	const lines = content.split('\n');
+	const publications = lines.filter(line => line.match(/^\d+\./)).length;
+	return publications;
+}
+
+// インターン歴から企業数を抽出
+function parseInternshipHistory(content: string) {
+	const lines = content.split('\n');
+	const companies = lines.filter(line => line.match(/^## \d+\./)).length;
+	return companies;
+}
+
+// 更新日を抽出
+function parseLastUpdated(content: string) {
+	const lines = content.split('\n');
+	let lastUpdated = '';
+	
+	lines.forEach(line => {
+		if (line.includes('最終更新日:')) {
+			lastUpdated = line.replace('最終更新日:', '').trim();
+		}
+	});
+	
+	return lastUpdated || '2024年7月28日';
+}
+
+// データを解析
+const personalData = parsePersonalInfo(personalInfoContent);
+const { awards, technologies } = parseDevelopmentExperience(developmentExperienceContent);
+const publicationCount = parseResearchHistory(researchHistoryContent);
+const companyCount = parseInternshipHistory(internshipHistoryContent);
+const lastUpdated = parseLastUpdated(lastUpdatedContent);
+
+// 統計データを生成
 const quickStats = [
-	{ label: "経験年数", value: "3+" },
-	{ label: "プロジェクト", value: "15+" },
-	{ label: "論文発表", value: "3" },
-	{ label: "インターン", value: "3社" }
+	{ label: "論文発表", value: publicationCount.toString() },
+	{ label: "インターン", value: `${companyCount}社` },
+	{ label: "受賞", value: `${awards.length}回` },
+	{ label: "TOEIC", value: `${personalData.toeic}点` }
 ];
 
-const technologies = [
-	"React", "TypeScript", "Python", "Go", "AWS", "Docker"
-];
-
+// ハイライトを生成
 const highlights = [
-	{
-		title: "技育CAMPハッカソン 最優秀賞",
-		date: "2023.12",
+	...awards.slice(0, 2).map(award => ({
+		title: award.title,
+		date: award.date,
 		type: "award"
-	},
+	})),
 	{
-		title: "株式会社メルカリ インターン",
-		date: "2023.08-09",
-		type: "experience"
-	},
-	{
-		title: "深層学習を用いた感情分析 論文発表",
-		date: "2023.03",
-		type: "research"
+		title: `${personalData.affiliation} ${personalData.grade}`,
+		date: "現在",
+		type: "education"
 	}
 ];
 ---
 
 <main class="portfolio-container">
-	<!-- Header Section -->
-	<header class="portfolio-header">
-		<div class="profile-section">
+	<!-- Hero Section -->
+	<section class="hero-section">
+		<div class="hero-content">
 			<div class="avatar">
-				<span class="avatar-initial">中</span>
+				<span class="avatar-initial">{personalData.name.charAt(0)}</span>
 			</div>
-			<div class="profile-info">
-				<h1 class="name">中野 太郎</h1>
-				<p class="title">Software Engineer & Researcher</p>
-				<p class="affiliation">東京大学大学院 情報理工学系研究科 修士2年</p>
+			<div class="hero-text">
+				<h1 class="hero-name">{personalData.name}</h1>
+				<p class="hero-title">Software Engineer & Researcher</p>
+				<p class="hero-affiliation">{personalData.affiliation} {personalData.grade}</p>
 			</div>
 		</div>
-		
-		<nav class="navigation">
-			<a href="/development" class="nav-link">開発経験</a>
-			<a href="/research" class="nav-link">研究</a>
-			<a href="/internship" class="nav-link">インターン</a>
-			<a href="/contact" class="nav-link nav-link-primary">Contact</a>
-		</nav>
-	</header>
+	</section>
 
 	<!-- Main Content Grid -->
 	<div class="content-grid">
@@ -82,7 +187,7 @@ const highlights = [
 		<section class="skills-card">
 			<h2 class="card-title">主要技術</h2>
 			<div class="tech-list">
-				{technologies.map((tech) => (
+				{technologies.slice(0, 6).map((tech) => (
 					<span class="tech-tag">{tech}</span>
 				))}
 			</div>
@@ -102,42 +207,43 @@ const highlights = [
 						<span class={`highlight-type highlight-type-${highlight.type}`}>
 							{highlight.type === 'award' ? '🏆' : 
 							 highlight.type === 'experience' ? '💼' : 
-							 highlight.type === 'research' ? '📚' : '📄'}
+							 highlight.type === 'research' ? '📚' : 
+							 highlight.type === 'education' ? '🎓' : '📄'}
 						</span>
 					</div>
 				))}
 			</div>
 		</section>
 
-		<!-- Contact Section -->
-		<section class="contact-card">
-			<h2 class="card-title">連絡先</h2>
-			<div class="contact-info">
-				<a href={`https://github.com/${contactInfo.github}`} class="contact-link" target="_blank" rel="noopener noreferrer">
-					<svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-					</svg>
-					<span>GitHub</span>
-				</a>
-				<a href={`mailto:${contactInfo.email}`} class="contact-link">
-					<svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-					</svg>
-					<span>Email</span>
-				</a>
+		<!-- Personal Info Section -->
+		<section class="personal-info-card">
+			<h2 class="card-title">個人情報</h2>
+			<div class="personal-info">
+				<div class="info-item">
+					<span class="info-label">GitHub:</span>
+					<a href={`https://github.com/${personalData.github}`} class="info-link" target="_blank" rel="noopener noreferrer">@{personalData.github}</a>
+				</div>
+				<div class="info-item">
+					<span class="info-label">AtCoder:</span>
+					<a href={`https://atcoder.jp/users/${personalData.atcoder}`} class="info-link" target="_blank" rel="noopener noreferrer">@{personalData.atcoder}</a>
+				</div>
+				<div class="info-item">
+					<span class="info-label">TOEIC:</span>
+					<span class="info-value">{personalData.toeic}点</span>
+				</div>
 			</div>
 		</section>
 	</div>
 
 	<!-- Footer -->
 	<footer class="portfolio-footer">
-		<p class="last-updated">最終更新: {new Date().toLocaleDateString('ja-JP')}</p>
+		<p class="last-updated">最終更新日: {lastUpdated}</p>
 	</footer>
 </main>
 
 <style>
 	.portfolio-container {
-		max-width: 1200px;
+		max-width: 1400px;
 		margin: 0 auto;
 		padding: var(--spacing-xl);
 		font-family: 'Inter', 'Noto Sans JP', sans-serif;
@@ -146,20 +252,19 @@ const highlights = [
 		flex-direction: column;
 	}
 
-	/* Header */
-	.portfolio-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: var(--spacing-2xl);
-		padding-bottom: var(--spacing-lg);
-		border-bottom: 1px solid var(--color-border);
+	/* Hero Section */
+	.hero-section {
+		text-align: center;
+		margin-bottom: var(--spacing-4xl);
+		padding: var(--spacing-3xl) 0;
+		position: relative;
 	}
 
-	.profile-section {
+	.hero-content {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		gap: var(--spacing-lg);
+		gap: var(--spacing-xl);
 	}
 
 	.avatar {
@@ -175,53 +280,29 @@ const highlights = [
 		font-size: 1.5rem;
 	}
 
-	.name {
-		font-size: 1.75rem;
+	.hero-name {
+		font-size: 2.5rem;
 		font-weight: 700;
 		color: var(--color-text);
-		margin-bottom: var(--spacing-xs);
+		margin-bottom: var(--spacing-sm);
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
-	.title {
+	.hero-title {
+		font-size: 1.25rem;
+		color: var(--color-primary-solid);
+		font-weight: 500;
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.hero-affiliation {
 		font-size: 1rem;
-		color: var(--color-primary);
-		font-weight: 500;
-		margin-bottom: var(--spacing-xs);
-	}
-
-	.affiliation {
-		font-size: 0.875rem;
 		color: var(--color-text-light);
 	}
 
-	.navigation {
-		display: flex;
-		gap: var(--spacing-lg);
-		align-items: center;
-	}
-
-	.nav-link {
-		color: var(--color-text-light);
-		text-decoration: none;
-		font-weight: 500;
-		transition: color 0.2s ease;
-		padding: var(--spacing-sm) var(--spacing-md);
-		border-radius: var(--radius-md);
-	}
-
-	.nav-link:hover {
-		color: var(--color-primary);
-	}
-
-	.nav-link-primary {
-		background: var(--color-primary);
-		color: white;
-	}
-
-	.nav-link-primary:hover {
-		background: var(--color-primary-dark);
-		color: white;
-	}
 
 	/* Content Grid */
 	.content-grid {
@@ -235,7 +316,7 @@ const highlights = [
 	.stats-card,
 	.skills-card,
 	.highlights-card,
-	.contact-card {
+	.personal-info-card {
 		background: var(--color-bg-card);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-lg);
@@ -247,7 +328,7 @@ const highlights = [
 	.stats-card:hover,
 	.skills-card:hover,
 	.highlights-card:hover,
-	.contact-card:hover {
+	.personal-info-card:hover {
 		box-shadow: var(--shadow-md);
 	}
 
@@ -352,32 +433,39 @@ const highlights = [
 		font-size: 1.25rem;
 	}
 
-	/* Contact */
-	.contact-info {
+	/* Personal Info */
+	.personal-info {
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-md);
 	}
 
-	.contact-link {
+	.info-item {
 		display: flex;
 		align-items: center;
 		gap: var(--spacing-sm);
-		color: var(--color-text-light);
-		text-decoration: none;
 		padding: var(--spacing-sm);
 		border-radius: var(--radius-md);
-		transition: all 0.2s ease;
 	}
 
-	.contact-link:hover {
-		background: var(--color-bg-secondary);
+	.info-label {
+		font-weight: 500;
+		color: var(--color-text);
+		min-width: 80px;
+	}
+
+	.info-link {
 		color: var(--color-primary);
+		text-decoration: none;
+		transition: color 0.2s ease;
 	}
 
-	.contact-icon {
-		width: 20px;
-		height: 20px;
+	.info-link:hover {
+		color: var(--color-primary-dark);
+	}
+
+	.info-value {
+		color: var(--color-text-light);
 	}
 
 	/* Footer */
@@ -399,20 +487,16 @@ const highlights = [
 			padding: var(--spacing-lg);
 		}
 
-		.portfolio-header {
-			flex-direction: column;
-			gap: var(--spacing-lg);
-			text-align: center;
+		.hero-name {
+			font-size: 2rem;
 		}
 
-		.profile-section {
-			flex-direction: column;
-			text-align: center;
+		.hero-title {
+			font-size: 1.125rem;
 		}
 
-		.navigation {
-			flex-wrap: wrap;
-			justify-content: center;
+		.hero-affiliation {
+			font-size: 0.875rem;
 		}
 
 		.content-grid {

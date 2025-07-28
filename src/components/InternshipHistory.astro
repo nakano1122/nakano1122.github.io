@@ -1,85 +1,83 @@
 ---
-interface InternshipExperience {
-	company: string;
-	role: string;
-	duration: string;
-	period: string;
-	department: string;
-	description: string[];
-	technologies: string[];
-	achievements?: string[];
-	companyLogo?: string;
-	status: 'completed' | 'ongoing' | 'upcoming';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Markdownファイルを直接読み込み
+const internshipHistoryPath = join(process.cwd(), 'src/data/internship-history.md');
+const markdownContent = readFileSync(internshipHistoryPath, 'utf-8');
+
+// セクション別にパース
+function parseInternshipMarkdown(content: string) {
+	const internships = [];
+	
+	// ## で分割してセクションを取得
+	const sections = content.split('## ').filter(section => section.trim());
+	
+	sections.forEach(section => {
+		if (section.match(/^\d+\./)) {
+			const lines = section.split('\n');
+			
+			// 会社名を抽出
+			const titleMatch = lines[0].match(/\d+\.\s*(.*?)\s*\(/);
+			const company = titleMatch ? titleMatch[1].trim() : '';
+			
+			// 期間を抽出
+			const periodMatch = lines[0].match(/\((.*?)\)/);
+			const period = periodMatch ? periodMatch[1] : '';
+			
+			// 部署を抽出
+			let department = '';
+			let description = [];
+			
+			lines.forEach(line => {
+				if (line.includes('**部署**:')) {
+					department = line.replace('**部署**:', '').replace('-', '').trim();
+				}
+				if (line.includes('**業務内容**:')) {
+					// 業務内容の次の行から説明を抽出
+					const startIndex = lines.indexOf(line);
+					for (let i = startIndex + 1; i < lines.length; i++) {
+						const descLine = lines[i].trim();
+						if (descLine.startsWith('-')) {
+							description.push(descLine.replace('-', '').trim());
+						} else if (descLine === '') {
+							continue;
+						} else {
+							break;
+						}
+					}
+				}
+			});
+			
+			if (company) {
+				internships.push({
+					company,
+					role: department.includes('Backend') ? 'Backend Engineer Intern' : 
+					       department.includes('AI') ? 'AI Engineer Intern' :
+					       department.includes('Frontend') ? 'Frontend Engineer Intern' : 'Software Engineer Intern',
+					duration: period.includes('現在') ? '進行中' : '2ヶ月間',
+					period,
+					department,
+					description: description.length > 0 ? description : ['業務内容の詳細'],
+					technologies: ['Next.js', 'Django', 'Python', 'Web開発'],
+					status: period.includes('現在') ? 'ongoing' : 'completed'
+				});
+			}
+		}
+	});
+	
+	return internships;
 }
 
-const internships: InternshipExperience[] = [
-	{
-		company: "株式会社メルカリ",
-		role: "Software Engineer Intern",
-		duration: "2ヶ月間",
-		period: "2023年8月 - 9月",
-		department: "Backend Team",
-		description: [
-			"マイクロサービスアーキテクチャでの新機能開発を担当",
-			"Go言語を用いたRESTful APIの設計・実装",
-			"Kubernetesクラスターでの本番環境デプロイを経験",
-			"メンターとのペアプログラミングを通じたコードレビュー文化の学習"
-		],
-		technologies: ["Go", "Kubernetes", "Docker", "gRPC", "PostgreSQL", "Redis"],
-		achievements: [
-			"新機能のAPIレスポンス時間を30%改善",
-			"テストカバレッジを85%まで向上",
-			"チーム内でのベストプラクティス共有"
-		],
-		status: "completed"
-	},
-	{
-		company: "株式会社サイバーエージェント",
-		role: "Machine Learning Engineer Intern",
-		duration: "1ヶ月間",
-		period: "2024年2月 - 3月",
-		department: "AI技術部",
-		description: [
-			"広告配信最適化のための機械学習モデル開発",
-			"Python + TensorFlowでの深層学習モデル実装",
-			"A/Bテストによる効果検証とデータ分析",
-			"MLOpsパイプラインの構築と運用"
-		],
-		technologies: ["Python", "TensorFlow", "Kubernetes", "BigQuery", "Airflow", "Docker"],
-		achievements: [
-			"CTR予測精度を12%向上",
-			"モデル推論速度を40%高速化",
-			"自動化パイプラインの構築で工数50%削減"
-		],
-		status: "completed"
-	},
-	{
-		company: "LINE株式会社",
-		role: "Frontend Engineer Intern",
-		duration: "2ヶ月間",
-		period: "2024年8月 - 9月",
-		department: "LINE Platform Development Team",
-		description: [
-			"LINEミニアプリのフロントエンド開発を担当",
-			"React + TypeScriptでのユーザーインターフェース実装",
-			"パフォーマンス最適化とUX改善施策の実施",
-			"アクセシビリティ対応とクロスブラウザ互換性の確保"
-		],
-		technologies: ["React", "TypeScript", "Next.js", "Styled Components", "Jest", "Storybook"],
-		achievements: [
-			"ページロード時間を45%短縮",
-			"ユーザビリティテストでの満足度95%達成",
-			"コンポーネントライブラリの標準化"
-		],
-		status: "upcoming"
-	}
-];
+const internships = parseInternshipMarkdown(markdownContent);
+
+const finalInternships = internships;
 
 const getStatusColor = (status: string) => {
 	switch (status) {
 		case 'completed': return 'var(--color-success)';
 		case 'ongoing': return 'var(--color-warning)';
-		case 'upcoming': return 'var(--color-accent)';
+		case 'upcoming': return 'var(--color-accent-solid)';
 		default: return 'var(--color-text-light)';
 	}
 };
@@ -108,108 +106,82 @@ const getStatusIcon = (status: string) => {
 		<h2 class="section-title">Internship Experience</h2>
 		
 		<div class="internship-intro animate-slide-up">
-			<div class="intro-card">
-				<div class="intro-icon">💼</div>
-				<div class="intro-content">
-					<h3 class="intro-title">インターンシップ経験</h3>
-					<p class="intro-description">
-						多様な技術領域での実務経験を通じて、エンジニアリングスキルとビジネス理解を深めています。
-						バックエンド、機械学習、フロントエンドの各分野で実践的な開発経験を積んでいます。
-					</p>
+			<div class="intro-content">
+				<h3 class="intro-title">インターンシップ経験</h3>
+				<div class="stats-grid">
+					<div class="stat-item">
+						<div class="stat-icon">🏢</div>
+						<div class="stat-content">
+							<div class="stat-number">{finalInternships.length}</div>
+							<div class="stat-label">インターン先企業数</div>
+						</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-icon">⏱️</div>
+						<div class="stat-content">
+							<div class="stat-number">{finalInternships.length * 2}</div>
+							<div class="stat-label">総実務経験月数</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="internships-timeline">
-			{internships.map((internship, index) => (
-				<div class="internship-item animate-slide-up" style={`animation-delay: ${index * 0.2}s`}>
-					<div class="timeline-connector">
-						<div class="timeline-dot" style={`background-color: ${getStatusColor(internship.status)}`}></div>
-						{index < internships.length - 1 && <div class="timeline-line"></div>}
-					</div>
-					
-					<div class="internship-card">
-						<div class="internship-header">
-							<div class="company-info">
-								<h3 class="company-name text-gradient">{internship.company}</h3>
-								<p class="role-title">{internship.role}</p>
-								<div class="department">{internship.department}</div>
-							</div>
-							<div class="internship-meta">
-								<div class="status-badge" style={`background-color: ${getStatusColor(internship.status)}20; color: ${getStatusColor(internship.status)}`}>
-									<span class="status-icon">{getStatusIcon(internship.status)}</span>
-									{getStatusLabel(internship.status)}
-								</div>
-								<div class="duration-info">
-									<div class="period">{internship.period}</div>
-									<div class="duration">{internship.duration}</div>
-								</div>
-							</div>
+		{finalInternships.length > 0 && (
+			<div class="internships-timeline">
+				{finalInternships.map((internship, index) => (
+					<div class="internship-item animate-slide-up" style={`animation-delay: ${index * 0.2}s`}>
+						<div class="timeline-connector">
+							<div class="timeline-dot" style={`background-color: ${getStatusColor(internship.status)}`}></div>
+							{index < finalInternships.length - 1 && <div class="timeline-line"></div>}
 						</div>
-
-						<div class="internship-content">
-							<div class="description-section">
-								<h4 class="content-title">業務内容</h4>
-								<ul class="description-list">
-									{internship.description.map((item) => (
-										<li class="description-item">{item}</li>
-									))}
-								</ul>
-							</div>
-
-							<div class="technologies-section">
-								<h4 class="content-title">使用技術</h4>
-								<div class="tech-tags">
-									{internship.technologies.map((tech) => (
-										<span class="tech-tag">{tech}</span>
-									))}
+						
+						<div class="internship-card">
+							<div class="internship-header">
+								<div class="company-info">
+									<h3 class="company-name text-gradient">{internship.company}</h3>
+									<p class="role-title">{internship.role}</p>
+									<div class="department">{internship.department}</div>
+								</div>
+								<div class="internship-meta">
+									<div class="status-badge" style={`background-color: ${getStatusColor(internship.status)}20; color: ${getStatusColor(internship.status)}`}>
+										<span class="status-icon">{getStatusIcon(internship.status)}</span>
+										{getStatusLabel(internship.status)}
+									</div>
+									<div class="duration-info">
+										<div class="period">{internship.period}</div>
+										<div class="duration">{internship.duration}</div>
+									</div>
 								</div>
 							</div>
 
-							{internship.achievements && (
-								<div class="achievements-section">
-									<h4 class="content-title">主な成果</h4>
-									<div class="achievements-grid">
-										{internship.achievements.map((achievement) => (
-											<div class="achievement-item">
-												<span class="achievement-icon">🎯</span>
-												<span class="achievement-text">{achievement}</span>
-											</div>
+							<div class="internship-content">
+								<div class="description-section">
+									<h4 class="content-title">業務内容</h4>
+									<ul class="description-list">
+										{internship.description.map((item) => (
+											<li class="description-item">{item}</li>
+										))}
+									</ul>
+								</div>
+
+								<div class="technologies-section">
+									<h4 class="content-title">使用技術</h4>
+									<div class="tech-tags">
+										{internship.technologies.map((tech) => (
+											<span class="tech-tag">{tech}</span>
 										))}
 									</div>
 								</div>
-							)}
+
+							</div>
 						</div>
 					</div>
-				</div>
-			))}
-		</div>
-
-		<div class="internship-summary animate-slide-up">
-			<div class="summary-grid">
-				<div class="summary-item">
-					<div class="summary-icon">🏢</div>
-					<div class="summary-content">
-						<div class="summary-number">3</div>
-						<div class="summary-label">インターン先企業数</div>
-					</div>
-				</div>
-				<div class="summary-item">
-					<div class="summary-icon">⏱️</div>
-					<div class="summary-content">
-						<div class="summary-number">5</div>
-						<div class="summary-label">総実務経験月数</div>
-					</div>
-				</div>
-				<div class="summary-item">
-					<div class="summary-icon">🔧</div>
-					<div class="summary-content">
-						<div class="summary-number">15+</div>
-						<div class="summary-label">習得技術数</div>
-					</div>
-				</div>
+				))}
 			</div>
-		</div>
+		)}
+
+
 	</div>
 </section>
 
@@ -220,52 +192,102 @@ const getStatusIcon = (status: string) => {
 
 	.internship-intro {
 		margin-bottom: var(--spacing-3xl);
-	}
-
-	.intro-card {
 		background: var(--color-bg-card);
 		border-radius: var(--radius-xl);
 		padding: var(--spacing-2xl);
-		box-shadow: var(--shadow-md);
+		box-shadow: var(--shadow-lg);
 		border: 1px solid var(--color-border);
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-xl);
-		max-width: 800px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.internship-intro::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: var(--gradient-primary);
+	}
+
+	.intro-content {
+		text-align: center;
+	}
+
+	.intro-title {
+		font-size: 1.75rem;
+		font-weight: 700;
+		margin-bottom: var(--spacing-xl);
+		color: var(--color-text);
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.stats-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: var(--spacing-lg);
+		max-width: 600px;
 		margin: 0 auto;
 	}
 
-	.intro-icon {
-		font-size: 3rem;
-		padding: var(--spacing-lg);
-		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+	.stat-item {
+		background: var(--color-bg-secondary);
 		border-radius: var(--radius-lg);
+		padding: var(--spacing-xl);
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-lg);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		border: 1px solid var(--color-border);
+	}
+
+	.stat-item:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.stat-icon {
+		font-size: 2.5rem;
+		padding: var(--spacing-md);
+		background: var(--gradient-primary);
+		border-radius: var(--radius-md);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		box-shadow: var(--shadow-lg);
+		box-shadow: var(--shadow-md);
 	}
 
-	.intro-content {
+	.stat-content {
 		flex: 1;
+		text-align: left;
 	}
 
-	.intro-title {
-		font-size: 1.5rem;
-		font-weight: 600;
-		margin-bottom: var(--spacing-sm);
+	.stat-number {
+		font-size: 2rem;
+		font-weight: 700;
 		color: var(--color-text);
+		margin-bottom: var(--spacing-xs);
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
-	.intro-description {
+	.stat-label {
 		color: var(--color-text-light);
-		line-height: 1.7;
+		font-weight: 500;
+		font-size: 0.875rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
 	}
 
 	.internships-timeline {
 		position: relative;
-		max-width: 1000px;
 		margin: 0 auto;
 	}
 
@@ -328,12 +350,12 @@ const getStatusIcon = (status: string) => {
 		left: 0;
 		right: 0;
 		height: 4px;
-		background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+		background: var(--gradient-primary);
 	}
 
 	.internship-header {
 		display: flex;
-		justify-content: between;
+		justify-content: space-between;
 		gap: var(--spacing-xl);
 		margin-bottom: var(--spacing-2xl);
 		padding-bottom: var(--spacing-lg);
@@ -423,7 +445,7 @@ const getStatusIcon = (status: string) => {
 		content: '';
 		width: 4px;
 		height: 20px;
-		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+		background: var(--gradient-primary);
 		border-radius: 2px;
 	}
 
@@ -450,7 +472,7 @@ const getStatusIcon = (status: string) => {
 		content: '▸';
 		position: absolute;
 		left: var(--spacing-md);
-		color: var(--color-primary);
+		color: var(--color-primary-solid);
 		font-weight: 600;
 	}
 
@@ -462,7 +484,7 @@ const getStatusIcon = (status: string) => {
 
 	.tech-tag {
 		padding: var(--spacing-xs) var(--spacing-sm);
-		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+		background: var(--gradient-primary);
 		color: white;
 		border-radius: var(--radius-sm);
 		font-size: 0.875rem;
@@ -485,8 +507,7 @@ const getStatusIcon = (status: string) => {
 		align-items: center;
 		gap: var(--spacing-sm);
 		padding: var(--spacing-sm) var(--spacing-md);
-		background: linear-gradient(135deg, var(--color-success) 0%, var(--color-accent) 100%);
-		background-clip: padding-box;
+		background: linear-gradient(135deg, var(--color-success) 0%, var(--color-accent-solid) 100%);
 		border-radius: var(--radius-md);
 		color: white;
 		font-weight: 500;
@@ -498,72 +519,59 @@ const getStatusIcon = (status: string) => {
 		flex-shrink: 0;
 	}
 
-	.internship-summary {
-		margin-top: var(--spacing-3xl);
-	}
 
-	.summary-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		gap: var(--spacing-lg);
-		max-width: 700px;
-		margin: 0 auto;
-	}
 
-	.summary-item {
-		background: var(--color-bg-card);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
-		box-shadow: var(--shadow-md);
-		border: 1px solid var(--color-border);
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-lg);
-		transition: transform 0.3s ease;
-	}
-
-	.summary-item:hover {
-		transform: translateY(-2px);
-	}
-
-	.summary-icon {
-		font-size: 2rem;
-		padding: var(--spacing-md);
-		background: var(--color-bg-secondary);
-		border-radius: var(--radius-md);
-		flex-shrink: 0;
-	}
-
-	.summary-content {
-		flex: 1;
-	}
-
-	.summary-number {
-		font-size: 2rem;
-		font-weight: 700;
-		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin-bottom: var(--spacing-xs);
-	}
-
-	.summary-label {
-		color: var(--color-text-light);
-		font-weight: 500;
-		font-size: 0.875rem;
-	}
-
-	@media (max-width: 768px) {
-		.intro-card {
-			flex-direction: column;
-			text-align: center;
+	/* ノートPC対応 */
+	@media (max-width: 1024px) {
+		.internship-intro {
 			padding: var(--spacing-xl);
 		}
 
-		.intro-icon {
-			font-size: 2.5rem;
-			padding: var(--spacing-md);
+		.stats-grid {
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: var(--spacing-md);
+		}
+
+		.stat-item {
+			padding: var(--spacing-lg);
+		}
+
+		.internship-card {
+			padding: var(--spacing-xl);
+		}
+
+		.internship-header {
+			gap: var(--spacing-lg);
+		}
+	}
+
+	/* タブレット対応 */
+	@media (max-width: 768px) {
+		.internship-intro {
+			padding: var(--spacing-xl);
+		}
+
+		.intro-title {
+			font-size: 1.5rem;
+		}
+
+		.stats-grid {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-md);
+		}
+
+		.stat-item {
+			padding: var(--spacing-lg);
+			gap: var(--spacing-md);
+		}
+
+		.stat-icon {
+			font-size: 2rem;
+			padding: var(--spacing-sm);
+		}
+
+		.stat-number {
+			font-size: 1.75rem;
 		}
 
 		.timeline-connector {
@@ -585,14 +593,6 @@ const getStatusIcon = (status: string) => {
 
 		.duration-info {
 			text-align: left;
-		}
-
-		.summary-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.summary-item {
-			padding: var(--spacing-lg);
 		}
 	}
 </style>

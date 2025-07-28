@@ -1,5 +1,26 @@
 ---
-// 最先端ヘッダーコンポーネント - プレミアムナビゲーション体験
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Markdownファイルから個人情報を読み込み
+const personalInfoPath = join(process.cwd(), 'src/data/personal-info.md');
+const personalInfoContent = readFileSync(personalInfoPath, 'utf-8');
+
+// 名前を抽出
+function parsePersonalName(content: string) {
+	const lines = content.split('\n');
+let name = '中野暁登'; // フォールバック
+	
+	lines.forEach(line => {
+		if (line.includes('**氏名**:')) {
+			name = line.replace('- **氏名**:', '').trim();
+		}
+	});
+	
+	return name;
+}
+
+const personalName = parsePersonalName(personalInfoContent);
 ---
 
 <header class="site-header">
@@ -12,7 +33,7 @@
 					<div class="logo-ring"></div>
 				</div>
 				<div class="logo-text-container">
-					<span class="logo-text">中野太郎</span>
+					<span class="logo-text">{personalName}</span>
 					<span class="logo-subtitle">Portfolio</span>
 				</div>
 			</div>
@@ -20,15 +41,19 @@
 		
 		<nav class="main-nav">
 			<div class="nav-background"></div>
-			<a href="/development" class="nav-item" data-text="開発経験">
+			<a href="/" class="nav-item" data-text="ホーム">
+				<span class="nav-text">ホーム</span>
+				<div class="nav-indicator"></div>
+			</a>
+			<a href="/development" class="nav-item" data-text="開発">
 				<span class="nav-text">開発経験</span>
 				<div class="nav-indicator"></div>
 			</a>
 			<a href="/research" class="nav-item" data-text="研究">
-				<span class="nav-text">研究</span>
+				<span class="nav-text">研究歴</span>
 				<div class="nav-indicator"></div>
 			</a>
-			<a href="/internship" class="nav-item" data-text="インターン">
+			<a href="/internship" class="nav-item" data-text="インタ">
 				<span class="nav-text">インターン</span>
 				<div class="nav-indicator"></div>
 			</a>
@@ -389,7 +414,7 @@
 		// Active state management
 		navItems.forEach(item => {
 			const href = item.getAttribute('href');
-			if (href && currentPath.startsWith(href) && href !== '/') {
+			if (href === currentPath || (href !== '/' && currentPath.startsWith(href))) {
 				item.classList.add('active');
 			}
 		});

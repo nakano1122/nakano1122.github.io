@@ -2,16 +2,18 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="お問い合わせ - 中野太郎 Portfolio">
-	<main class="page-container">
-		<header class="page-header">
-			<h1 class="page-title">Contact</h1>
-			<p class="page-description">
-				お仕事のご依頼やご相談、その他お問い合わせがございましたら、お気軽にご連絡ください。
-			</p>
-		</header>
+<Layout title="お問い合わせ - 中野暁登 Portfolio">
+	<div class="page-content">
+		<section class="page-hero">
+			<div class="hero-container">
+				<h1 class="page-title">Contact</h1>
+				<p class="page-subtitle">
+					お仕事のご依頼やご相談、その他お問い合わせがございましたら、お気軽にご連絡ください。
+				</p>
+			</div>
+		</section>
 
-		<div class="contact-content">
+		<main class="content-container">
 			<div class="contact-grid">
 				<!-- Contact Information -->
 				<section class="contact-info-card">
@@ -44,15 +46,15 @@ import Layout from '../layouts/Layout.astro';
 						</div>
 
 						<div class="contact-method">
-							<div class="contact-icon linkedin-icon">
+							<div class="contact-icon atcoder-icon">
 								<svg viewBox="0 0 24 24" fill="currentColor">
-									<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+									<path d="M12 2L3.09 8.26l1.25 1.45L7 7.77v5.74l1.5-1.17v4.91L12 21l3.5-3.75v-4.91L17 13.51V7.77l2.66 1.94 1.25-1.45L12 2z"/>
 								</svg>
 							</div>
 							<div class="contact-details">
-								<h3 class="contact-label">LinkedIn</h3>
-								<a href="https://linkedin.com/in/nakano-taro" target="_blank" rel="noopener noreferrer" class="contact-value">linkedin.com/in/nakano-taro</a>
-								<p class="contact-note">プロフェッショナルなネットワーキングはこちら</p>
+								<h3 class="contact-label">AtCoder</h3>
+								<a href="https://atcoder.jp/users/nakano_competitive" target="_blank" rel="noopener noreferrer" class="contact-value">@nakano_competitive</a>
+								<p class="contact-note">競技プログラミングの実績をご覧いただけます</p>
 							</div>
 						</div>
 					</div>
@@ -121,9 +123,9 @@ import Layout from '../layouts/Layout.astro';
 						<div class="tool-category">
 							<h3>Backend</h3>
 							<div class="tool-tags">
-								<span class="tool-tag">Node.js</span>
 								<span class="tool-tag">Python</span>
 								<span class="tool-tag">Go</span>
+								<span class="tool-tag">FastAPI</span>
 							</div>
 						</div>
 						<div class="tool-category">
@@ -145,58 +147,70 @@ import Layout from '../layouts/Layout.astro';
 					</div>
 				</section>
 			</div>
-		</div>
-		
-		<nav class="page-navigation">
-			<a href="/" class="nav-button nav-button-primary">ホームに戻る →</a>
-		</nav>
-	</main>
+		</main>
+	</div>
 </Layout>
 
 <style>
-	.page-container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: var(--spacing-xl);
-		min-height: 100vh;
+	.page-content {
+		min-height: calc(100vh - 80px);
+		display: flex;
+		flex-direction: column;
 	}
 
-
-	.page-header {
-		margin-bottom: var(--spacing-3xl);
+	.page-hero {
+		background: var(--gradient-dark);
+		padding: var(--spacing-4xl) 0;
 		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.page-hero::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: 
+			radial-gradient(circle at 30% 70%, rgba(139, 124, 246, 0.1) 0%, transparent 50%),
+			radial-gradient(circle at 70% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+		pointer-events: none;
+	}
+
+	.hero-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 var(--spacing-xl);
+		position: relative;
+		z-index: 1;
 	}
 
 	.page-title {
-		font-size: 2.5rem;
+		font-size: 3rem;
 		font-weight: 700;
 		color: var(--color-text);
 		margin-bottom: var(--spacing-lg);
-		position: relative;
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
-	.page-title::after {
-		content: '';
-		position: absolute;
-		bottom: -8px;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 60px;
-		height: 4px;
-		background: var(--color-primary);
-		border-radius: 2px;
-	}
-
-	.page-description {
-		font-size: 1.125rem;
+	.page-subtitle {
+		font-size: 1.25rem;
 		color: var(--color-text-light);
 		max-width: 600px;
 		margin: 0 auto;
 		line-height: 1.6;
 	}
 
-	.contact-content {
-		margin-bottom: var(--spacing-3xl);
+	.content-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: var(--spacing-4xl) var(--spacing-xl);
+		flex: 1;
 	}
 
 	.contact-grid {
@@ -218,6 +232,15 @@ import Layout from '../layouts/Layout.astro';
 		border-radius: var(--radius-lg);
 		padding: var(--spacing-xl);
 		box-shadow: var(--shadow-sm);
+		transition: all 0.3s ease;
+	}
+
+	.contact-info-card:hover,
+	.response-card:hover,
+	.availability-card:hover,
+	.tools-card:hover {
+		box-shadow: var(--shadow-md);
+		transform: translateY(-2px);
 	}
 
 	.card-title {
@@ -237,7 +260,7 @@ import Layout from '../layouts/Layout.astro';
 		transform: translateY(-50%);
 		width: 3px;
 		height: 18px;
-		background: var(--color-primary);
+		background: var(--gradient-primary);
 		border-radius: 2px;
 	}
 
@@ -254,6 +277,12 @@ import Layout from '../layouts/Layout.astro';
 		padding: var(--spacing-lg);
 		background: var(--color-bg-secondary);
 		border-radius: var(--radius-md);
+		transition: all 0.3s ease;
+	}
+
+	.contact-method:hover {
+		background: var(--color-bg-tertiary);
+		transform: translateX(4px);
 	}
 
 	.contact-icon {
@@ -272,7 +301,7 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	.email-icon {
-		background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+		background: var(--gradient-warm);
 		color: white;
 	}
 
@@ -281,8 +310,8 @@ import Layout from '../layouts/Layout.astro';
 		color: white;
 	}
 
-	.linkedin-icon {
-		background: linear-gradient(135deg, #0077b5 0%, #0a66c2 100%);
+	.atcoder-icon {
+		background: var(--gradient-accent);
 		color: white;
 	}
 
@@ -299,15 +328,17 @@ import Layout from '../layouts/Layout.astro';
 
 	.contact-value {
 		font-size: 1.125rem;
-		color: var(--color-primary);
+		color: var(--color-primary-solid);
 		text-decoration: none;
 		font-weight: 500;
 		display: block;
 		margin-bottom: var(--spacing-xs);
+		transition: all 0.2s ease;
 	}
 
 	.contact-value:hover {
-		text-decoration: underline;
+		color: var(--color-primary-dark);
+		text-shadow: 0 0 8px rgba(139, 124, 246, 0.5);
 	}
 
 	.contact-note {
@@ -330,6 +361,11 @@ import Layout from '../layouts/Layout.astro';
 		padding: var(--spacing-md);
 		background: var(--color-bg-secondary);
 		border-radius: var(--radius-md);
+		transition: all 0.3s ease;
+	}
+
+	.response-item:hover {
+		background: var(--color-bg-tertiary);
 	}
 
 	.response-icon {
@@ -368,6 +404,12 @@ import Layout from '../layouts/Layout.astro';
 		border-radius: var(--radius-md);
 		font-weight: 500;
 		color: var(--color-text);
+		transition: all 0.3s ease;
+	}
+
+	.availability-item:hover {
+		background: var(--color-bg-tertiary);
+		transform: translateX(4px);
 	}
 
 	.availability-icon {
@@ -402,59 +444,31 @@ import Layout from '../layouts/Layout.astro';
 		font-size: 0.875rem;
 		font-weight: 500;
 		border: 1px solid var(--color-border);
+		transition: all 0.3s ease;
 	}
 
-	/* Navigation */
-	.page-navigation {
-		display: flex;
-		justify-content: flex-end;
-		margin-top: var(--spacing-3xl);
-		padding-top: var(--spacing-xl);
-		border-top: 1px solid var(--color-border);
-	}
-
-	.nav-button {
-		display: inline-flex;
-		align-items: center;
-		padding: var(--spacing-md) var(--spacing-xl);
-		border-radius: var(--radius-lg);
-		text-decoration: none;
-		font-weight: 500;
-		transition: all 0.2s ease;
-	}
-
-	.nav-button-primary {
-		background: var(--color-primary);
+	.tool-tag:hover {
+		background: var(--color-primary-solid);
 		color: white;
-	}
-
-	.nav-button-primary:hover {
-		background: var(--color-primary-dark);
-		transform: translateX(4px);
-	}
-
-	.nav-button-secondary {
-		background: var(--color-bg-secondary);
-		color: var(--color-text-light);
-		border: 1px solid var(--color-border);
-	}
-
-	.nav-button-secondary:hover {
-		background: var(--color-border);
-		transform: translateX(-4px);
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-sm);
 	}
 
 	@media (max-width: 768px) {
-		.page-container {
-			padding: var(--spacing-lg);
+		.hero-container {
+			padding: 0 var(--spacing-lg);
 		}
 
 		.page-title {
-			font-size: 2rem;
+			font-size: 2.25rem;
 		}
 
-		.page-description {
-			font-size: 1rem;
+		.page-subtitle {
+			font-size: 1.125rem;
+		}
+
+		.content-container {
+			padding: var(--spacing-3xl) var(--spacing-lg);
 		}
 
 		.contact-grid {
@@ -469,15 +483,6 @@ import Layout from '../layouts/Layout.astro';
 
 		.tools-grid {
 			grid-template-columns: 1fr;
-		}
-
-		.page-navigation {
-			flex-direction: column;
-			gap: var(--spacing-md);
-		}
-
-		.nav-button {
-			justify-content: center;
 		}
 	}
 </style>
