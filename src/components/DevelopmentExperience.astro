@@ -29,7 +29,7 @@ function parseMarkdownSections(content: string) {
 			});
 		}
 		
-		if (section.includes('使用技術')) {
+		if (section.includes('技術')) {
 			const lines = section.split('\n').filter(line => line.trim().startsWith('-'));
 			lines.forEach(line => {
 				const match = line.match(/\*\*(.*?)\*\*:\s*(.*)/);
@@ -74,6 +74,18 @@ function parseMarkdownSections(content: string) {
 	return { awards, technologies, projects };
 }
 
+// 技術ロゴのマッピング（仕様書に従ってロゴで表示）
+const techLogos: Record<string, { logo: string; color: string }> = {
+	'TypeScript': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', color: '#3178C6' },
+	'React': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', color: '#61DAFB' },
+	'Next.js': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg', color: '#000000' },
+	'Python': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', color: '#3776AB' },
+	'Go': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg', color: '#00ADD8' },
+	'FastAPI': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg', color: '#009688' },
+	'Gin': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg', color: '#00ADD8' },
+	'Docker': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', color: '#2496ED' }
+};
+
 const { awards, technologies, projects } = parseMarkdownSections(markdownContent);
 
 const finalProjects = projects;
@@ -89,15 +101,11 @@ const finalProjects = projects;
 			{awards.length > 0 && (
 				<div class="awards-section">
 					<h3 class="subsection-title">
-						<span class="icon-wrapper">🏆</span>
 						受賞歴
 					</h3>
 					<div class="awards-list">
 						{awards.map((award, index) => (
 							<div class="award-card" style={`animation-delay: ${index * 0.1}s`}>
-								<div class="award-rank">
-									<span class="rank-badge">{award.rank}</span>
-								</div>
 								<div class="award-content">
 									<h4 class="award-title">{award.title}</h4>
 									<p class="award-event">{award.event}</p>
@@ -113,21 +121,26 @@ const finalProjects = projects;
 			{technologies.length > 0 && (
 				<div class="tech-section">
 					<h3 class="subsection-title">
-						<span class="icon-wrapper">⚡</span>
 						技術スタック
 					</h3>
 					<div class="tech-grid">
 						{technologies.map((tech, index) => (
 							<div class="tech-category" style={`animation-delay: ${index * 0.1}s`}>
 								<div class="tech-header">
-									<div class="tech-icon" style={`background-color: ${tech.color}20; border-color: ${tech.color}`}>
-										<div class="tech-dot" style={`background-color: ${tech.color}`}></div>
-									</div>
 									<h4 class="tech-title">{tech.category}</h4>
 								</div>
 								<div class="tech-items">
 									{tech.items.map((item) => (
-										<span class="tech-item">{item}</span>
+										<div class="tech-item-with-icon">
+											{techLogos[item] && (
+												<img 
+													src={techLogos[item].logo} 
+													alt={item} 
+													class="tech-logo"
+												/>
+											)}
+											<span class="tech-item">{item}</span>
+										</div>
 									))}
 								</div>
 							</div>
@@ -180,12 +193,12 @@ const finalProjects = projects;
 	}
 
 	.awards-tech-container {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
+		display: flex;
+		flex-direction: column;
 		gap: var(--spacing-5xl);
 		margin-bottom: var(--spacing-6xl);
 		width: 100%;
-		max-width: 1600px;
+		max-width: 1200px;
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -200,8 +213,16 @@ const finalProjects = projects;
 		backdrop-filter: blur(10px);
 		position: relative;
 		overflow: hidden;
-		min-height: 600px;
 		width: 100%;
+	}
+
+	.awards-section {
+		min-height: auto;
+		padding: var(--spacing-3xl);
+	}
+
+	.tech-section {
+		min-height: 600px;
 	}
 
 	.awards-section::before,
@@ -224,9 +245,6 @@ const finalProjects = projects;
 	}
 
 	.subsection-title {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-lg);
 		font-size: 1.5rem;
 		font-weight: 700;
 		margin-bottom: var(--spacing-2xl);
@@ -235,38 +253,28 @@ const finalProjects = projects;
 		letter-spacing: 1px;
 	}
 
-	.icon-wrapper {
-		font-size: 1.75rem;
-		width: 56px;
-		height: 56px;
-		background: var(--gradient-primary);
-		border-radius: var(--radius-xl);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-shadow: var(--shadow-glow);
-		flex-shrink: 0;
-	}
-
 	/* Awards Styles */
 	.awards-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-xl);
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--spacing-lg);
+		align-items: stretch;
+		grid-auto-rows: min-content;
 	}
 
 	.award-card {
 		background: var(--color-bg-secondary);
-		border-radius: var(--radius-xl);
-		padding: var(--spacing-2xl);
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-md) var(--spacing-lg);
 		box-shadow: var(--shadow-md);
 		border: 1px solid var(--color-border);
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-xl);
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
 		overflow: hidden;
+		height: fit-content;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
 	}
 
 	.award-card:hover {
@@ -285,71 +293,40 @@ const finalProjects = projects;
 		background: var(--gradient-primary);
 	}
 
-	.award-rank {
-		position: relative;
-		flex-shrink: 0;
-	}
-
-	.rank-badge {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 64px;
-		height: 64px;
-		background: var(--gradient-primary);
-		color: white;
-		border-radius: var(--radius-xl);
-		font-weight: 800;
-		font-size: 0.875rem;
-		box-shadow: var(--shadow-glow);
-		position: relative;
-	}
-
-	.rank-badge::after {
-		content: '';
-		position: absolute;
-		top: -2px;
-		left: -2px;
-		right: -2px;
-		bottom: -2px;
-		background: var(--gradient-primary);
-		border-radius: var(--radius-xl);
-		z-index: -1;
-		opacity: 0.3;
-		filter: blur(8px);
-	}
-
 	.award-content {
-		flex: 1;
-		min-width: 0;
+		width: 100%;
 	}
 
 	.award-title {
-		font-size: 1.125rem;
+		font-size: 0.95rem;
 		font-weight: 700;
 		margin-bottom: var(--spacing-xs);
 		color: var(--color-text);
-		line-height: 1.3;
+		line-height: 1.2;
+		flex-grow: 1;
 	}
 
 	.award-event {
-		font-size: 0.875rem;
+		font-size: 0.825rem;
 		color: var(--color-text-light);
-		margin-bottom: var(--spacing-sm);
+		margin-bottom: var(--spacing-xs);
 		font-weight: 500;
+		line-height: 1.3;
 	}
 
 	.award-date {
 		display: inline-block;
-		font-size: 0.75rem;
+		font-size: 0.7rem;
 		color: var(--color-primary-solid);
-		padding: var(--spacing-xs) var(--spacing-sm);
+		padding: 4px var(--spacing-xs);
 		background: rgba(139, 124, 246, 0.1);
 		border: 1px solid rgba(139, 124, 246, 0.2);
 		border-radius: var(--radius-full);
 		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 0.5px;
+		letter-spacing: 0.3px;
+		align-self: flex-start;
+		margin-top: auto;
 	}
 
 	/* Technology Styles */
@@ -386,29 +363,7 @@ const finalProjects = projects;
 	}
 
 	.tech-header {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-lg);
 		margin-bottom: var(--spacing-xl);
-	}
-
-	.tech-icon {
-		width: 56px;
-		height: 56px;
-		border-radius: var(--radius-xl);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-		flex-shrink: 0;
-		box-shadow: var(--shadow-md);
-	}
-
-	.tech-dot {
-		width: 16px;
-		height: 16px;
-		border-radius: 50%;
-		box-shadow: var(--shadow-sm);
 	}
 
 	.tech-title {
@@ -425,20 +380,34 @@ const finalProjects = projects;
 		gap: var(--spacing-sm);
 	}
 
-	.tech-item {
+	.tech-item-with-icon {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-xs);
 		padding: var(--spacing-sm) var(--spacing-md);
 		background: var(--color-bg);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-full);
-		font-size: 0.875rem;
-		color: var(--color-text-light);
-		font-weight: 500;
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
 		overflow: hidden;
 	}
 
-	.tech-item::before {
+	.tech-logo {
+		width: 16px;
+		height: 16px;
+		object-fit: contain;
+		filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+	}
+
+	.tech-item {
+		font-size: 0.875rem;
+		color: var(--color-text-light);
+		font-weight: 500;
+		white-space: nowrap;
+	}
+
+	.tech-item-with-icon::before {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -450,15 +419,92 @@ const finalProjects = projects;
 		z-index: -1;
 	}
 
-	.tech-item:hover {
+	.tech-item-with-icon:hover {
+		border-color: var(--color-primary-solid);
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.tech-item-with-icon:hover .tech-item {
+		color: white;
+	}
+
+	.tech-item-with-icon:hover::before {
+		left: 0;
+	}
+
+	/* Show More Button Styles */
+	.show-more-container {
+		margin-top: var(--spacing-lg);
+		text-align: center;
+	}
+
+	.show-more-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+		padding: var(--spacing-sm) var(--spacing-lg);
+		background: var(--color-bg-secondary);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-full);
+		color: var(--color-text-light);
+		font-size: 0.875rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.show-more-btn::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: var(--gradient-primary);
+		transition: left 0.3s ease;
+		z-index: -1;
+	}
+
+	.show-more-btn:hover {
 		color: white;
 		border-color: var(--color-primary-solid);
 		transform: translateY(-2px);
 		box-shadow: var(--shadow-md);
 	}
 
-	.tech-item:hover::before {
+	.show-more-btn:hover::before {
 		left: 0;
+	}
+
+	.show-more-icon {
+		transition: transform 0.3s ease;
+	}
+
+	.show-more-btn.expanded .show-more-icon {
+		transform: rotate(180deg);
+	}
+
+	.hidden-award {
+		display: none;
+	}
+
+	.hidden-award.show {
+		display: flex;
+		animation: slideInUp 0.5s ease-out;
+	}
+
+	@keyframes slideInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	/* Projects Styles */
@@ -601,7 +647,7 @@ const finalProjects = projects;
 		.awards-section,
 		.tech-section {
 			padding: var(--spacing-5xl);
-			min-height: 700px;
+			min-height: auto;
 		}
 
 		.projects-subsection {
@@ -638,12 +684,15 @@ const finalProjects = projects;
 		}
 
 		.awards-tech-container {
-			grid-template-columns: 1fr;
 			gap: var(--spacing-4xl);
 			max-width: 800px;
 		}
 
-		.awards-section,
+		.awards-section {
+			padding: var(--spacing-2xl);
+			min-height: auto;
+		}
+
 		.tech-section {
 			padding: var(--spacing-3xl);
 			min-height: auto;
@@ -659,9 +708,13 @@ const finalProjects = projects;
 			gap: var(--spacing-2xl);
 		}
 
+		.awards-list {
+			grid-template-columns: repeat(2, 1fr);
+			gap: var(--spacing-md);
+		}
+
 		.award-card {
-			padding: var(--spacing-xl);
-			gap: var(--spacing-lg);
+			padding: var(--spacing-md);
 		}
 
 		.tech-category {
@@ -684,13 +737,16 @@ const finalProjects = projects;
 		}
 
 		.awards-tech-container {
-			grid-template-columns: 1fr;
 			gap: var(--spacing-3xl);
 			margin-bottom: var(--spacing-4xl);
 			max-width: none;
 		}
 
-		.awards-section,
+		.awards-section {
+			padding: var(--spacing-xl);
+			max-width: none;
+		}
+
 		.tech-section,
 		.projects-subsection {
 			padding: var(--spacing-2xl);
@@ -713,16 +769,13 @@ const finalProjects = projects;
 			gap: var(--spacing-xl);
 		}
 
-		.award-card {
-			padding: var(--spacing-lg);
-			gap: var(--spacing-md);
-			flex-direction: column;
-			text-align: center;
+		.awards-list {
+			grid-template-columns: 1fr;
 		}
 
-		.rank-badge {
-			width: 56px;
-			height: 56px;
+		.award-card {
+			padding: var(--spacing-lg);
+			text-align: center;
 		}
 
 		.project-header {
@@ -743,19 +796,6 @@ const finalProjects = projects;
 			padding: var(--spacing-lg);
 		}
 
-		.tech-header {
-			gap: var(--spacing-md);
-		}
-
-		.tech-icon {
-			width: 48px;
-			height: 48px;
-		}
-
-		.tech-dot {
-			width: 14px;
-			height: 14px;
-		}
 
 		.project-card {
 			padding: var(--spacing-lg);
@@ -796,3 +836,39 @@ const finalProjects = projects;
 		}
 	}
 </style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const showMoreBtn = document.getElementById('show-more-btn');
+		const hiddenAwards = document.querySelectorAll('.hidden-award');
+		let isExpanded = false;
+
+		if (showMoreBtn) {
+			showMoreBtn.addEventListener('click', () => {
+				if (!isExpanded) {
+					// Show hidden awards
+					hiddenAwards.forEach((award, index) => {
+						setTimeout(() => {
+							award.classList.add('show');
+						}, index * 100);
+					});
+					
+					// Update button
+					showMoreBtn.classList.add('expanded');
+					showMoreBtn.querySelector('.show-more-text').textContent = '閉じる';
+					isExpanded = true;
+				} else {
+					// Hide awards
+					hiddenAwards.forEach(award => {
+						award.classList.remove('show');
+					});
+					
+					// Update button
+					showMoreBtn.classList.remove('expanded');
+					showMoreBtn.querySelector('.show-more-text').textContent = 'もっと見る';
+					isExpanded = false;
+				}
+			});
+		}
+	});
+</script>

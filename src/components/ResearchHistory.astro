@@ -9,8 +9,9 @@ const markdownContent = readFileSync(researchHistoryPath, 'utf-8');
 // セクション別にパース
 function parseResearchMarkdown(content: string) {
 	const publications = [];
+	let researchContent = '';
 	
-	// 発表論文セクションを抽出
+	// 発表論文セクションと研究内容セクションを抽出
 	const sections = content.split('## ');
 	
 	sections.forEach(section => {
@@ -43,13 +44,17 @@ function parseResearchMarkdown(content: string) {
 					});
 				}
 			});
+		} else if (section.includes('研究内容')) {
+			// 研究内容セクションのテキストを抽出
+			const lines = section.split('\n').filter(line => line.trim() && !line.startsWith('研究内容'));
+			researchContent = lines.join('\n').trim();
 		}
 	});
 	
-	return publications;
+	return { publications, researchContent };
 }
 
-const publications = parseResearchMarkdown(markdownContent);
+const { publications, researchContent } = parseResearchMarkdown(markdownContent);
 
 const finalPublications = publications;
 
@@ -85,14 +90,36 @@ const getStatusIcon = (status: string) => {
 	<div class="container">
 		<h2 class="section-title">Research History</h2>
 		
+		<div class="research-overview animate-slide-up">
+			<div class="stats-hero">
+				<div class="stats-grid">
+					<div class="stat-card">
+						<div class="stat-icon">📄</div>
+						<div class="stat-content">
+							<div class="stat-number">{finalPublications.length}</div>
+							<div class="stat-label">発表論文数</div>
+						</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-icon">🎤</div>
+						<div class="stat-content">
+							<div class="stat-number">{finalPublications.filter(p => p.type === 'conference').length}</div>
+							<div class="stat-label">学会発表</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="research-intro animate-slide-up">
 			<div class="intro-card">
-				<div class="intro-icon">🔬</div>
-				<div class="intro-content">
+				<div class="intro-header">
+					<div class="intro-icon">🔬</div>
 					<h3 class="intro-title">研究分野</h3>
+				</div>
+				<div class="intro-content">
 					<p class="intro-description">
-						機械学習・深層学習を中心とした人工知能技術の研究に取り組んでいます。
-						特に自然言語処理、グラフニューラルネットワーク、異常検知システムの分野で成果を上げています。
+						{researchContent || '研究内容を準備中です。'}
 					</p>
 				</div>
 			</div>
@@ -155,22 +182,6 @@ const getStatusIcon = (status: string) => {
 			</div>
 		)}
 
-		<div class="research-stats animate-slide-up">
-			<div class="stats-grid">
-				<div class="stat-item">
-					<div class="stat-number">{finalPublications.length}</div>
-					<div class="stat-label">発表論文数</div>
-				</div>
-				<div class="stat-item">
-					<div class="stat-number">{finalPublications.filter(p => p.type === 'conference').length}</div>
-					<div class="stat-label">学会発表</div>
-				</div>
-				<div class="stat-item">
-					<div class="stat-number">{finalPublications.filter(p => p.type === 'report').length}</div>
-					<div class="stat-label">技術報告</div>
-				</div>
-			</div>
-		</div>
 
 	</div>
 </section>
@@ -178,81 +189,149 @@ const getStatusIcon = (status: string) => {
 <style>
 	.research-history {
 		background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-secondary) 100%);
+		padding: var(--spacing-4xl) 0;
+		position: relative;
+	}
+
+	.research-history::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: 
+			radial-gradient(circle at 25% 25%, rgba(139, 124, 246, 0.04) 0%, transparent 50%),
+			radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.03) 0%, transparent 50%);
+		pointer-events: none;
+	}
+
+	.container {
+		position: relative;
+		z-index: 1;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 var(--spacing-xl);
 	}
 
 	.research-intro {
-		margin-bottom: var(--spacing-3xl);
+		margin-bottom: var(--spacing-4xl);
 	}
 
 	.intro-card {
 		background: var(--color-bg-card);
-		border-radius: var(--radius-xl);
-		padding: var(--spacing-2xl);
-		box-shadow: var(--shadow-md);
+		border-radius: var(--radius-2xl);
+		padding: var(--spacing-3xl);
+		box-shadow: var(--shadow-lg);
 		border: 1px solid var(--color-border);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.intro-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: var(--gradient-primary);
+	}
+
+	.intro-header {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-xl);
-		margin: 0 auto;
+		gap: var(--spacing-lg);
+		margin-bottom: var(--spacing-xl);
 	}
 
 	.intro-icon {
-		font-size: 3rem;
-		padding: var(--spacing-lg);
-		background: var(--gradient-primary);
+		font-size: 2.5rem;
+		padding: var(--spacing-md);
+		background: linear-gradient(135deg, var(--color-primary-solid), var(--color-secondary-solid));
 		border-radius: var(--radius-lg);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		box-shadow: var(--shadow-lg);
-	}
-
-	.intro-content {
-		flex: 1;
+		box-shadow: var(--shadow-md);
 	}
 
 	.intro-title {
-		font-size: 1.5rem;
-		font-weight: 600;
-		margin-bottom: var(--spacing-sm);
+		font-size: 1.75rem;
+		font-weight: 700;
 		color: var(--color-text);
+		margin: 0;
+	}
+
+	.intro-content {
+		position: relative;
 	}
 
 	.intro-description {
 		color: var(--color-text-light);
-		line-height: 1.7;
+		line-height: 1.8;
+		font-size: 1.1rem;
+		margin: 0;
 	}
 
 	.subsection-title {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-md);
-		font-size: 1.75rem;
-		font-weight: 600;
-		margin-bottom: var(--spacing-xl);
+		gap: var(--spacing-lg);
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: var(--spacing-2xl);
 		color: var(--color-text);
+		position: relative;
+	}
+
+	.subsection-title::after {
+		content: '';
+		position: absolute;
+		bottom: -8px;
+		left: 0;
+		width: 60px;
+		height: 3px;
+		background: var(--gradient-primary);
+		border-radius: var(--radius-sm);
 	}
 
 	.icon-wrapper {
-		font-size: 2rem;
-		padding: var(--spacing-sm);
-		background: var(--color-bg-secondary);
-		border-radius: var(--radius-md);
+		font-size: 2.25rem;
+		padding: var(--spacing-md);
+		background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-card));
+		border-radius: var(--radius-lg);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		box-shadow: var(--shadow-sm);
+		border: 1px solid var(--color-border);
 	}
 
 	.publications-timeline {
 		position: relative;
 		margin: 0 auto;
+		padding-left: var(--spacing-lg);
+	}
+
+	.publications-timeline::before {
+		content: '';
+		position: absolute;
+		left: 20px;
+		top: 0;
+		bottom: 0;
+		width: 3px;
+		background: linear-gradient(180deg, var(--color-primary-solid), var(--color-secondary-solid));
+		border-radius: var(--radius-sm);
+		opacity: 0.6;
 	}
 
 	.publication-item {
 		display: flex;
-		margin-bottom: var(--spacing-2xl);
+		margin-bottom: var(--spacing-3xl);
 		animation: slideUp 0.6s ease-out both;
+		position: relative;
 	}
 
 	.publication-item:last-child {
@@ -263,42 +342,54 @@ const getStatusIcon = (status: string) => {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		margin-right: var(--spacing-xl);
+		margin-right: var(--spacing-2xl);
 		flex-shrink: 0;
-	}
-
-	.timeline-dot {
-		width: 16px;
-		height: 16px;
-		border-radius: 50%;
-		border: 4px solid var(--color-bg-card);
-		box-shadow: var(--shadow-md);
+		position: relative;
 		z-index: 2;
 	}
 
+	.timeline-dot {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		border: 4px solid var(--color-bg);
+		box-shadow: 0 0 0 2px var(--color-primary-solid), var(--shadow-lg);
+		position: relative;
+		background: var(--color-primary-solid);
+	}
+
+	.timeline-dot::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 8px;
+		height: 8px;
+		background: var(--color-bg);
+		border-radius: 50%;
+	}
+
 	.timeline-line {
-		width: 2px;
-		height: 100%;
-		background: var(--color-border);
-		margin-top: var(--spacing-sm);
-		min-height: 60px;
+		display: none;
 	}
 
 	.publication-card {
 		background: var(--color-bg-card);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
-		box-shadow: var(--shadow-md);
+		border-radius: var(--radius-xl);
+		padding: var(--spacing-2xl);
+		box-shadow: var(--shadow-lg);
 		border: 1px solid var(--color-border);
 		flex: 1;
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		transition: all 0.3s ease;
 		position: relative;
 		overflow: hidden;
 	}
 
 	.publication-card:hover {
-		transform: translateY(-2px);
-		box-shadow: var(--shadow-lg);
+		transform: translateY(-4px) scale(1.01);
+		box-shadow: var(--shadow-xl);
+		border-color: var(--color-primary-solid);
 	}
 
 	.publication-card::before {
@@ -307,8 +398,19 @@ const getStatusIcon = (status: string) => {
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 3px;
+		height: 4px;
 		background: var(--gradient-primary);
+	}
+
+	.publication-card::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 90% 10%, rgba(139, 124, 246, 0.03) 0%, transparent 50%);
+		pointer-events: none;
 	}
 
 	.publication-header {
@@ -360,10 +462,21 @@ const getStatusIcon = (status: string) => {
 		color: var(--color-text-light);
 		line-height: 1.6;
 		margin-bottom: var(--spacing-md);
-		padding: var(--spacing-md);
-		background: var(--color-bg-secondary);
-		border-radius: var(--radius-md);
+		padding: var(--spacing-lg);
+		background: linear-gradient(135deg, var(--color-bg-secondary), rgba(139, 124, 246, 0.05));
+		border-radius: var(--radius-lg);
 		border-left: 4px solid var(--color-primary-solid);
+		position: relative;
+		font-weight: 500;
+	}
+
+	.publication-description::before {
+		content: '🏆';
+		position: absolute;
+		top: var(--spacing-sm);
+		right: var(--spacing-sm);
+		font-size: 1.25rem;
+		opacity: 0.7;
 	}
 
 	.publication-authors {
@@ -396,45 +509,94 @@ const getStatusIcon = (status: string) => {
 		font-weight: 600;
 	}
 
-	.research-stats {
-		margin-top: var(--spacing-3xl);
+	.research-overview {
+		margin-bottom: var(--spacing-4xl);
+		position: relative;
+	}
+
+	.stats-hero {
+		background: linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-bg-secondary) 100%);
+		border-radius: var(--radius-2xl);
+		padding: var(--spacing-3xl) var(--spacing-2xl);
+		box-shadow: var(--shadow-lg);
+		border: 1px solid var(--color-border);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.stats-hero::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: 
+			radial-gradient(circle at 20% 50%, rgba(139, 124, 246, 0.08) 0%, transparent 50%),
+			radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.06) 0%, transparent 50%);
+		pointer-events: none;
 	}
 
 	.stats-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: var(--spacing-2xl);
+		position: relative;
+		z-index: 1;
+	}
+
+	.stat-card {
+		display: flex;
+		align-items: center;
 		gap: var(--spacing-lg);
-		margin: 0 auto;
-	}
-
-	.stat-item {
-		background: var(--color-bg-card);
-		border-radius: var(--radius-lg);
 		padding: var(--spacing-xl);
-		text-align: center;
-		box-shadow: var(--shadow-md);
-		border: 1px solid var(--color-border);
-		transition: transform 0.3s ease;
+		background: rgba(255, 255, 255, 0.02);
+		border-radius: var(--radius-xl);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		transition: all 0.3s ease;
+		backdrop-filter: blur(10px);
 	}
 
-	.stat-item:hover {
-		transform: translateY(-2px);
+	.stat-card:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-xl);
+		border-color: var(--color-primary-solid);
+	}
+
+	.stat-icon {
+		font-size: 3rem;
+		padding: var(--spacing-lg);
+		background: var(--gradient-primary);
+		border-radius: var(--radius-lg);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		box-shadow: var(--shadow-lg);
+	}
+
+	.stat-content {
+		flex: 1;
+		text-align: left;
 	}
 
 	.stat-number {
-		font-size: 2.5rem;
-		font-weight: 700;
+		font-size: 3rem;
+		font-weight: 800;
 		background: var(--gradient-primary);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 		margin-bottom: var(--spacing-xs);
+		line-height: 1;
 	}
 
 	.stat-label {
-		color: var(--color-text-light);
-		font-weight: 500;
-		font-size: 0.875rem;
+		color: var(--color-text);
+		font-weight: 600;
+		font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
 	}
 
 
@@ -450,31 +612,75 @@ const getStatusIcon = (status: string) => {
 			padding: var(--spacing-lg);
 		}
 
-		.stats-grid {
-			grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-			gap: var(--spacing-md);
+		.stats-hero {
+			padding: var(--spacing-2xl) var(--spacing-xl);
 		}
 
-		.stat-item {
+		.stats-grid {
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: var(--spacing-xl);
+		}
+
+		.stat-card {
 			padding: var(--spacing-lg);
+		}
+
+		.stat-icon {
+			font-size: 2.5rem;
+			padding: var(--spacing-md);
+		}
+
+		.stat-number {
+			font-size: 2.5rem;
 		}
 	}
 
 	/* タブレット対応 */
 	@media (max-width: 768px) {
 		.intro-card {
+			padding: var(--spacing-2xl);
+		}
+
+		.intro-header {
 			flex-direction: column;
 			text-align: center;
-			padding: var(--spacing-xl);
+			gap: var(--spacing-md);
 		}
 
 		.intro-icon {
-			font-size: 2.5rem;
-			padding: var(--spacing-md);
+			font-size: 2.25rem;
+			padding: var(--spacing-sm);
+		}
+
+		.intro-title {
+			font-size: 1.5rem;
+		}
+
+		.intro-description {
+			font-size: 1rem;
+			text-align: center;
+		}
+
+		.publications-timeline {
+			padding-left: var(--spacing-md);
+		}
+
+		.publications-timeline::before {
+			left: 14px;
 		}
 
 		.timeline-connector {
-			margin-right: var(--spacing-md);
+			margin-right: var(--spacing-lg);
+		}
+
+		.timeline-dot {
+			width: 16px;
+			height: 16px;
+		}
+
+		.timeline-dot::after {
+			width: 6px;
+			height: 6px;
 		}
 
 		.publication-card {
@@ -490,8 +696,23 @@ const getStatusIcon = (status: string) => {
 			font-size: 1.1rem;
 		}
 
+		.stats-hero {
+			padding: var(--spacing-xl);
+		}
+
 		.stats-grid {
 			grid-template-columns: 1fr;
+			gap: var(--spacing-lg);
+		}
+
+		.stat-card {
+			flex-direction: column;
+			text-align: center;
+			gap: var(--spacing-md);
+		}
+
+		.stat-content {
+			text-align: center;
 		}
 	}
 </style>

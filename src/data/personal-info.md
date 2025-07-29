@@ -4,5 +4,5 @@
 - **所属**: 静岡大学情報学部行動情報学科
 - **学年**: 学部 4 年
 - **GitHub**: [@nakano1122](https://github.com/nakano1122)
-- **AtCoder**: [@nakano_competitive](https://atcoder.jp/users/cafkaf)
+- **AtCoder**: [@cafkaf](https://atcoder.jp/users/cafkaf)
 - **TOEIC**: 780 点

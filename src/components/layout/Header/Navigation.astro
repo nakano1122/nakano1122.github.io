@@ -1,0 +1,127 @@
+---
+export interface Props {
+	currentPath?: string;
+}
+
+const { currentPath = '' } = Astro.props;
+---
+
+<nav class="main-nav desktop-nav">
+	<div class="nav-background"></div>
+	<a href="/" class={`nav-item ${currentPath === '/' ? 'active' : ''}`}>
+		<span class="nav-text">ホーム</span>
+		<div class="nav-indicator"></div>
+	</a>
+	<a href="/development" class={`nav-item ${currentPath.startsWith('/development') ? 'active' : ''}`}>
+		<span class="nav-text">開発経験</span>
+		<div class="nav-indicator"></div>
+	</a>
+	<a href="/research" class={`nav-item ${currentPath.startsWith('/research') ? 'active' : ''}`}>
+		<span class="nav-text">研究歴</span>
+		<div class="nav-indicator"></div>
+	</a>
+	<a href="/internship" class={`nav-item ${currentPath.startsWith('/internship') ? 'active' : ''}`}>
+		<span class="nav-text">インターン</span>
+		<div class="nav-indicator"></div>
+	</a>
+</nav>
+
+<style>
+	.main-nav {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+		position: relative;
+		padding: var(--spacing-sm);
+		background: var(--color-bg-glass);
+		border-radius: var(--radius-full);
+		border: 1px solid var(--color-border-light);
+		backdrop-filter: blur(10px);
+	}
+
+	.nav-background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: var(--gradient-glass);
+		border-radius: var(--radius-full);
+		opacity: 0.3;
+	}
+
+	.nav-item {
+		position: relative;
+		color: var(--color-text-light);
+		text-decoration: none;
+		font-weight: var(--font-weight-medium);
+		font-size: var(--font-size-sm);
+		padding: var(--spacing-md) var(--spacing-xl);
+		border-radius: var(--radius-full);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		z-index: 1;
+		overflow: hidden;
+	}
+
+	.nav-item::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: var(--gradient-primary);
+		border-radius: var(--radius-full);
+		transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		z-index: -1;
+		opacity: 0.1;
+	}
+
+	.nav-item:hover::before {
+		left: 0;
+	}
+
+	.nav-item:hover {
+		color: var(--color-primary-solid);
+		transform: translateY(-2px);
+	}
+
+	.nav-text {
+		position: relative;
+		z-index: 2;
+	}
+
+	.nav-indicator {
+		position: absolute;
+		bottom: 4px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 4px;
+		height: 4px;
+		background: var(--gradient-primary);
+		border-radius: 50%;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.nav-item:hover .nav-indicator {
+		opacity: 1;
+	}
+
+	.nav-item.active {
+		color: var(--color-primary-solid);
+		background: var(--color-bg-card);
+		box-shadow: var(--shadow-md);
+	}
+
+	.nav-item.active .nav-indicator {
+		opacity: 1;
+		background: var(--gradient-accent);
+	}
+
+	@media (max-width: 768px) {
+		.desktop-nav {
+			display: none;
+		}
+	}
+</style>

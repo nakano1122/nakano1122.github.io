@@ -1,0 +1,116 @@
+---
+import { techLogos } from '../../utils/tech-logos';
+
+export interface Props {
+	tech: string;
+	showName?: boolean;
+	size?: 'sm' | 'md' | 'lg';
+}
+
+const { tech, showName = true, size = 'md' } = Astro.props;
+const logoData = techLogos[tech];
+
+const sizeClasses = {
+	sm: 'tech-logo-sm',
+	md: 'tech-logo-md', 
+	lg: 'tech-logo-lg'
+};
+---
+
+{logoData && (
+	<div class={`tech-item-with-icon ${sizeClasses[size]}`}>
+		<img 
+			src={logoData.logo} 
+			alt={tech} 
+			class="tech-logo"
+		/>
+		{showName && <span class="tech-name">{tech}</span>}
+	</div>
+)}
+
+<style>
+	.tech-item-with-icon {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+		padding: var(--spacing-sm) var(--spacing-md);
+		background: var(--color-bg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-full);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.tech-logo-sm {
+		padding: var(--spacing-xs) var(--spacing-sm);
+	}
+
+	.tech-logo-sm .tech-logo {
+		width: 14px;
+		height: 14px;
+	}
+
+	.tech-logo-sm .tech-name {
+		font-size: 0.75rem;
+	}
+
+	.tech-logo-md .tech-logo {
+		width: 16px;
+		height: 16px;
+	}
+
+	.tech-logo-md .tech-name {
+		font-size: 0.875rem;
+	}
+
+	.tech-logo-lg {
+		padding: var(--spacing-md) var(--spacing-lg);
+	}
+
+	.tech-logo-lg .tech-logo {
+		width: 20px;
+		height: 20px;
+	}
+
+	.tech-logo-lg .tech-name {
+		font-size: 1rem;
+	}
+
+	.tech-logo {
+		object-fit: contain;
+		filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+	}
+
+	.tech-name {
+		color: var(--color-text-light);
+		font-weight: 500;
+		white-space: nowrap;
+	}
+
+	.tech-item-with-icon::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: var(--gradient-primary);
+		transition: left 0.3s ease;
+		z-index: -1;
+	}
+
+	.tech-item-with-icon:hover {
+		border-color: var(--color-primary-solid);
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.tech-item-with-icon:hover .tech-name {
+		color: white;
+	}
+
+	.tech-item-with-icon:hover::before {
+		left: 0;
+	}
+</style>

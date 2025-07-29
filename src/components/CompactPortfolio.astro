@@ -1,156 +1,17 @@
 ---
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import PersonalInfoCard from './portfolio/PersonalInfoCard.astro';
+import DevelopmentCard from './portfolio/DevelopmentCard.astro';
+import ResearchCard from './portfolio/ResearchCard.astro';
+import InternshipCard from './portfolio/InternshipCard.astro';
+import { 
+	loadMarkdownData, 
+	parsePersonalInfo, 
+	parseLastUpdated 
+} from '../utils/data-extractors';
 
-// Markdownファイルを直接読み込み
-const personalInfoPath = join(process.cwd(), 'src/data/personal-info.md');
-const developmentExperiencePath = join(process.cwd(), 'src/data/development-experience.md');
-const researchHistoryPath = join(process.cwd(), 'src/data/research-history.md');
-const internshipHistoryPath = join(process.cwd(), 'src/data/internship-history.md');
-const lastUpdatedPath = join(process.cwd(), 'src/data/last-updated.md');
-
-const personalInfoContent = readFileSync(personalInfoPath, 'utf-8');
-const developmentExperienceContent = readFileSync(developmentExperiencePath, 'utf-8');
-const researchHistoryContent = readFileSync(researchHistoryPath, 'utf-8');
-const internshipHistoryContent = readFileSync(internshipHistoryPath, 'utf-8');
-const lastUpdatedContent = readFileSync(lastUpdatedPath, 'utf-8');
-
-// Markdownから個人情報を抽出
-function parsePersonalInfo(content: string) {
-	const lines = content.split('\n');
-	const personalData = {
-		name: '',
-		affiliation: '',
-		grade: '',
-		github: '',
-		atcoder: '',
-		toeic: 0
-	};
-
-	lines.forEach(line => {
-		if (line.includes('**氏名**:')) {
-			personalData.name = line.replace('- **氏名**:', '').trim();
-		}
-		if (line.includes('**所属**:')) {
-			personalData.affiliation = line.replace('- **所属**:', '').trim();
-		}
-		if (line.includes('**学年**:')) {
-			personalData.grade = line.replace('- **学年**:', '').trim();
-		}
-		if (line.includes('**GitHub**:')) {
-			const match = line.match(/\[@(.*?)\]/);
-			if (match) {
-				personalData.github = match[1];
-			}
-		}
-		if (line.includes('**AtCoder**:')) {
-			const match = line.match(/\[@(.*?)\]/);
-			if (match) {
-				personalData.atcoder = match[1];
-			}
-		}
-		if (line.includes('**TOEIC**:')) {
-			const match = line.match(/(\d+)\s*点/);
-			if (match) {
-				personalData.toeic = parseInt(match[1]);
-			}
-		}
-	});
-
-	return personalData;
-}
-
-// 開発経験から受賞歴と技術を抽出
-function parseDevelopmentExperience(content: string) {
-	const lines = content.split('\n');
-	const awards = [];
-	const technologies = [];
-	
-	let currentSection = '';
-	
-	lines.forEach(line => {
-		if (line.includes('## 受賞歴')) {
-			currentSection = 'awards';
-		} else if (line.includes('## 使用技術')) {
-			currentSection = 'tech';
-		} else if (line.includes('## 個人開発')) {
-			currentSection = 'projects';
-		} else if (currentSection === 'awards' && line.includes('**') && line.includes('最優秀賞')) {
-			const match = line.match(/\*\*(.*?)\*\*.*\((.*?)\)/);
-			if (match) {
-				awards.push({
-					title: match[1],
-					date: match[2]
-				});
-			}
-		} else if (currentSection === 'tech' && line.includes('**') && line.includes(':')) {
-			const match = line.match(/\*\*(.*?)\*\*:\s*(.*)/);
-			if (match) {
-				const techs = match[2].split(',').map(t => t.trim());
-				technologies.push(...techs);
-			}
-		}
-	});
-	
-	return { awards, technologies };
-}
-
-// 研究歴から論文数を抽出
-function parseResearchHistory(content: string) {
-	const lines = content.split('\n');
-	const publications = lines.filter(line => line.match(/^\d+\./)).length;
-	return publications;
-}
-
-// インターン歴から企業数を抽出
-function parseInternshipHistory(content: string) {
-	const lines = content.split('\n');
-	const companies = lines.filter(line => line.match(/^## \d+\./)).length;
-	return companies;
-}
-
-// 更新日を抽出
-function parseLastUpdated(content: string) {
-	const lines = content.split('\n');
-	let lastUpdated = '';
-	
-	lines.forEach(line => {
-		if (line.includes('最終更新日:')) {
-			lastUpdated = line.replace('最終更新日:', '').trim();
-		}
-	});
-	
-	return lastUpdated || '2024年7月28日';
-}
-
-// データを解析
-const personalData = parsePersonalInfo(personalInfoContent);
-const { awards, technologies } = parseDevelopmentExperience(developmentExperienceContent);
-const publicationCount = parseResearchHistory(researchHistoryContent);
-const companyCount = parseInternshipHistory(internshipHistoryContent);
-const lastUpdated = parseLastUpdated(lastUpdatedContent);
-
-// 統計データを生成
-const quickStats = [
-	{ label: "論文発表", value: publicationCount.toString() },
-	{ label: "インターン", value: `${companyCount}社` },
-	{ label: "受賞", value: `${awards.length}回` },
-	{ label: "TOEIC", value: `${personalData.toeic}点` }
-];
-
-// ハイライトを生成
-const highlights = [
-	...awards.slice(0, 2).map(award => ({
-		title: award.title,
-		date: award.date,
-		type: "award"
-	})),
-	{
-		title: `${personalData.affiliation} ${personalData.grade}`,
-		date: "現在",
-		type: "education"
-	}
-];
+const markdownData = loadMarkdownData();
+const personalData = parsePersonalInfo(markdownData.personalInfo);
+const lastUpdated = parseLastUpdated(markdownData.lastUpdated);
 ---
 
 <main class="portfolio-container">
@@ -168,71 +29,18 @@ const highlights = [
 		</div>
 	</section>
 
-	<!-- Main Content Grid -->
+	<!-- 4つの主要セクション（仕様書に従って別々のパーツで表示） -->
 	<div class="content-grid">
-		<!-- Stats Section -->
-		<section class="stats-card">
-			<h2 class="card-title">実績</h2>
-			<div class="stats-grid">
-				{quickStats.map((stat) => (
-					<div class="stat-item">
-						<div class="stat-value">{stat.value}</div>
-						<div class="stat-label">{stat.label}</div>
-					</div>
-				))}
-			</div>
-		</section>
-
-		<!-- Skills Section -->
-		<section class="skills-card">
-			<h2 class="card-title">主要技術</h2>
-			<div class="tech-list">
-				{technologies.slice(0, 6).map((tech) => (
-					<span class="tech-tag">{tech}</span>
-				))}
-			</div>
-			<a href="/development#technologies" class="view-more">すべて見る →</a>
-		</section>
-
-		<!-- Recent Highlights -->
-		<section class="highlights-card">
-			<h2 class="card-title">最近のハイライト</h2>
-			<div class="highlights-list">
-				{highlights.map((highlight) => (
-					<div class="highlight-item">
-						<div class="highlight-content">
-							<h3 class="highlight-title">{highlight.title}</h3>
-							<span class="highlight-date">{highlight.date}</span>
-						</div>
-						<span class={`highlight-type highlight-type-${highlight.type}`}>
-							{highlight.type === 'award' ? '🏆' : 
-							 highlight.type === 'experience' ? '💼' : 
-							 highlight.type === 'research' ? '📚' : 
-							 highlight.type === 'education' ? '🎓' : '📄'}
-						</span>
-					</div>
-				))}
-			</div>
-		</section>
-
-		<!-- Personal Info Section -->
-		<section class="personal-info-card">
-			<h2 class="card-title">個人情報</h2>
-			<div class="personal-info">
-				<div class="info-item">
-					<span class="info-label">GitHub:</span>
-					<a href={`https://github.com/${personalData.github}`} class="info-link" target="_blank" rel="noopener noreferrer">@{personalData.github}</a>
-				</div>
-				<div class="info-item">
-					<span class="info-label">AtCoder:</span>
-					<a href={`https://atcoder.jp/users/${personalData.atcoder}`} class="info-link" target="_blank" rel="noopener noreferrer">@{personalData.atcoder}</a>
-				</div>
-				<div class="info-item">
-					<span class="info-label">TOEIC:</span>
-					<span class="info-value">{personalData.toeic}点</span>
-				</div>
-			</div>
-		</section>
+		<PersonalInfoCard content={markdownData.personalInfo} />
+		<a href="/development" class="card-link">
+			<DevelopmentCard content={markdownData.developmentExperience} />
+		</a>
+		<a href="/research" class="card-link">
+			<ResearchCard content={markdownData.researchHistory} />
+		</a>
+		<a href="/internship" class="card-link">
+			<InternshipCard content={markdownData.internshipHistory} />
+		</a>
 	</div>
 
 	<!-- Footer -->
@@ -304,7 +112,7 @@ const highlights = [
 	}
 
 
-	/* Content Grid */
+	/* Content Grid - 4つのパーツを2x2で表示 */
 	.content-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -313,160 +121,21 @@ const highlights = [
 		align-content: start;
 	}
 
-	.stats-card,
-	.skills-card,
-	.highlights-card,
-	.personal-info-card {
-		background: var(--color-bg-card);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
-		box-shadow: var(--shadow-sm);
-		transition: box-shadow 0.2s ease;
-	}
 
-	.stats-card:hover,
-	.skills-card:hover,
-	.highlights-card:hover,
-	.personal-info-card:hover {
-		box-shadow: var(--shadow-md);
-	}
 
-	.card-title {
-		font-size: 1.125rem;
-		font-weight: 600;
-		color: var(--color-text);
-		margin-bottom: var(--spacing-lg);
+	/* Card Link Styles */
+	.card-link {
+		text-decoration: none;
+		color: inherit;
+		display: block;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
-		padding-left: var(--spacing-md);
 	}
 
-	.card-title::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 3px;
-		height: 16px;
-		background: var(--color-primary);
-		border-radius: 2px;
+	.card-link:hover {
+		transform: translateY(-2px) scale(1.02);
 	}
 
-	/* Stats */
-	.stats-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: var(--spacing-lg);
-	}
-
-	.stat-item {
-		text-align: center;
-	}
-
-	.stat-value {
-		font-size: 2rem;
-		font-weight: 700;
-		color: var(--color-primary);
-		margin-bottom: var(--spacing-xs);
-	}
-
-	.stat-label {
-		font-size: 0.875rem;
-		color: var(--color-text-light);
-	}
-
-	/* Skills */
-	.tech-list {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--spacing-sm);
-		margin-bottom: var(--spacing-lg);
-	}
-
-	.tech-tag {
-		background: var(--color-bg-secondary);
-		color: var(--color-text);
-		padding: var(--spacing-xs) var(--spacing-sm);
-		border-radius: var(--radius-sm);
-		font-size: 0.875rem;
-		font-weight: 500;
-		border: 1px solid var(--color-border);
-	}
-
-	.view-more {
-		color: var(--color-primary);
-		text-decoration: none;
-		font-size: 0.875rem;
-		font-weight: 500;
-	}
-
-	/* Highlights */
-	.highlights-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-md);
-	}
-
-	.highlight-item {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: var(--spacing-md);
-		background: var(--color-bg-secondary);
-		border-radius: var(--radius-md);
-	}
-
-	.highlight-title {
-		font-size: 0.875rem;
-		font-weight: 500;
-		color: var(--color-text);
-		margin-bottom: var(--spacing-xs);
-	}
-
-	.highlight-date {
-		font-size: 0.75rem;
-		color: var(--color-text-lighter);
-	}
-
-	.highlight-type {
-		font-size: 1.25rem;
-	}
-
-	/* Personal Info */
-	.personal-info {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-md);
-	}
-
-	.info-item {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-sm);
-		padding: var(--spacing-sm);
-		border-radius: var(--radius-md);
-	}
-
-	.info-label {
-		font-weight: 500;
-		color: var(--color-text);
-		min-width: 80px;
-	}
-
-	.info-link {
-		color: var(--color-primary);
-		text-decoration: none;
-		transition: color 0.2s ease;
-	}
-
-	.info-link:hover {
-		color: var(--color-primary-dark);
-	}
-
-	.info-value {
-		color: var(--color-text-light);
-	}
 
 	/* Footer */
 	.portfolio-footer {
@@ -504,17 +173,5 @@ const highlights = [
 			gap: var(--spacing-lg);
 		}
 
-		.stats-grid {
-			grid-template-columns: repeat(4, 1fr);
-			gap: var(--spacing-sm);
-		}
-
-		.stat-value {
-			font-size: 1.5rem;
-		}
-
-		.stat-label {
-			font-size: 0.75rem;
-		}
 	}
 </style>
