@@ -160,20 +160,6 @@ const getStatusIcon = (status: string) => {
 									{publication.description && (
 										<p class="publication-description">{publication.description}</p>
 									)}
-									
-									{publication.authors && (
-										<div class="publication-authors">
-											<span class="authors-label">著者:</span>
-											<div class="authors-list">
-												{publication.authors.map((author, authorIndex) => (
-													<span class={`author ${author.includes('中野') ? 'author-self' : ''}`}>
-														{author}
-														{authorIndex < publication.authors.length - 1 && ', '}
-													</span>
-												))}
-											</div>
-										</div>
-									)}
 								</div>
 							</div>
 						</div>
