@@ -1,10 +1,42 @@
-export const techLogos: Record<string, { logo: string; color: string }> = {
-	'TypeScript': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', color: '#3178C6' },
-	'React': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', color: '#61DAFB' },
-	'Next.js': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg', color: '#000000' },
-	'Python': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', color: '#3776AB' },
-	'Go': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg', color: '#00ADD8' },
-	'FastAPI': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg', color: '#009688' },
-	'Gin': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg', color: '#00ADD8' },
-	'Docker': { logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', color: '#2496ED' }
+const techIcons: Record<string, string> = {
+	'React': 'devicon-react-original colored',
+	'Next.js': 'devicon-nextjs-original',
+	'TypeScript': 'devicon-typescript-plain colored',
+	'Tailwind CSS': 'devicon-tailwindcss-plain colored',
+	'Python': 'devicon-python-original colored',
+	'FastAPI': 'devicon-fastapi-plain colored',
+	'Go': 'devicon-go-original-wordmark colored',
+	'AWS': 'devicon-amazonwebservices-plain-wordmark colored',
+	'Docker': 'devicon-docker-plain colored',
+	'JavaScript': 'devicon-javascript-plain colored',
+	'Vue.js': 'devicon-vuejs-plain colored',
+	'Angular': 'devicon-angularjs-plain colored',
+	'Node.js': 'devicon-nodejs-plain colored',
+	'MongoDB': 'devicon-mongodb-plain colored',
+	'PostgreSQL': 'devicon-postgresql-plain colored',
+	'MySQL': 'devicon-mysql-plain colored',
+	'Redis': 'devicon-redis-plain colored',
+	'Git': 'devicon-git-plain colored',
+	'Linux': 'devicon-linux-plain',
+	'Ubuntu': 'devicon-ubuntu-plain colored',
+	'CSS3': 'devicon-css3-plain colored',
+	'HTML5': 'devicon-html5-plain colored',
+	'Sass': 'devicon-sass-original colored',
+	'Webpack': 'devicon-webpack-plain colored',
+	'Vite': 'devicon-vitejs-plain colored'
 };
+
+export function getTechIcon(tech: string): string {
+	if (techIcons[tech]) {
+		return techIcons[tech];
+	}
+
+	const normalized = tech.toLowerCase();
+	for (const [key, icon] of Object.entries(techIcons)) {
+		if (key.toLowerCase().includes(normalized) || normalized.includes(key.toLowerCase())) {
+			return icon;
+		}
+	}
+
+	return 'devicon-devicon-plain';
+}

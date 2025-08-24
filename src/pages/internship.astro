@@ -1,99 +1,188 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import InternshipHistory from '../components/InternshipHistory.astro';
+import { loadInternshipHistory } from '../functions/dataLoader';
+import TechLogo from '../components/common/TechLogo.astro';
+
+const internshipHistory = await loadInternshipHistory();
+
 ---
 
-<Layout title="インターン歴 - 中野暁登 Portfolio">
-	<div class="page-content">
-		<section class="page-hero">
-			<div class="hero-container">
-				<h1 class="page-title">インターン歴</h1>
-			</div>
-		</section>
+<Layout title="インターンシップ歴 - 中野暁登 Portfolio">
+	<div class="page-container">
+		<header class="page-header">
+			<h1 class="page-title">インターンシップ歴</h1>
+			<a href="/" class="back-link">← ポートフォリオに戻る</a>
+		</header>
 
-		<main class="content-container">
-			<InternshipHistory />
+		<main class="page-content">
+			<div class="internships-list">
+				{internshipHistory.map((internship) => (
+					<article class="internship-card">
+						<div class="internship-header">
+							<h2 class="company-name">{internship.company}</h2>
+							<span class="internship-period">{internship.period}</span>
+						</div>
+						<p class="internship-position">{internship.position}</p>
+						{internship.content && (
+							<p class="internship-content">{internship.content}</p>
+						)}
+						{internship.techStack && internship.techStack.length > 0 && (
+							<div class="tech-stack">
+								<h3 class="tech-title">使用技術</h3>
+								<div class="tech-list">
+									{internship.techStack.map((tech) => (
+										<TechLogo tech={tech} size="sm" />
+									))}
+								</div>
+							</div>
+						)}
+					</article>
+				))}
+			</div>
 		</main>
 	</div>
 </Layout>
 
 <style>
-	.page-content {
-		min-height: calc(100vh - 80px);
-		display: flex;
-		flex-direction: column;
-	}
-
-	.page-hero {
-		background: var(--gradient-dark);
-		padding: var(--spacing-4xl) 0;
-		text-align: center;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.page-hero::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: 
-			radial-gradient(circle at 30% 70%, rgba(139, 124, 246, 0.1) 0%, transparent 50%),
-			radial-gradient(circle at 70% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
-		pointer-events: none;
-	}
-
-	.hero-container {
+	.page-container {
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 var(--spacing-xl);
-		position: relative;
-		z-index: 1;
+		min-height: 100vh;
+	}
+
+	.page-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: var(--spacing-3xl) 0;
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.page-title {
-		font-size: 3rem;
-		font-weight: 700;
-		color: var(--color-text);
-		margin-bottom: var(--spacing-lg);
+		font-size: var(--font-size-4xl);
+		font-weight: var(--font-weight-bold);
 		background: var(--gradient-primary);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
-		background-clip: text;
 	}
 
-	.page-subtitle {
-		font-size: 1.25rem;
+	.back-link {
 		color: var(--color-text-light);
-		max-width: 600px;
-		margin: 0 auto;
-		line-height: 1.6;
+		text-decoration: none;
+		transition: color 0.3s ease;
 	}
 
-	.content-container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: var(--spacing-4xl) var(--spacing-xl);
+	.back-link:hover {
+		color: var(--color-secondary-solid);
+	}
+
+	.page-content {
+		padding: var(--spacing-3xl) 0;
+	}
+
+	.internships-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-2xl);
+	}
+
+	.internship-card {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-xl);
+		transition: all 0.3s ease;
+	}
+
+	.internship-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--color-secondary-solid);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.internship-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: var(--spacing-md);
+	}
+
+	.company-name {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
 		flex: 1;
+		margin-right: var(--spacing-md);
+	}
+
+	.internship-period {
+		font-size: var(--font-size-sm);
+		background: var(--gradient-secondary);
+		color: #ffffff;
+		padding: var(--spacing-xs) var(--spacing-sm);
+		border-radius: var(--radius-sm);
+		white-space: nowrap;
+		font-weight: var(--font-weight-semibold);
+		text-shadow: 0 0 8px rgba(0, 0, 0, 0.7), 0 0 4px rgba(0, 0, 0, 0.9);
+	}
+
+	.internship-position {
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-text-accent);
+		margin-bottom: var(--spacing-md);
+	}
+
+	.internship-content {
+		font-size: var(--font-size-base);
+		line-height: var(--line-height-relaxed);
+		color: var(--color-text-light);
+		margin-bottom: var(--spacing-lg);
+		border-left: 3px solid var(--color-secondary-solid);
+		padding-left: var(--spacing-md);
+	}
+
+	.tech-stack {
+		border-top: 1px solid var(--color-border);
+		padding-top: var(--spacing-lg);
+	}
+
+	.tech-title {
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-light);
+		margin-bottom: var(--spacing-md);
+	}
+
+	.tech-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-sm);
 	}
 
 	@media (max-width: 768px) {
-		.hero-container {
+		.page-container {
 			padding: 0 var(--spacing-lg);
 		}
 
+		.page-header {
+			flex-direction: column;
+			gap: var(--spacing-md);
+			align-items: flex-start;
+		}
+
 		.page-title {
-			font-size: 2.25rem;
+			font-size: var(--font-size-3xl);
 		}
 
-		.page-subtitle {
-			font-size: 1.125rem;
+		.internship-header {
+			flex-direction: column;
+			gap: var(--spacing-sm);
 		}
 
-		.content-container {
-			padding: var(--spacing-3xl) var(--spacing-lg);
+		.tech-list {
+			justify-content: center;
 		}
 	}
 </style>

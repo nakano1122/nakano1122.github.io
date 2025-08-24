@@ -1,239 +1,94 @@
 ---
-import Navigation from './Navigation.astro';
-import MobileMenu from './MobileMenu.astro';
-import { parsePersonalName, loadMarkdownData } from '../../../utils/data-extractors';
+import { loadPersonalInfo } from '../../../functions/dataLoader';
 
-const { personalInfo } = loadMarkdownData();
-const personalName = parsePersonalName(personalInfo);
-const currentPath = Astro.url.pathname;
+const personalInfo = await loadPersonalInfo();
+const path = Astro.url.pathname;
 ---
 
 <header class="site-header">
-	<div class="header-glow"></div>
 	<div class="header-container">
 		<a href="/" class="logo-link">
 			<div class="logo">
-				<div class="logo-icon">
-					<div class="logo-dot"></div>
-					<div class="logo-ring"></div>
-				</div>
-				<div class="logo-text-container">
-					<span class="logo-text">{personalName}</span>
-					<span class="logo-subtitle">Portfolio</span>
-				</div>
+				<span class="logo-text">{personalInfo.name}</span>
 			</div>
 		</a>
 		
-		<Navigation currentPath={currentPath} />
-		<MobileMenu currentPath={currentPath} />
+		<nav class="navigation">
+			<a href="/" class={path === '/' ? 'nav-link active' : 'nav-link'}>ホーム</a>
+			<a href="/development" class={path === '/development' ? 'nav-link active' : 'nav-link'}>アプリ開発</a>
+			<a href="/research" class={path === '/research' ? 'nav-link active' : 'nav-link'}>研究</a>
+			<a href="/internship" class={path === '/internship' ? 'nav-link active' : 'nav-link'}>インターンシップ</a>
+		</nav>
 	</div>
 </header>
 
 <style>
 	.site-header {
-		position: sticky;
-		top: 0;
-		z-index: 1000;
-		background: var(--color-bg-glass);
-		backdrop-filter: blur(20px) saturate(180%);
-		border-bottom: 1px solid var(--color-border-light);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	.site-header::before {
-		content: '';
-		position: absolute;
+		position: fixed;
 		top: 0;
 		left: 0;
 		right: 0;
-		bottom: 0;
-		background: var(--gradient-glass);
-		opacity: 0.5;
-		pointer-events: none;
-	}
-
-	.header-glow {
-		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 300px;
-		height: 1px;
-		background: var(--gradient-primary);
-		opacity: 0.6;
-		filter: blur(20px);
+		z-index: 1000;
+		background: var(--color-bg-header);
+		backdrop-filter: blur(20px);
+		border-bottom: 1px solid var(--color-border);
+		transition: all 0.3s ease;
 	}
 
 	.header-container {
-		max-width: 1400px;
+		max-width: 1200px;
 		margin: 0 auto;
-		padding: 0 var(--spacing-6xl);
+		padding: 0 var(--spacing-xl);
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		height: 80px;
-		position: relative;
-		z-index: 1;
 	}
 
 	.logo-link {
 		text-decoration: none;
-		color: inherit;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		position: relative;
-	}
-
-	.logo-link:hover {
-		transform: translateY(-2px);
-	}
-
-	.logo {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-lg);
-	}
-
-	.logo-icon {
-		position: relative;
-		width: 40px;
-		height: 40px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo-dot {
-		width: 12px;
-		height: 12px;
-		background: var(--gradient-primary);
-		border-radius: 50%;
-		position: relative;
-		z-index: 2;
-		animation: logoPulse 3s ease-in-out infinite;
-	}
-
-	.logo-ring {
-		position: absolute;
-		width: 30px;
-		height: 30px;
-		border: 2px solid transparent;
-		border-top: 2px solid var(--color-primary-solid);
-		border-radius: 50%;
-		animation: logoRotate 8s linear infinite;
-	}
-
-	@keyframes logoPulse {
-		0%, 100% { transform: scale(1); opacity: 1; }
-		50% { transform: scale(1.2); opacity: 0.8; }
-	}
-
-	@keyframes logoRotate {
-		from { transform: rotate(0deg); }
-		to { transform: rotate(360deg); }
-	}
-
-	.logo-text-container {
-		display: flex;
-		flex-direction: column;
 	}
 
 	.logo-text {
-		font-size: var(--font-size-xl);
+		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-text);
-		line-height: var(--line-height-tight);
 		background: var(--gradient-primary);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
-		background-clip: text;
 	}
 
-	.logo-subtitle {
-		font-size: var(--font-size-xs);
-		color: var(--color-text-lighter);
+	.navigation {
+		display: flex;
+		gap: var(--spacing-lg);
+	}
+
+	.nav-link {
+		color: var(--color-text-light);
+		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		text-transform: uppercase;
-		letter-spacing: 2px;
-		margin-top: -2px;
+		padding: var(--spacing-sm) var(--spacing-md);
+		border-radius: var(--radius-md);
+		transition: all 0.3s ease;
 	}
 
-	@media (max-width: 1024px) {
-		.header-container {
-			padding: 0 var(--spacing-4xl);
-		}
+	.nav-link:hover {
+		color: var(--color-secondary-solid);
+		background: var(--color-bg-tertiary);
+	}
+
+	.nav-link.active {
+		color: var(--color-secondary-solid);
+		background: var(--color-bg-card);
 	}
 
 	@media (max-width: 768px) {
 		.header-container {
-			padding: 0 var(--spacing-3xl);
-			height: 70px;
-		}
-
-		.logo-text {
-			font-size: var(--font-size-lg);
-		}
-	}
-
-	@media (max-width: 640px) {
-		.header-container {
 			padding: 0 var(--spacing-lg);
-			height: 70px;
 		}
 
-		.logo {
-			gap: var(--spacing-sm);
-		}
-
-		.logo-icon {
-			width: 28px;
-			height: 28px;
-		}
-
-		.logo-dot {
-			width: 8px;
-			height: 8px;
-		}
-
-		.logo-ring {
-			width: 18px;
-			height: 18px;
-		}
-
-		.logo-text {
-			font-size: var(--font-size-base);
-		}
-	}
-
-	@media (max-width: 480px) {
-		.header-container {
-			padding: 0 var(--spacing-md);
-		}
-
-		.logo-text-container {
+		.navigation {
 			display: none;
 		}
 	}
 </style>
-
-<script>
-	document.addEventListener('DOMContentLoaded', () => {
-		const header = document.querySelector('.site-header');
-		let lastScrollY = window.scrollY;
-		
-		window.addEventListener('scroll', () => {
-			const currentScrollY = window.scrollY;
-			
-			if (currentScrollY > 100) {
-				header.style.background = 'rgba(255, 255, 255, 0.95)';
-				header.style.backdropFilter = 'blur(25px) saturate(200%)';
-				header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-			} else {
-				header.style.background = 'var(--color-bg-glass)';
-				header.style.backdropFilter = 'blur(20px) saturate(180%)';
-				header.style.boxShadow = 'none';
-			}
-			
-			lastScrollY = currentScrollY;
-		});
-	});
-</script>
