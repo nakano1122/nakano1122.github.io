@@ -1,17 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageContainer from '../components/layout/PageContainer.astro';
 import { loadResearchHistory } from '../functions/dataLoader';
 
 const researchHistory = await loadResearchHistory();
 ---
 
 <Layout title="研究内容 - 中野暁登 Portfolio">
-	<div class="page-container">
-		<header class="page-header">
-			<h1 class="page-title">研究内容</h1>
-		</header>
-
-		<main class="page-content">
+	<PageContainer title="研究内容" maxWidth="1200px">
 			{researchHistory.researchContent && (
 				<section class="section">
 					<h2 class="section-title">研究概要</h2>
@@ -37,49 +33,11 @@ const researchHistory = await loadResearchHistory();
 						</article>
 					))}
 				</div>
-			</section>
-		</main>
-	</div>
+		</section>
+	</PageContainer>
 </Layout>
 
 <style>
-	.page-container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 0 var(--spacing-xl);
-		min-height: 100vh;
-	}
-
-	.page-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: var(--spacing-3xl) 0;
-		border-bottom: 1px solid var(--color-border);
-	}
-
-	.page-title {
-		font-size: var(--font-size-4xl);
-		font-weight: var(--font-weight-bold);
-		background: var(--gradient-primary);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-	}
-
-	.back-link {
-		color: var(--color-text-light);
-		text-decoration: none;
-		transition: color 0.3s ease;
-	}
-
-	.back-link:hover {
-		color: var(--color-secondary-solid);
-	}
-
-	.page-content {
-		padding: var(--spacing-3xl) 0;
-	}
-
 	.section {
 		margin-bottom: var(--spacing-5xl);
 	}
@@ -154,19 +112,4 @@ const researchHistory = await loadResearchHistory();
 		font-style: italic;
 	}
 
-	@media (max-width: 768px) {
-		.page-container {
-			padding: 0 var(--spacing-lg);
-		}
-
-		.page-header {
-			flex-direction: column;
-			gap: var(--spacing-md);
-			align-items: flex-start;
-		}
-
-		.page-title {
-			font-size: var(--font-size-3xl);
-		}
-	}
 </style>

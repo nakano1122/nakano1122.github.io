@@ -1,31 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageContainer from '../components/layout/PageContainer.astro';
 import Timeline from '../components/common/Timeline.astro';
+import EmailDisplay from '../components/common/EmailDisplay.astro';
 import { loadPersonalInfo } from '../functions/dataLoader';
+import { convertEducationToTimeline, convertInternshipToTimeline } from '../utils/timelineHelpers';
 
 const personalInfo = await loadPersonalInfo();
 
 // 教育歴をTimelineアイテムに変換
-const educationItems = (personalInfo.education || []).map((edu) => ({
-	title: edu.institution,
-	meta: edu.period,
-}));
+const educationItems = convertEducationToTimeline(personalInfo.education || []);
 
 // インターンシップをTimelineアイテムに変換
-const internshipItems = (personalInfo.internships || []).map((internship) => ({
-	title: internship.company,
-	subtitle: internship.position,
-	meta: internship.period,
-}));
+const internshipItems = convertInternshipToTimeline(personalInfo.internships || []);
 ---
 
 <Layout title="About - 中野暁登">
-	<main class="about-page">
-		<div class="container">
-			<h1 class="page-title">About</h1>
-
-			<!-- Profile Section -->
-			<section class="profile-section">
+	<PageContainer title="About">
+		<!-- Profile Section -->
+		<section class="profile-section">
 				<div class="profile-card">
 					<div class="profile-header">
 						<div class="profile-info">
@@ -38,8 +31,8 @@ const internshipItems = (personalInfo.internships || []).map((internship) => ({
 					<div class="contact-info">
 						<div class="contact-item">
 							<span class="contact-label">Email</span>
-							<span class="contact-value email-value">
-								{personalInfo.contact.email.split(' ')[0]}<img src="/images/about/at-mark.svg" alt=" " class="at-icon" />{personalInfo.contact.email.split(' ')[1]}
+							<span class="contact-value">
+								<EmailDisplay email={personalInfo.contact.email} />
 							</span>
 						</div>
 						<div class="contact-item">
@@ -79,31 +72,10 @@ const internshipItems = (personalInfo.internships || []).map((internship) => ({
 					<Timeline items={internshipItems} markerColor="primary" />
 				</section>
 			)}
-		</div>
-	</main>
+	</PageContainer>
 </Layout>
 
 <style>
-	.about-page {
-		padding: var(--spacing-5xl) 0;
-		min-height: calc(100vh - 80px);
-	}
-
-	.container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 0 var(--spacing-xl);
-	}
-
-	.page-title {
-		font-size: var(--font-size-4xl);
-		font-weight: var(--font-weight-bold);
-		background: var(--gradient-primary);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		margin-bottom: var(--spacing-5xl);
-	}
-
 	/* Profile Section */
 	.profile-section {
 		margin-bottom: var(--spacing-5xl);
@@ -177,19 +149,6 @@ const internshipItems = (personalInfo.internships || []).map((internship) => ({
 		word-break: break-all;
 	}
 
-	.email-value {
-		display: inline-flex;
-		align-items: center;
-		gap: 2px;
-	}
-
-	.at-icon {
-		width: 14px;
-		height: 14px;
-		display: inline-block;
-		vertical-align: middle;
-	}
-
 	/* Section */
 	.section {
 		margin-bottom: var(--spacing-5xl);
@@ -204,14 +163,6 @@ const internshipItems = (personalInfo.internships || []).map((internship) => ({
 	}
 
 	@media (max-width: 768px) {
-		.container {
-			padding: 0 var(--spacing-lg);
-		}
-
-		.page-title {
-			font-size: var(--font-size-3xl);
-		}
-
 		.profile-card {
 			padding: var(--spacing-2xl);
 		}

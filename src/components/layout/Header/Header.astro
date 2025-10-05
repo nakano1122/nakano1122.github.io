@@ -56,11 +56,9 @@ const path = Astro.url.pathname;
 
 <style>
 	.site-header {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		z-index: 1001;
+		position: static;
+		z-index: 10;
+		flex-shrink: 0;
 		background: var(--color-bg-header);
 		backdrop-filter: blur(20px);
 		border-bottom: 1px solid var(--color-border);

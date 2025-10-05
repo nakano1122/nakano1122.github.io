@@ -149,12 +149,17 @@ const { title = "中野暁登 - Portfolio", showHeader = true } = Astro.props;
 	html {
 		scroll-behavior: smooth;
 		font-size: 16px;
+		height: 100vh;
+		overflow: hidden;
 	}
 
 	body {
 		margin: 0;
 		padding: 0;
-		padding-top: 80px;
+		height: 100vh;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
 		font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 		background: var(--color-bg);
 		color: var(--color-text);
@@ -162,8 +167,6 @@ const { title = "中野暁登 - Portfolio", showHeader = true } = Astro.props;
 		font-weight: var(--font-weight-normal);
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		overflow-x: hidden;
-		scroll-behavior: smooth;
 	}
 
 	body::before {

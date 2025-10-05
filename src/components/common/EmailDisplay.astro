@@ -1,0 +1,30 @@
+---
+interface Props {
+	email: string;
+	class?: string;
+}
+
+const { email, class: className } = Astro.props;
+const [username, domain] = email.split(' ');
+---
+
+<span class={`email-display ${className || ''}`}>
+	{username}
+	<img src="/images/about/at-mark.svg" alt=" " class="at-icon" />
+	{domain}
+</span>
+
+<style>
+	.email-display {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+	}
+
+	.at-icon {
+		width: 14px;
+		height: 14px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+</style>

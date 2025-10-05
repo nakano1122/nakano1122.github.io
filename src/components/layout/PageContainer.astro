@@ -1,0 +1,49 @@
+---
+interface Props {
+	title: string;
+	maxWidth?: '800px' | '1200px';
+	class?: string;
+}
+
+const { title, maxWidth = '800px', class: className } = Astro.props;
+---
+
+<div class={`page-wrapper ${className || ''}`}>
+	<div class="container" style={`max-width: ${maxWidth}`}>
+		<h1 class="page-title">{title}</h1>
+		<slot />
+	</div>
+</div>
+
+<style>
+	.page-wrapper {
+		padding: var(--spacing-5xl) 0;
+		height: 100%;
+		overflow-y: auto;
+		flex: 1;
+	}
+
+	.container {
+		margin: 0 auto;
+		padding: 0 var(--spacing-xl);
+	}
+
+	.page-title {
+		font-size: var(--font-size-4xl);
+		font-weight: var(--font-weight-bold);
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		margin-bottom: var(--spacing-5xl);
+	}
+
+	@media (max-width: 768px) {
+		.container {
+			padding: 0 var(--spacing-lg);
+		}
+
+		.page-title {
+			font-size: var(--font-size-3xl);
+		}
+	}
+</style>

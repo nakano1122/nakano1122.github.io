@@ -1,26 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageContainer from '../components/layout/PageContainer.astro';
 import Timeline from '../components/common/Timeline.astro';
 import { loadDevelopmentExperience } from '../functions/dataLoader';
 import TechLogo from '../components/common/TechLogo.astro';
+import { convertAwardsToTimeline } from '../utils/timelineHelpers';
 
 const developmentExp = await loadDevelopmentExperience();
 
 // 受賞歴を新しい順にソートしてTimelineアイテムに変換
-const sortedAwards = [...developmentExp.awards].reverse();
-const awardItems = sortedAwards.map((award) => ({
-	title: award.event,
-	subtitle: award.award,
-	meta: award.date,
-}));
+const awardItems = convertAwardsToTimeline(developmentExp.awards);
 ---
 
 <Layout title="Development - 中野暁登">
-	<main class="development-page">
-		<div class="container">
-			<h1 class="page-title">Development</h1>
-
-			<section class="content-section">
+	<PageContainer title="Development" class="development-page-container">
+		<section class="content-section">
 				<div class="content-card">
 					<!-- 受賞歴 -->
 					{awardItems.length > 0 && (
@@ -47,30 +41,13 @@ const awardItems = sortedAwards.map((award) => ({
 						</div>
 					)}
 				</div>
-			</section>
-		</div>
-	</main>
+		</section>
+	</PageContainer>
 </Layout>
 
 <style>
-	.development-page {
-		padding: var(--spacing-5xl) 0;
-	}
-
-	.container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 0 var(--spacing-xl);
-	}
-
-	.page-title {
-		font-size: var(--font-size-4xl);
-		font-weight: var(--font-weight-bold);
-		background: var(--gradient-primary);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
+	.development-page-container :global(.page-title) {
 		text-align: center;
-		margin-bottom: var(--spacing-5xl);
 	}
 
 	.content-card {
@@ -117,10 +94,6 @@ const awardItems = sortedAwards.map((award) => ({
 	}
 
 	@media (max-width: 768px) {
-		.page-title {
-			font-size: var(--font-size-3xl);
-		}
-
 		.content-card {
 			padding: var(--spacing-2xl);
 		}
