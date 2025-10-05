@@ -1,8 +1,624 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Portfolio from '../components/Portfolio.astro';
+import Timeline from '../components/common/Timeline.astro';
+import {
+	loadPersonalInfo,
+	loadDevelopmentExperience,
+	loadResearchHistory
+} from '../functions/dataLoader';
+import TechLogo from '../components/common/TechLogo.astro';
+
+const personalInfo = await loadPersonalInfo();
+const developmentExp = await loadDevelopmentExperience();
+const researchHistory = await loadResearchHistory();
+
+// インターンシップをTimelineアイテムに変換
+const sortedInternships = personalInfo.internships || [];
+const internshipItems = sortedInternships.map((internship) => ({
+	title: internship.company,
+	subtitle: internship.position,
+	meta: internship.period,
+}));
+
+// Awardsを新しい順にソートしてTimelineアイテムに変換
+const sortedAwards = [...developmentExp.awards].reverse();
+const awardItems = sortedAwards.map((award) => ({
+	title: award.event,
+	subtitle: award.award,
+	meta: award.date,
+}));
 ---
 
 <Layout title="中野暁登 - Portfolio | Software Engineer & Researcher">
-	<Portfolio />
+	<main class="top-page">
+		<div class="two-column-container">
+			<!-- Left Column -->
+			<aside class="left-column">
+				<div class="profile-card">
+					<div class="profile-image-wrapper">
+						<img src="/images/profile/icon.webp" alt={personalInfo.name} class="profile-image" />
+					</div>
+					<h1 class="profile-name">{personalInfo.name}</h1>
+					<div class="profile-affiliation">
+						<p>{personalInfo.affiliation.university}</p>
+						<p>{personalInfo.affiliation.faculty}</p>
+						<p>{personalInfo.year}</p>
+					</div>
+					<div class="profile-links">
+						<div class="github-container">
+							<button type="button" class="social-link github-button" id="github-button">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+									<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.430.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+								</svg>
+							</button>
+							<div class="github-tooltip" id="github-tooltip">
+								<div class="tooltip-arrow"></div>
+								<a href={personalInfo.contact.github.url} target="_blank" rel="noopener noreferrer" class="github-link">
+									GitHub Profile
+								</a>
+							</div>
+						</div>
+						<div class="email-container">
+							<button type="button" class="social-link email-button" id="email-button">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+									<polyline points="22,6 12,13 2,6"></polyline>
+								</svg>
+							</button>
+							<div class="email-tooltip" id="email-tooltip">
+								<div class="tooltip-arrow"></div>
+								<p class="email-address">
+									{personalInfo.contact.email.split(' ')[0]}
+									<img src="/images/about/at-mark.svg" alt=" " class="at-icon" />
+									{personalInfo.contact.email.split(' ')[1]}
+								</p>
+							</div>
+						</div>
+						{personalInfo.contact.atcoder && (
+							<div class="atcoder-container">
+								<button type="button" class="social-link atcoder-button" id="atcoder-button">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<polyline points="16 18 22 12 16 6"></polyline>
+										<polyline points="8 6 2 12 8 18"></polyline>
+									</svg>
+								</button>
+								<div class="atcoder-tooltip" id="atcoder-tooltip">
+									<div class="tooltip-arrow"></div>
+									<a href={personalInfo.contact.atcoder} target="_blank" rel="noopener noreferrer" class="atcoder-link">
+										AtCoder Profile
+									</a>
+								</div>
+							</div>
+						)}
+					</div>
+
+					<!-- Education Section -->
+					{personalInfo.education && personalInfo.education.length > 0 && (
+						<div class="education-section">
+							<h2 class="education-title">Education</h2>
+							<div class="education-list">
+								{personalInfo.education.map((edu) => {
+									const parts = edu.institution.split('大学');
+									const university = parts[0] + '大学';
+									const detail = parts[1] || '';
+									return (
+										<div class="education-item">
+											<p class="education-period">{edu.period}</p>
+											<p class="education-institution">
+												<span class="university-name">{university}</span>
+												{detail && <span class="university-detail">{detail}</span>}
+											</p>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					)}
+				</div>
+			</aside>
+
+			<!-- Right Column -->
+			<div class="right-column">
+				<!-- Research Papers Section -->
+				<section class="content-section">
+					<div class="section-header">
+						<h2 class="section-title">Research</h2>
+					</div>
+					<div class="papers-list">
+						{researchHistory.papers.map((paper) => (
+							<div class="paper-item">
+								<p class="paper-title">{paper.title}</p>
+								<div class="paper-meta">
+									<span class="paper-conference">{paper.conference}</span>
+									{paper.note && <span class="paper-note">{paper.note}</span>}
+								</div>
+							</div>
+						))}
+					</div>
+				</section>
+
+				<!-- Internship Section -->
+				{internshipItems.length > 0 && (
+					<section class="content-section">
+						<div class="section-header">
+							<h2 class="section-title">Internship</h2>
+						</div>
+						<Timeline items={internshipItems} markerColor="primary" />
+					</section>
+				)}
+
+				<!-- Awards Section -->
+				<section class="content-section">
+					<div class="section-header">
+						<h2 class="section-title">Development</h2>
+					</div>
+					<Timeline items={awardItems} markerColor="primary" />
+				</section>
+			</div>
+		</div>
+	</main>
 </Layout>
+
+<style>
+	.top-page {
+		width: 100%;
+		min-height: 100vh;
+	}
+
+	/* ===== TWO COLUMN LAYOUT ===== */
+	.two-column-container {
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: var(--spacing-5xl) var(--spacing-xl);
+		display: grid;
+		grid-template-columns: 300px 1fr;
+		gap: var(--spacing-5xl);
+		height: calc(100vh - var(--spacing-5xl) * 2);
+	}
+
+	/* ===== LEFT COLUMN (PROFILE) ===== */
+	.left-column {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.profile-card {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-2xl);
+		padding: var(--spacing-3xl);
+		text-align: center;
+		position: relative;
+		z-index: 1;
+	}
+
+	.profile-image-wrapper {
+		width: 150px;
+		height: 150px;
+		margin: 0 auto var(--spacing-2xl);
+		border-radius: 50%;
+		overflow: hidden;
+		border: 3px solid var(--color-border);
+		box-shadow: var(--shadow-md);
+	}
+
+	.profile-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.profile-name {
+		font-size: var(--font-size-2xl);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.profile-affiliation {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
+		line-height: 1.6;
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.profile-affiliation p {
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.profile-links {
+		display: flex;
+		justify-content: center;
+		gap: var(--spacing-md);
+		padding-bottom: var(--spacing-xl);
+		margin-bottom: var(--spacing-xl);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.social-link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+		background: var(--color-bg-secondary);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		color: var(--color-text);
+		text-decoration: none;
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	.email-button {
+		border: none;
+		padding: 0;
+	}
+
+	.social-link svg {
+		width: 28px;
+		height: 28px;
+	}
+
+	.social-link:hover {
+		border-color: var(--color-primary-solid);
+		background: var(--color-primary-solid);
+		color: #ffffff;
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+	}
+
+	/* Tooltips */
+	.github-container,
+	.email-container,
+	.atcoder-container {
+		position: relative;
+	}
+
+	.github-tooltip,
+	.email-tooltip,
+	.atcoder-tooltip {
+		position: absolute;
+		bottom: calc(100% + 12px);
+		left: 50%;
+		transform: translateX(-50%);
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-md) var(--spacing-lg);
+		box-shadow: var(--shadow-lg);
+		white-space: nowrap;
+		opacity: 0;
+		visibility: hidden;
+		transition: all 0.3s ease;
+		z-index: 999;
+	}
+
+	.github-tooltip.show,
+	.email-tooltip.show,
+	.atcoder-tooltip.show {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.tooltip-arrow {
+		position: absolute;
+		bottom: -6px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 12px;
+		height: 12px;
+		background: var(--color-bg-card);
+		border-right: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
+		rotate: 45deg;
+	}
+
+	.email-address {
+		font-size: var(--font-size-sm);
+		color: var(--color-text);
+		margin: 0;
+		font-weight: var(--font-weight-medium);
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+	}
+
+	.at-icon {
+		width: 14px;
+		height: 14px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.github-link,
+	.atcoder-link {
+		font-size: var(--font-size-sm);
+		color: var(--color-text);
+		text-decoration: none;
+		font-weight: var(--font-weight-medium);
+		transition: color 0.3s ease;
+	}
+
+	.github-link:hover,
+	.atcoder-link:hover {
+		color: var(--color-primary-solid);
+	}
+
+	/* ===== EDUCATION SECTION ===== */
+	.education-section {
+		text-align: left;
+	}
+
+	.education-title {
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+		margin-bottom: var(--spacing-md);
+	}
+
+	.education-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+	}
+
+	.education-item {
+		padding: var(--spacing-sm);
+	}
+
+	.education-period {
+		font-size: var(--font-size-xs);
+		color: var(--color-text-lighter);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.education-institution {
+		line-height: 1.5;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xs);
+	}
+
+	.university-name {
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text);
+	}
+
+	.university-detail {
+		font-size: var(--font-size-xs);
+		color: var(--color-text-light);
+	}
+
+	/* ===== RIGHT COLUMN (CONTENT) ===== */
+	.right-column {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4xl);
+		height: 100%;
+		overflow-y: auto;
+		padding-right: var(--spacing-md);
+	}
+
+	.right-column::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	.right-column::-webkit-scrollbar-track {
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-full);
+	}
+
+	.right-column::-webkit-scrollbar-thumb {
+		background: var(--color-border);
+		border-radius: var(--radius-full);
+	}
+
+	.right-column::-webkit-scrollbar-thumb:hover {
+		background: var(--color-primary-solid);
+	}
+
+	.content-section {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-2xl);
+		padding: var(--spacing-3xl);
+	}
+
+	.section-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: var(--spacing-2xl);
+		padding-bottom: var(--spacing-lg);
+		border-bottom: 2px solid var(--color-border);
+	}
+
+	.section-title {
+		font-size: var(--font-size-2xl);
+		font-weight: var(--font-weight-bold);
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.section-link {
+		font-size: var(--font-size-sm);
+		color: var(--color-secondary-solid);
+		font-weight: var(--font-weight-semibold);
+		text-decoration: none;
+		transition: all 0.3s ease;
+	}
+
+	.section-link:hover {
+		color: var(--color-primary-solid);
+	}
+
+	/* ===== RESEARCH PAPERS ===== */
+	.papers-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-lg);
+	}
+
+	.paper-item {
+		padding: var(--spacing-xl);
+		background: var(--color-bg-secondary);
+		border-radius: var(--radius-lg);
+		border-left: 3px solid var(--color-primary-solid);
+	}
+
+	.paper-title {
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text);
+		margin-bottom: var(--spacing-sm);
+		line-height: 1.6;
+	}
+
+	.paper-meta {
+		display: flex;
+		gap: var(--spacing-md);
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.paper-conference {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-lighter);
+	}
+
+	.paper-note {
+		background: var(--gradient-accent);
+		color: #ffffff;
+		padding: var(--spacing-xs) var(--spacing-md);
+		border-radius: var(--radius-md);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-semibold);
+	}
+
+	/* ===== RESPONSIVE DESIGN ===== */
+	@media (max-width: 1024px) {
+		.two-column-container {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-4xl);
+			height: auto;
+		}
+
+		.left-column {
+			height: auto;
+		}
+
+		.right-column {
+			height: auto;
+			overflow-y: visible;
+			padding-right: 0;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.two-column-container {
+			padding: var(--spacing-4xl) var(--spacing-lg);
+		}
+
+		.profile-card {
+			padding: var(--spacing-2xl);
+		}
+
+		.profile-image-wrapper {
+			width: 120px;
+			height: 120px;
+		}
+
+		.content-section {
+			padding: var(--spacing-2xl);
+		}
+
+		.section-title {
+			font-size: var(--font-size-xl);
+		}
+
+		.award-header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const githubButton = document.getElementById('github-button');
+		const githubTooltip = document.getElementById('github-tooltip');
+		const emailButton = document.getElementById('email-button');
+		const emailTooltip = document.getElementById('email-tooltip');
+		const atcoderButton = document.getElementById('atcoder-button');
+		const atcoderTooltip = document.getElementById('atcoder-tooltip');
+
+		if (githubButton && githubTooltip) {
+			// GitHubボタンをクリックしたときに吹き出しを表示/非表示
+			githubButton.addEventListener('click', (e) => {
+				e.stopPropagation();
+				githubTooltip.classList.toggle('show');
+				// 他の吹き出しを閉じる
+				if (emailTooltip) emailTooltip.classList.remove('show');
+				if (atcoderTooltip) atcoderTooltip.classList.remove('show');
+			});
+
+			// 吹き出し内をクリックしても閉じないようにする
+			githubTooltip.addEventListener('click', (e) => {
+				e.stopPropagation();
+			});
+		}
+
+		if (emailButton && emailTooltip) {
+			// メールボタンをクリックしたときに吹き出しを表示/非表示
+			emailButton.addEventListener('click', (e) => {
+				e.stopPropagation();
+				emailTooltip.classList.toggle('show');
+				// 他の吹き出しを閉じる
+				if (githubTooltip) githubTooltip.classList.remove('show');
+				if (atcoderTooltip) atcoderTooltip.classList.remove('show');
+			});
+
+			// 吹き出し内をクリックしても閉じないようにする
+			emailTooltip.addEventListener('click', (e) => {
+				e.stopPropagation();
+			});
+		}
+
+		if (atcoderButton && atcoderTooltip) {
+			// AtCoderボタンをクリックしたときに吹き出しを表示/非表示
+			atcoderButton.addEventListener('click', (e) => {
+				e.stopPropagation();
+				atcoderTooltip.classList.toggle('show');
+				// 他の吹き出しを閉じる
+				if (githubTooltip) githubTooltip.classList.remove('show');
+				if (emailTooltip) emailTooltip.classList.remove('show');
+			});
+
+			// 吹き出し内をクリックしても閉じないようにする
+			atcoderTooltip.addEventListener('click', (e) => {
+				e.stopPropagation();
+			});
+		}
+
+		// ドキュメント全体のクリックで吹き出しを閉じる
+		document.addEventListener('click', (e) => {
+			const target = e.target as Node;
+
+			if (githubTooltip && !githubTooltip.contains(target) && e.target !== githubButton) {
+				githubTooltip.classList.remove('show');
+			}
+
+			if (emailTooltip && !emailTooltip.contains(target) && e.target !== emailButton) {
+				emailTooltip.classList.remove('show');
+			}
+
+			if (atcoderTooltip && !atcoderTooltip.contains(target) && e.target !== atcoderButton) {
+				atcoderTooltip.classList.remove('show');
+			}
+		});
+	});
+</script>

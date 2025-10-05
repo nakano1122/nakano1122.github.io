@@ -9,17 +9,14 @@ const researchHistory = await loadResearchHistory();
 	<div class="page-container">
 		<header class="page-header">
 			<h1 class="page-title">研究内容</h1>
-			<a href="/" class="back-link">← ポートフォリオに戻る</a>
 		</header>
 
 		<main class="page-content">
-			{researchHistory.keywords.length > 0 && (
+			{researchHistory.researchContent && (
 				<section class="section">
-					<h2 class="section-title">研究キーワード</h2>
-					<div class="keywords-list">
-						{researchHistory.keywords.map((keyword) => (
-							<span class="keyword-tag">{keyword}</span>
-						))}
+					<h2 class="section-title">研究概要</h2>
+					<div class="research-overview">
+						<p>{researchHistory.researchContent}</p>
 					</div>
 				</section>
 			)}
@@ -30,9 +27,13 @@ const researchHistory = await loadResearchHistory();
 					{researchHistory.papers.map((paper) => (
 						<article class="paper-card">
 							<h3 class="paper-title">{paper.title}</h3>
-							<p class="paper-authors">{paper.authors}</p>
+							{paper.authors && (
+								<p class="paper-authors">{paper.authors}</p>
+							)}
 							<p class="paper-conference">{paper.conference}</p>
-							<p class="paper-abstract">{paper.abstract}</p>
+							{paper.note && (
+								<p class="paper-note">{paper.note}</p>
+							)}
 						</article>
 					))}
 				</div>
@@ -92,27 +93,6 @@ const researchHistory = await loadResearchHistory();
 		padding-left: var(--spacing-md);
 	}
 
-	.keywords-list {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--spacing-md);
-	}
-
-	.keyword-tag {
-		background: var(--gradient-secondary);
-		color: white;
-		padding: var(--spacing-sm) var(--spacing-lg);
-		border-radius: var(--radius-full);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
-		transition: all 0.3s ease;
-	}
-
-	.keyword-tag:hover {
-		transform: scale(1.05);
-		box-shadow: var(--shadow-neon-cyan);
-	}
-
 	.research-overview p {
 		font-size: var(--font-size-lg);
 		line-height: var(--line-height-relaxed);
@@ -154,7 +134,8 @@ const researchHistory = await loadResearchHistory();
 	.paper-authors {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-bottom: var(--spacing-xs);
+		margin-bottom: var(--spacing-sm);
+		line-height: var(--line-height-relaxed);
 	}
 
 	.paper-conference {
@@ -164,12 +145,13 @@ const researchHistory = await loadResearchHistory();
 		margin-bottom: var(--spacing-md);
 	}
 
-	.paper-abstract {
-		font-size: var(--font-size-base);
+	.paper-note {
+		font-size: var(--font-size-sm);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-light);
 		border-left: 3px solid var(--color-secondary-solid);
 		padding-left: var(--spacing-md);
+		font-style: italic;
 	}
 
 	@media (max-width: 768px) {

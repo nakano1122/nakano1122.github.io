@@ -22,7 +22,6 @@ const { title = "中野暁登 - Portfolio", showHeader = true } = Astro.props;
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 	</head>
 	<body>
 		{showHeader && <Header />}
@@ -32,53 +31,66 @@ const { title = "中野暁登 - Portfolio", showHeader = true } = Astro.props;
 
 <style is:global>
 	:root {
-		--color-primary: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
-		--color-primary-solid: #ff006e;
-		--color-primary-dark: #d90368;
-		--color-secondary: linear-gradient(135deg, #06ffa5 0%, #00d9ff 100%);
-		--color-secondary-solid: #06ffa5;
-		--color-accent: linear-gradient(135deg, #ffbe0b 0%, #fb8500 100%);
-		--color-accent-solid: #ffbe0b;
-		--color-text: #ffffff;
-		--color-text-light: #e4e6ea;
-		--color-text-lighter: #b8bcc8;
-		--color-text-accent: #06ffa5;
-		--color-text-neon: #ff006e;
-		--color-bg: #0a0a0f;
-		--color-bg-secondary: #141427;
-		--color-bg-tertiary: #1e1e3f;
-		--color-bg-card: rgba(20, 20, 39, 0.85);
-		--color-bg-card-hover: rgba(20, 20, 39, 0.95);
-		--color-bg-glass: rgba(10, 10, 15, 0.6);
-		--color-bg-header: rgba(10, 10, 15, 0.95);
-		--color-border: rgba(6, 255, 165, 0.3);
-		--color-border-light: rgba(6, 255, 165, 0.15);
-		--color-border-accent: rgba(255, 0, 110, 0.4);
-		--color-success: #06ffa5;
-		--color-warning: #ffbe0b;
-		--color-error: #ff006e;
-		--shadow-xs: 0 0 0 1px rgba(0, 0, 0, 0.1);
-		--shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-		--shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.3), 0 2px 8px -2px rgba(0, 0, 0, 0.2);
-		--shadow-lg: 0 8px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 12px -4px rgba(0, 0, 0, 0.3);
-		--shadow-xl: 0 16px 40px -8px rgba(0, 0, 0, 0.5), 0 8px 20px -6px rgba(0, 0, 0, 0.4);
-		--shadow-2xl: 0 25px 60px -15px rgba(0, 0, 0, 0.6);
-		--shadow-inner: inset 0 2px 8px 0 rgba(0, 0, 0, 0.3);
-		--shadow-neon-pink: 0 0 30px rgba(255, 0, 110, 0.6), 0 0 60px rgba(255, 0, 110, 0.3);
-		--shadow-neon-cyan: 0 0 30px rgba(6, 255, 165, 0.6), 0 0 60px rgba(6, 255, 165, 0.3);
-		--shadow-neon-purple: 0 0 30px rgba(131, 56, 236, 0.6), 0 0 60px rgba(131, 56, 236, 0.3);
-		--shadow-neon-orange: 0 0 30px rgba(255, 190, 11, 0.6), 0 0 60px rgba(255, 190, 11, 0.3);
-		--shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.6);
-		--shadow-dark-lg: 0 16px 64px rgba(0, 0, 0, 0.7);
-		--gradient-primary: linear-gradient(135deg, #d90368 0%, #6f2da8 50%, #2563eb 100%);
-		--gradient-secondary: linear-gradient(135deg, #059669 0%, #0891b2 100%);
-		--gradient-accent: linear-gradient(135deg, #d97706 0%, #dc2626 100%);
-		--gradient-neon: linear-gradient(135deg, #ff006e 0%, #06ffa5 50%, #3a86ff 100%);
-		--gradient-dark: linear-gradient(135deg, #0a0a0f 0%, #141427 100%);
-		--gradient-glass: linear-gradient(135deg, rgba(10, 10, 15, 0.6) 0%, rgba(10, 10, 15, 0.3) 100%);
-		--gradient-cyber: linear-gradient(135deg, #06ffa5 0%, #ff006e 50%, #8338ec 100%);
-		--gradient-hologram: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b);
-		--gradient-aurora: linear-gradient(135deg, #ff006e 0%, #8338ec 25%, #3a86ff 50%, #06ffa5 75%, #ffbe0b 100%);
+		/* Happy Hues Palette 9 - Base Colors */
+		--hh-background: #fffffe;
+		--hh-headline: #0d0d0d;
+		--hh-subheadline: #2a2a2a;
+		--hh-card-bg: #eff0f3;
+		--hh-card-heading: #0d0d0d;
+		--hh-card-paragraph: #2a2a2a;
+		--hh-highlight: #ff8e3c;
+		--hh-secondary: #fffffe;
+		--hh-tertiary: #d9376e;
+
+		/* Background Colors */
+		--color-bg: #fffffe;
+		--color-bg-secondary: #f7f8fa;
+		--color-bg-tertiary: #eff0f3;
+		--color-bg-card: #eff0f3;
+		--color-bg-card-hover: #e5e6ea;
+		--color-bg-glass: rgba(239, 240, 243, 0.8);
+		--color-bg-header: rgba(255, 255, 254, 0.95);
+
+		/* Text Colors */
+		--color-text: #0d0d0d;
+		--color-text-light: #2a2a2a;
+		--color-text-lighter: #6b6b6b;
+		--color-text-accent: #ff8e3c;
+		--color-text-secondary: #d9376e;
+
+		/* Primary & Accent Colors */
+		--color-primary-solid: #ff8e3c;
+		--color-primary-dark: #e67a2a;
+		--color-secondary-solid: #d9376e;
+		--color-accent-solid: #ff8e3c;
+
+		/* Gradients */
+		--gradient-primary: linear-gradient(135deg, #ff8e3c 0%, #e67a2a 100%);
+		--gradient-secondary: linear-gradient(135deg, #d9376e 0%, #b82959 100%);
+		--gradient-accent: linear-gradient(135deg, #ff8e3c 0%, #d9376e 100%);
+		--gradient-neon: linear-gradient(135deg, #ff8e3c 0%, #d9376e 100%);
+		--gradient-subtle: linear-gradient(135deg, #eff0f3 0%, #f7f8fa 100%);
+
+		/* Border Colors */
+		--color-border: rgba(42, 42, 42, 0.15);
+		--color-border-light: rgba(42, 42, 42, 0.08);
+		--color-border-accent: rgba(255, 142, 60, 0.3);
+
+		/* Status Colors */
+		--color-success: #22c55e;
+		--color-warning: #ff8e3c;
+		--color-error: #d9376e;
+
+		/* Shadows */
+		--shadow-xs: 0 0 0 1px rgba(13, 13, 13, 0.05);
+		--shadow-sm: 0 2px 4px 0 rgba(13, 13, 13, 0.1);
+		--shadow-md: 0 4px 12px -2px rgba(13, 13, 13, 0.12), 0 2px 8px -2px rgba(13, 13, 13, 0.08);
+		--shadow-lg: 0 8px 25px -5px rgba(13, 13, 13, 0.15), 0 4px 12px -4px rgba(13, 13, 13, 0.1);
+		--shadow-xl: 0 16px 40px -8px rgba(13, 13, 13, 0.18), 0 8px 20px -6px rgba(13, 13, 13, 0.12);
+		--shadow-2xl: 0 25px 60px -15px rgba(13, 13, 13, 0.25);
+		--shadow-inner: inset 0 2px 8px 0 rgba(13, 13, 13, 0.06);
+		--shadow-glow: 0 0 20px rgba(255, 142, 60, 0.3);
+		--shadow-glow-secondary: 0 0 20px rgba(217, 55, 110, 0.3);
 		--spacing-xs: 0.25rem;
 		--spacing-sm: 0.5rem;
 		--spacing-md: 0.75rem;
@@ -129,29 +141,6 @@ const { title = "中野暁登 - Portfolio", showHeader = true } = Astro.props;
 		--font-weight-black: 900;
 	}
 
-	@media (prefers-color-scheme: dark) {
-		:root {
-			--color-text: #f7fafc;
-			--color-text-light: #cbd5e0;
-			--color-text-lighter: #a0aec0;
-			--color-text-accent: #90cdf4;
-			
-			--color-bg: #0f0f23;
-			--color-bg-secondary: #1a1b3e;
-			--color-bg-tertiary: #2d2e5f;
-			--color-bg-card: rgba(26, 27, 62, 0.8);
-			--color-bg-card-hover: rgba(26, 27, 62, 0.95);
-			--color-bg-glass: rgba(26, 27, 62, 0.1);
-			
-			--color-border: rgba(113, 128, 150, 0.2);
-			--color-border-light: rgba(113, 128, 150, 0.1);
-			--gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			--gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-			--gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-			--gradient-dark: linear-gradient(135deg, #1a1b3e 0%, #0f0f23 100%);
-			--gradient-glass: linear-gradient(135deg, rgba(26, 27, 62, 0.1) 0%, rgba(26, 27, 62, 0.05) 100%);
-		}
-	}
 
 	* {
 		box-sizing: border-box;
@@ -184,44 +173,11 @@ const { title = "中野暁登 - Portfolio", showHeader = true } = Astro.props;
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: 
-			radial-gradient(circle at 15% 85%, rgba(255, 0, 110, 0.15) 0%, transparent 60%),
-			radial-gradient(circle at 85% 15%, rgba(6, 255, 165, 0.12) 0%, transparent 60%),
-			radial-gradient(circle at 35% 45%, rgba(131, 56, 236, 0.10) 0%, transparent 50%),
-			radial-gradient(circle at 65% 75%, rgba(58, 134, 255, 0.08) 0%, transparent 55%),
-			radial-gradient(circle at 50% 30%, rgba(255, 190, 11, 0.06) 0%, transparent 45%);
+		background:
+			radial-gradient(circle at 15% 85%, rgba(255, 142, 60, 0.08) 0%, transparent 50%),
+			radial-gradient(circle at 85% 15%, rgba(217, 55, 110, 0.06) 0%, transparent 50%);
 		pointer-events: none;
 		z-index: -1;
-		animation: aurora-pulse 8s ease-in-out infinite alternate;
-	}
-
-	@keyframes aurora-pulse {
-		0% { opacity: 0.8; }
-		100% { opacity: 1; }
-	}
-
-	body::after {
-		content: '';
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-image: 
-			linear-gradient(rgba(6, 255, 165, 0.06) 1px, transparent 1px),
-			linear-gradient(90deg, rgba(6, 255, 165, 0.06) 1px, transparent 1px),
-			linear-gradient(rgba(255, 0, 110, 0.03) 1px, transparent 1px),
-			linear-gradient(90deg, rgba(255, 0, 110, 0.03) 1px, transparent 1px);
-		background-size: 60px 60px, 60px 60px, 120px 120px, 120px 120px;
-		pointer-events: none;
-		z-index: -1;
-		opacity: 0.4;
-		animation: grid-flicker 4s ease-in-out infinite;
-	}
-
-	@keyframes grid-flicker {
-		0%, 100% { opacity: 0.4; }
-		50% { opacity: 0.6; }
 	}
 
 	h1, h2, h3, h4, h5, h6 {
@@ -282,47 +238,15 @@ const { title = "中野暁登 - Portfolio", showHeader = true } = Astro.props;
 		background: var(--color-bg-card);
 		border-radius: var(--radius-xl);
 		padding: var(--spacing-2xl);
-		box-shadow: var(--shadow-dark);
+		box-shadow: var(--shadow-md);
 		border: 1px solid var(--color-border);
-		backdrop-filter: blur(15px);
-		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.card::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 2px;
-		background: var(--gradient-neon);
-		opacity: 0.8;
-	}
-
-	.card::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		border-radius: var(--radius-xl);
-		background: var(--gradient-neon);
-		opacity: 0;
-		z-index: -1;
-		transition: opacity 0.4s ease;
+		transition: all 0.3s ease;
 	}
 
 	.card:hover {
-		transform: translateY(-8px) scale(1.03);
-		box-shadow: var(--shadow-neon-cyan), var(--shadow-dark-lg);
-		border-color: var(--color-secondary-solid);
-	}
-
-	.card:hover::after {
-		opacity: 0.1;
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-xl);
+		border-color: var(--color-border-accent);
 	}
 
 	.btn {
@@ -340,61 +264,29 @@ const { title = "中野暁登 - Portfolio", showHeader = true } = Astro.props;
 	}
 
 	.btn-primary {
-		background: var(--gradient-neon);
+		background: var(--gradient-accent);
 		color: #ffffff;
-		box-shadow: var(--shadow-neon-cyan);
-		position: relative;
-		overflow: hidden;
-		text-shadow: 0 0 12px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 1);
-		font-weight: 700;
-	}
-
-	.btn-primary::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -100%;
-		width: 100%;
-		height: 100%;
-		background: var(--gradient-aurora);
-		transition: left 0.4s ease;
-	}
-
-	.btn-primary:hover::before {
-		left: 0;
+		box-shadow: var(--shadow-glow);
+		font-weight: 600;
+		transition: all 0.3s ease;
 	}
 
 	.btn-primary:hover {
-		transform: translateY(-3px) scale(1.08);
-		box-shadow: var(--shadow-neon-pink), var(--shadow-neon-cyan);
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-glow-secondary), var(--shadow-lg);
+		background: var(--gradient-primary);
 	}
 
 	.btn-outline {
 		background: transparent;
 		border: 2px solid var(--color-primary-solid);
 		color: var(--color-primary-solid);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.btn-outline::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -100%;
-		width: 100%;
-		height: 100%;
-		background: var(--gradient-primary);
-		transition: left 0.3s ease;
-		z-index: -1;
-	}
-
-	.btn-outline:hover::before {
-		left: 0;
+		transition: all 0.3s ease;
 	}
 
 	.btn-outline:hover {
-		color: white;
+		background: var(--color-primary-solid);
+		color: #ffffff;
 		border-color: var(--color-primary-dark);
 		box-shadow: var(--shadow-glow);
 	}

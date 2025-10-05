@@ -1,82 +1,66 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Timeline from '../components/common/Timeline.astro';
 import { loadDevelopmentExperience } from '../functions/dataLoader';
 import TechLogo from '../components/common/TechLogo.astro';
 
 const developmentExp = await loadDevelopmentExperience();
 
+// 受賞歴を新しい順にソートしてTimelineアイテムに変換
+const sortedAwards = [...developmentExp.awards].reverse();
+const awardItems = sortedAwards.map((award) => ({
+	title: award.event,
+	subtitle: award.award,
+	meta: award.date,
+}));
 ---
 
-<Layout title="アプリ開発経験 - 中野暁登 Portfolio">
-	<div class="page-container">
-		<header class="page-header">
-			<h1 class="page-title">アプリ開発経験</h1>
-			<a href="/" class="back-link">← ポートフォリオに戻る</a>
-		</header>
+<Layout title="Development - 中野暁登">
+	<main class="development-page">
+		<div class="container">
+			<h1 class="page-title">Development</h1>
 
-		<main class="page-content">
-			<!-- 技術系イベント受賞歴 -->
-			<section class="section">
-				<h2 class="section-title">技術系イベント受賞歴</h2>
-				<div class="events-grid">
-					{developmentExp.events.map((event) => (
-						<div class="event-card">
-							<div class="event-header">
-								<h3 class="event-name">{event.name}</h3>
-								<span class="event-date">{event.date.year}年{event.date.month}月</span>
-							</div>
-							<p class="event-award">{event.award}</p>
+			<section class="content-section">
+				<div class="content-card">
+					<!-- 受賞歴 -->
+					{awardItems.length > 0 && (
+						<div class="awards-section">
+							<h2>受賞歴</h2>
+							<Timeline items={awardItems} markerColor="primary" />
 						</div>
-					))}
-				</div>
-			</section>
+					)}
 
-			<!-- 技術スタック -->
-			<section class="section">
-				<h2 class="section-title">技術スタック</h2>
-				{Object.entries(developmentExp.techStack).filter(([category, techs]) => techs.length > 0).map(([category, techs]) => (
-					<div class="tech-category">
-						<h3 class="category-title">{category}</h3>
-						<div class="tech-grid">
-							{techs.map((tech: string) => (
-								<TechLogo tech={tech} size="md" />
+					<!-- Tech Stack -->
+					{Object.keys(developmentExp.techStack).length > 0 && (
+						<div class="tech-stack-section">
+							<h2>Tech Stack</h2>
+							{Object.entries(developmentExp.techStack).map(([category, techs]) => (
+								<div class="tech-category">
+									<h3 class="category-title">{category}</h3>
+									<div class="tech-grid">
+										{(techs as string[]).map((tech) => (
+											<TechLogo tech={tech} showName={false} size="md" />
+										))}
+									</div>
+								</div>
 							))}
 						</div>
-					</div>
-				))}
+					)}
+				</div>
 			</section>
-
-			<!-- 個人開発プロジェクト -->
-			{developmentExp.projects.length > 0 && (
-				<section class="section">
-					<h2 class="section-title">個人開発プロジェクト</h2>
-					<div class="projects-list">
-						{developmentExp.projects.map((project) => (
-							<div class="project-item">
-								<h3 class="project-title">{project.title}</h3>
-							</div>
-						))}
-					</div>
-				</section>
-			)}
-		</main>
-	</div>
+		</div>
+	</main>
 </Layout>
 
 <style>
-	.page-container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 0 var(--spacing-xl);
-		min-height: 100vh;
+	.development-page {
+		padding: var(--spacing-5xl) 0;
 	}
 
-	.page-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: var(--spacing-3xl) 0;
-		border-bottom: 1px solid var(--color-border);
+	.container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 0 var(--spacing-xl);
 	}
 
 	.page-title {
@@ -85,83 +69,33 @@ const developmentExp = await loadDevelopmentExperience();
 		background: var(--gradient-primary);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
-	}
-
-	.back-link {
-		color: var(--color-text-light);
-		text-decoration: none;
-		transition: color 0.3s ease;
-	}
-
-	.back-link:hover {
-		color: var(--color-secondary-solid);
-	}
-
-	.page-content {
-		padding: var(--spacing-3xl) 0;
-	}
-
-	.section {
+		text-align: center;
 		margin-bottom: var(--spacing-5xl);
 	}
 
-	.section-title {
+	.content-card {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-2xl);
+		padding: var(--spacing-4xl);
+		box-shadow: var(--shadow-md);
+	}
+
+	.awards-section {
+		margin-bottom: var(--spacing-4xl);
+	}
+
+	.awards-section h2,
+	.tech-stack-section h2 {
 		font-size: var(--font-size-2xl);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-text);
-		margin-bottom: var(--spacing-xl);
-		border-left: 4px solid var(--color-secondary-solid);
-		padding-left: var(--spacing-md);
+		margin-bottom: var(--spacing-2xl);
 	}
 
-	.events-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: var(--spacing-xl);
-	}
-
-	.event-card {
-		background: var(--color-bg-card);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
-		transition: all 0.3s ease;
-	}
-
-	.event-card:hover {
-		transform: translateY(-2px);
-		border-color: var(--color-secondary-solid);
-		box-shadow: var(--shadow-lg);
-	}
-
-	.event-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		margin-bottom: var(--spacing-md);
-	}
-
-	.event-name {
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text);
-		flex: 1;
-		margin-right: var(--spacing-md);
-	}
-
-	.event-date {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
-		background: var(--color-bg-tertiary);
-		padding: var(--spacing-xs) var(--spacing-sm);
-		border-radius: var(--radius-sm);
-		white-space: nowrap;
-	}
-
-	.event-award {
-		font-size: var(--font-size-base);
-		font-weight: var(--font-weight-medium);
-		color: var(--color-text-accent);
+	.tech-stack-section {
+		padding-top: var(--spacing-4xl);
+		border-top: 1px solid var(--color-border);
 	}
 
 	.tech-category {
@@ -173,6 +107,7 @@ const developmentExp = await loadDevelopmentExperience();
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-light);
 		margin-bottom: var(--spacing-md);
+		text-transform: capitalize;
 	}
 
 	.tech-grid {
@@ -181,57 +116,13 @@ const developmentExp = await loadDevelopmentExperience();
 		gap: var(--spacing-md);
 	}
 
-	.projects-list {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: var(--spacing-lg);
-	}
-
-	.project-item {
-		background: var(--color-bg-card);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-lg);
-		transition: all 0.3s ease;
-	}
-
-	.project-item:hover {
-		transform: translateY(-2px);
-		border-color: var(--color-secondary-solid);
-		box-shadow: var(--shadow-lg);
-	}
-
-	.project-title {
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text);
-	}
-
 	@media (max-width: 768px) {
-		.page-container {
-			padding: 0 var(--spacing-lg);
-		}
-
-		.page-header {
-			flex-direction: column;
-			gap: var(--spacing-md);
-			align-items: flex-start;
-		}
-
 		.page-title {
 			font-size: var(--font-size-3xl);
 		}
 
-		.events-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.tech-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.projects-list {
-			grid-template-columns: 1fr;
+		.content-card {
+			padding: var(--spacing-2xl);
 		}
 	}
 </style>

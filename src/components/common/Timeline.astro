@@ -1,0 +1,184 @@
+---
+/**
+ * Timeline Component
+ * タイムライン形式でアイテムを表示する共通コンポーネント
+ */
+
+interface TimelineItem {
+	title: string;
+	subtitle?: string;
+	meta?: string;
+	link?: {
+		url: string;
+		label: string;
+	};
+}
+
+interface Props {
+	items: TimelineItem[];
+	markerColor?: 'primary' | 'secondary';
+}
+
+const { items, markerColor = 'primary' } = Astro.props;
+---
+
+<div class="timeline">
+	{items.map((item) => (
+		<div class="timeline-item">
+			<div class={`timeline-marker ${markerColor}`}></div>
+			<div class="timeline-content">
+				<div class="timeline-header">
+					<h3 class="timeline-title">
+						{item.title}
+						{item.link && (
+							<a href={item.link.url} target="_blank" rel="noopener noreferrer" class="timeline-link" aria-label={item.link.label}>
+								<img src="/images/about/external-link.svg" alt="外部リンク" class="external-link-icon" />
+							</a>
+						)}
+					</h3>
+				</div>
+				{item.meta && (
+					<div class="timeline-meta">
+						<span class="timeline-period">{item.meta}</span>
+						{item.subtitle && (
+							<>
+								<span class="timeline-divider">·</span>
+								<span class="timeline-subtitle">{item.subtitle}</span>
+							</>
+						)}
+					</div>
+				)}
+				{!item.meta && item.subtitle && (
+					<div class="timeline-subtitle-only">{item.subtitle}</div>
+				)}
+			</div>
+		</div>
+	))}
+</div>
+
+<style>
+	.timeline {
+		position: relative;
+		padding-left: var(--spacing-xl);
+	}
+
+	.timeline::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 4px;
+		bottom: 4px;
+		width: 1px;
+		background: var(--color-border);
+	}
+
+	.timeline-item {
+		position: relative;
+		padding-bottom: var(--spacing-2xl);
+	}
+
+	.timeline-item:last-child {
+		padding-bottom: 0;
+	}
+
+	.timeline-marker {
+		position: absolute;
+		left: calc(-1 * var(--spacing-xl) - 4px);
+		top: 6px;
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		border: 2px solid var(--color-bg);
+		z-index: 1;
+	}
+
+	.timeline-marker.primary {
+		background: var(--color-primary-solid);
+	}
+
+	.timeline-marker.secondary {
+		background: var(--color-text);
+	}
+
+	.timeline-content {
+		background: var(--color-bg-secondary);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-lg);
+		transition: all 0.3s ease;
+	}
+
+	.timeline-content:hover {
+		border-color: var(--color-primary-solid);
+		box-shadow: var(--shadow-md);
+	}
+
+	.timeline-header {
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.timeline-title {
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text);
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+		margin: 0;
+	}
+
+	.timeline-link {
+		display: inline-flex;
+		align-items: center;
+		transition: opacity 0.2s ease;
+	}
+
+	.timeline-link:hover {
+		opacity: 0.7;
+	}
+
+	.external-link-icon {
+		width: 14px;
+		height: 14px;
+		display: inline-block;
+	}
+
+	.timeline-meta {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+		color: var(--color-text-light);
+		font-size: var(--font-size-sm);
+		flex-wrap: wrap;
+	}
+
+	.timeline-period {
+		font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
+		color: var(--color-text-lighter);
+	}
+
+	.timeline-divider {
+		color: var(--color-text-lighter);
+	}
+
+	.timeline-subtitle {
+		color: var(--color-text-light);
+	}
+
+	.timeline-subtitle-only {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
+	}
+
+	@media (max-width: 768px) {
+		.timeline-meta {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: var(--spacing-xs);
+		}
+
+		.timeline-divider {
+			display: none;
+		}
+	}
+</style>

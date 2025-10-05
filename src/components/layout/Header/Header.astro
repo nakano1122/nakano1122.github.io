@@ -13,14 +13,46 @@ const path = Astro.url.pathname;
 			</div>
 		</a>
 		
-		<nav class="navigation">
-			<a href="/" class={path === '/' ? 'nav-link active' : 'nav-link'}>ホーム</a>
-			<a href="/development" class={path === '/development' ? 'nav-link active' : 'nav-link'}>アプリ開発</a>
-			<a href="/research" class={path === '/research' ? 'nav-link active' : 'nav-link'}>研究</a>
-			<a href="/internship" class={path === '/internship' ? 'nav-link active' : 'nav-link'}>インターンシップ</a>
+		<nav class="navigation desktop-nav">
+			<a href="/" class={path === '/' ? 'nav-link active' : 'nav-link'}>Home</a>
+			<a href="/about" class={path === '/about' ? 'nav-link active' : 'nav-link'}>About</a>
+			<a href="/research" class={path === '/research' ? 'nav-link active' : 'nav-link'}>Research</a>
+			<a href="/development" class={path === '/development' ? 'nav-link active' : 'nav-link'}>Development</a>
 		</nav>
+
+		<button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="メニュー">
+			<span class="hamburger"></span>
+		</button>
 	</div>
+
+	<nav class="mobile-nav" id="mobile-nav">
+		<a href="/" class={path === '/' ? 'nav-link active' : 'nav-link'}>Home</a>
+		<a href="/about" class={path === '/about' ? 'nav-link active' : 'nav-link'}>About</a>
+		<a href="/research" class={path === '/research' ? 'nav-link active' : 'nav-link'}>Research</a>
+		<a href="/development" class={path === '/development' ? 'nav-link active' : 'nav-link'}>Development</a>
+	</nav>
 </header>
+
+<script>
+	const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+	const mobileNav = document.getElementById('mobile-nav');
+
+	mobileMenuBtn?.addEventListener('click', () => {
+		mobileMenuBtn.classList.toggle('active');
+		mobileNav?.classList.toggle('active');
+		document.body.style.overflow = mobileNav?.classList.contains('active') ? 'hidden' : '';
+	});
+
+	// Close mobile menu when clicking on a link
+	const mobileNavLinks = mobileNav?.querySelectorAll('.nav-link');
+	mobileNavLinks?.forEach(link => {
+		link.addEventListener('click', () => {
+			mobileMenuBtn?.classList.remove('active');
+			mobileNav?.classList.remove('active');
+			document.body.style.overflow = '';
+		});
+	});
+</script>
 
 <style>
 	.site-header {
@@ -28,7 +60,7 @@ const path = Astro.url.pathname;
 		top: 0;
 		left: 0;
 		right: 0;
-		z-index: 1000;
+		z-index: 1001;
 		background: var(--color-bg-header);
 		backdrop-filter: blur(20px);
 		border-bottom: 1px solid var(--color-border);
@@ -82,13 +114,92 @@ const path = Astro.url.pathname;
 		background: var(--color-bg-card);
 	}
 
+	.mobile-menu-btn {
+		display: none;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: var(--spacing-sm);
+		z-index: 1001;
+	}
+
+	.hamburger {
+		display: block;
+		width: 24px;
+		height: 2px;
+		background: var(--color-text);
+		position: relative;
+		transition: all 0.3s ease;
+	}
+
+	.hamburger::before,
+	.hamburger::after {
+		content: '';
+		position: absolute;
+		width: 24px;
+		height: 2px;
+		background: var(--color-text);
+		transition: all 0.3s ease;
+	}
+
+	.hamburger::before {
+		top: -8px;
+	}
+
+	.hamburger::after {
+		bottom: -8px;
+	}
+
+	.mobile-menu-btn.active .hamburger {
+		background: transparent;
+	}
+
+	.mobile-menu-btn.active .hamburger::before {
+		top: 0;
+		transform: rotate(45deg);
+	}
+
+	.mobile-menu-btn.active .hamburger::after {
+		bottom: 0;
+		transform: rotate(-45deg);
+	}
+
+	.mobile-nav {
+		position: fixed;
+		top: 80px;
+		left: 0;
+		right: 0;
+		height: calc(100vh - 80px);
+		background: var(--color-bg);
+		display: flex;
+		flex-direction: column;
+		padding: var(--spacing-2xl);
+		gap: var(--spacing-lg);
+		z-index: 1000;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-20px);
+		transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+		overflow-y: auto;
+	}
+
+	.mobile-nav.active {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+
 	@media (max-width: 768px) {
 		.header-container {
 			padding: 0 var(--spacing-lg);
 		}
 
-		.navigation {
+		.desktop-nav {
 			display: none;
+		}
+
+		.mobile-menu-btn {
+			display: block;
 		}
 	}
 </style>

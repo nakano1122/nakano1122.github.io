@@ -1,19 +1,19 @@
 ---
-import { getTechIcon } from '../../utils/tech-logos';
-
 interface Props {
 	tech: string;
 	showName?: boolean;
 	size?: 'sm' | 'md' | 'lg';
 }
 
-const { tech, showName = true, size = 'md' } = Astro.props;
-const iconClass = getTechIcon(tech);
+const { tech, showName = false, size = 'md' } = Astro.props;
 const sizeClass = `tech-logo-${size}`;
+
+// development.mdの値をそのまま使用し、ローカル画像パスを生成
+const imagePath = `/images/tech-logos/${tech}.svg`;
 ---
 
 <div class={`tech-item ${sizeClass}`}>
-	<i class={`${iconClass} tech-icon`}></i>
+	<img src={imagePath} alt={tech} class="tech-icon" />
 	{showName && <span class="tech-name">{tech}</span>}
 </div>
 
@@ -36,19 +36,21 @@ const sizeClass = `tech-logo-${size}`;
 	}
 
 	.tech-logo-sm .tech-icon {
-		font-size: 14px;
+		width: 24px;
+		height: 24px;
 	}
 
 	.tech-logo-sm .tech-name {
-		font-size: 0.75rem;
+		font-size: 0.875rem;
 	}
 
 	.tech-logo-md .tech-icon {
-		font-size: 16px;
+		width: 32px;
+		height: 32px;
 	}
 
 	.tech-logo-md .tech-name {
-		font-size: 0.875rem;
+		font-size: 1rem;
 	}
 
 	.tech-logo-lg {
@@ -56,16 +58,18 @@ const sizeClass = `tech-logo-${size}`;
 	}
 
 	.tech-logo-lg .tech-icon {
-		font-size: 20px;
+		width: 40px;
+		height: 40px;
 	}
 
 	.tech-logo-lg .tech-name {
-		font-size: 1rem;
+		font-size: 1.125rem;
 	}
 
 	.tech-icon {
 		filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 		transition: all 0.3s ease;
+		object-fit: contain;
 	}
 
 	.tech-name {

@@ -1,0 +1,227 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Timeline from '../components/common/Timeline.astro';
+import { loadPersonalInfo } from '../functions/dataLoader';
+
+const personalInfo = await loadPersonalInfo();
+
+// 教育歴をTimelineアイテムに変換
+const educationItems = (personalInfo.education || []).map((edu) => ({
+	title: edu.institution,
+	meta: edu.period,
+}));
+
+// インターンシップをTimelineアイテムに変換
+const internshipItems = (personalInfo.internships || []).map((internship) => ({
+	title: internship.company,
+	subtitle: internship.position,
+	meta: internship.period,
+}));
+---
+
+<Layout title="About - 中野暁登">
+	<main class="about-page">
+		<div class="container">
+			<h1 class="page-title">About</h1>
+
+			<!-- Profile Section -->
+			<section class="profile-section">
+				<div class="profile-card">
+					<div class="profile-header">
+						<div class="profile-info">
+							<h2 class="profile-name">{personalInfo.name}</h2>
+							<p class="profile-department">{personalInfo.affiliation.university} {personalInfo.affiliation.faculty}</p>
+							<p class="profile-grade">{personalInfo.year}</p>
+						</div>
+					</div>
+
+					<div class="contact-info">
+						<div class="contact-item">
+							<span class="contact-label">Email</span>
+							<span class="contact-value email-value">
+								{personalInfo.contact.email.split(' ')[0]}<img src="/images/about/at-mark.svg" alt=" " class="at-icon" />{personalInfo.contact.email.split(' ')[1]}
+							</span>
+						</div>
+						<div class="contact-item">
+							<span class="contact-label">GitHub</span>
+							<span class="contact-value">
+								<a href={personalInfo.contact.github.url} target="_blank" rel="noopener noreferrer" class="contact-link">
+									{personalInfo.contact.github.url}
+								</a>
+							</span>
+						</div>
+						{personalInfo.contact.atcoder && (
+							<div class="contact-item">
+								<span class="contact-label">AtCoder</span>
+								<span class="contact-value">
+									<a href={personalInfo.contact.atcoder} target="_blank" rel="noopener noreferrer" class="contact-link">
+										{personalInfo.contact.atcoder}
+									</a>
+								</span>
+							</div>
+						)}
+					</div>
+				</div>
+			</section>
+
+			<!-- Education Section -->
+			{educationItems.length > 0 && (
+				<section class="section">
+					<h2 class="section-title">Education</h2>
+					<Timeline items={educationItems} markerColor="secondary" />
+				</section>
+			)}
+
+			<!-- Internship Section -->
+			{internshipItems.length > 0 && (
+				<section class="section">
+					<h2 class="section-title">Work Experience</h2>
+					<Timeline items={internshipItems} markerColor="primary" />
+				</section>
+			)}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.about-page {
+		padding: var(--spacing-5xl) 0;
+		min-height: calc(100vh - 80px);
+	}
+
+	.container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 0 var(--spacing-xl);
+	}
+
+	.page-title {
+		font-size: var(--font-size-4xl);
+		font-weight: var(--font-weight-bold);
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		margin-bottom: var(--spacing-5xl);
+	}
+
+	/* Profile Section */
+	.profile-section {
+		margin-bottom: var(--spacing-5xl);
+	}
+
+	.profile-card {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-xl);
+		padding: var(--spacing-3xl);
+		transition: all 0.3s ease;
+	}
+
+	.profile-header {
+		margin-bottom: var(--spacing-3xl);
+		padding-bottom: var(--spacing-2xl);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.profile-name {
+		font-size: var(--font-size-3xl);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+		margin-bottom: var(--spacing-sm);
+		letter-spacing: -0.02em;
+	}
+
+	.profile-department {
+		font-size: var(--font-size-base);
+		color: var(--color-text-light);
+		margin-bottom: var(--spacing-xs);
+		line-height: 1.6;
+	}
+
+	.profile-grade {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-lighter);
+	}
+
+	.contact-info {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-lg);
+	}
+
+	.contact-item {
+		display: grid;
+		grid-template-columns: 100px 1fr;
+		gap: var(--spacing-md);
+		align-items: baseline;
+	}
+
+	.contact-label {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-lighter);
+		font-weight: var(--font-weight-medium);
+	}
+
+	.contact-value {
+		font-size: var(--font-size-sm);
+		color: var(--color-text);
+		text-decoration: none;
+		word-break: break-all;
+	}
+
+	.contact-link {
+		color: var(--color-primary-solid);
+		text-decoration: underline;
+		text-decoration-color: var(--color-primary-solid);
+		text-underline-offset: 3px;
+		word-break: break-all;
+	}
+
+	.email-value {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+	}
+
+	.at-icon {
+		width: 14px;
+		height: 14px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	/* Section */
+	.section {
+		margin-bottom: var(--spacing-5xl);
+	}
+
+	.section-title {
+		font-size: var(--font-size-2xl);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+		margin-bottom: var(--spacing-2xl);
+		letter-spacing: -0.01em;
+	}
+
+	@media (max-width: 768px) {
+		.container {
+			padding: 0 var(--spacing-lg);
+		}
+
+		.page-title {
+			font-size: var(--font-size-3xl);
+		}
+
+		.profile-card {
+			padding: var(--spacing-2xl);
+		}
+
+		.profile-name {
+			font-size: var(--font-size-2xl);
+		}
+
+		.contact-item {
+			grid-template-columns: 80px 1fr;
+		}
+	}
+</style>
