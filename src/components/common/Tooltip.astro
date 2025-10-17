@@ -39,7 +39,10 @@ const icons = {
 			<EmailDisplay email={content.email || ''} class="email-address" />
 		) : (
 			<a href={content.url} target="_blank" rel="noopener noreferrer" class={`${type}-link tooltip-link`}>
-				{content.text || `${type.charAt(0).toUpperCase() + type.slice(1)} Profile`}
+				<span class="tooltip-link-text">
+					{content.text || `${type.charAt(0).toUpperCase() + type.slice(1)} Profile`}
+				</span>
+				<img src="/images/about/external-link.svg" alt="外部リンク" class="tooltip-external-icon" />
 			</a>
 		)}
 	</div>
@@ -130,11 +133,20 @@ const icons = {
 		color: var(--color-text);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		transition: color 0.3s ease;
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-xs);
 	}
 
-	.tooltip-link:hover {
-		color: var(--color-primary-solid);
+	.tooltip-link-text {
+		display: inline-block;
+	}
+
+	.tooltip-external-icon {
+		width: 12px;
+		height: 12px;
+		opacity: 0.7;
+		flex-shrink: 0;
 	}
 </style>
 

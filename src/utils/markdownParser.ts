@@ -5,10 +5,11 @@
 import type {
 	EducationItem,
 	JobHistoryItem,
-	ResearchInfo,
 	Paper,
 	DevelopmentInfo,
 } from '../types';
+import type { Laboratory } from '../types/personal';
+import type { ResearchTheme } from '../types/research';
 
 // パーサー専用の型（PersonalInfoとは異なる内部構造）
 export interface ParsedPersonalInfo {
@@ -21,6 +22,21 @@ export interface ParsedPersonalInfo {
 	skills: string[];
 	education: EducationItem[];
 	jobHistory: JobHistoryItem[];
+	laboratories: Laboratory[];
+}
+
+// markdownから読み取った研究室情報（period計算前）
+interface ParsedLaboratory {
+	name?: string;
+	siteUrl?: string;
+	period?: string;
+	startMonth?: string;
+	finishMonth?: string;
+}
+
+// research.mdからパースされたデータ構造
+export interface ParsedResearchInfo {
+	themes: ResearchTheme[];
 }
 
 /**
@@ -37,10 +53,12 @@ export function parsePersonalMarkdown(content: string): ParsedPersonalInfo {
 		skills: [],
 		education: [],
 		jobHistory: [],
+		laboratories: [],
 	};
 
 	let currentSection = '';
 	let currentJob: Partial<JobHistoryItem> = {};
+	let currentLab: ParsedLaboratory = {};
 
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i].trim();
@@ -51,8 +69,19 @@ export function parsePersonalMarkdown(content: string): ParsedPersonalInfo {
 			currentSection = 'skills';
 		} else if (line.startsWith('# Education')) {
 			currentSection = 'education';
+		} else if (line.startsWith('# Laboratory')) {
+			currentSection = 'laboratory';
 		} else if (line.startsWith('# Job History')) {
 			currentSection = 'jobHistory';
+		} else if (line.startsWith('### ') && currentSection === 'laboratory') {
+			// 前の研究室データを保存
+			if (currentLab.name) {
+				const startMonth = currentLab.startMonth || '';
+				const finishMonth = currentLab.finishMonth || '';
+				currentLab.period = startMonth + (finishMonth ? ' - ' + finishMonth : ' - 現在');
+				result.laboratories.push(currentLab as Laboratory);
+			}
+			currentLab = { name: line.replace('### ', '').trim() };
 		} else if (line.startsWith('## ') && currentSection === 'jobHistory') {
 			// 前のジョブデータを保存
 			if (currentJob.company) {
@@ -79,11 +108,22 @@ export function parsePersonalMarkdown(content: string): ParsedPersonalInfo {
 			const [period, institution] = line.split(':').map((s) => s.trim());
 			result.education.push({ period, institution });
 		} else if (currentSection === 'jobHistory' && line.includes(':')) {
-			const [key, value] = line.split(':').map((s) => s.trim());
-			if (key === 'start-month') currentJob.startMonth = value;
-			else if (key === 'finish-month') currentJob.finishMonth = value;
-			else if (key === 'HP-link') currentJob.hpLink = value.replace(/['"]/g, '');
-			else if (key === 'position') currentJob.position = value;
+			const [key, ...valueParts] = line.split(':');
+			const value = valueParts.join(':').trim(); // URLにコロンが含まれる場合に対応
+			if (key.trim() === 'start-month') currentJob.startMonth = value;
+			else if (key.trim() === 'finish-month') currentJob.finishMonth = value;
+			else if (key.trim() === 'HP-link') currentJob.hpLink = value.replace(/['"]/g, '');
+			else if (key.trim() === 'position') currentJob.position = value;
+		} else if (currentSection === 'laboratory' && line.includes(':')) {
+			const [key, ...valueParts] = line.split(':');
+			const value = valueParts.join(':').trim(); // URLにコロンが含まれる場合に対応
+			if (key.trim() === 'site-url') {
+				currentLab.siteUrl = value;
+			} else if (key.trim() === 'start-month') {
+				(currentLab as any).startMonth = value;
+			} else if (key.trim() === 'finish-month') {
+				(currentLab as any).finishMonth = value;
+			}
 		}
 	}
 
@@ -92,43 +132,64 @@ export function parsePersonalMarkdown(content: string): ParsedPersonalInfo {
 		result.jobHistory.push(currentJob as JobHistoryItem);
 	}
 
+	// 最後の研究室データを保存
+	if (currentLab.name) {
+		const startMonth = (currentLab as any).startMonth || '';
+		const finishMonth = (currentLab as any).finishMonth || '';
+		currentLab.period = startMonth + (finishMonth ? ' - ' + finishMonth : ' - 現在');
+		result.laboratories.push(currentLab as Laboratory);
+	}
+
 	return result;
 }
 
 /**
  * research.md をパースする
  */
-export function parseResearchMarkdown(content: string): ResearchInfo {
+export function parseResearchMarkdown(content: string): ParsedResearchInfo {
 	const lines = content.split('\n');
-	const result: ResearchInfo = {
-		title: '',
-		abstract: '',
-		papers: [],
-	};
+	const themes: ResearchTheme[] = [];
 
 	let currentSection = '';
+	let currentTheme: Partial<ResearchTheme> | null = null;
 	let currentPaper: Partial<Paper> = {};
 	let abstractLines: string[] = [];
 
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i].trim();
 
-		if (line.startsWith('## ')) {
-			result.title = line.replace('## ', '');
-		} else if (line.startsWith('### abstract')) {
+		if (line.startsWith('## Theme')) {
+			currentSection = 'theme';
+		} else if (line.startsWith('### ') && currentSection === 'theme') {
+			// 前のテーマを保存
+			if (currentTheme && currentTheme.title) {
+				if (currentPaper.title) {
+					currentTheme.papers!.push(currentPaper as Paper);
+					currentPaper = {};
+				}
+				themes.push(currentTheme as ResearchTheme);
+			}
+			// 新しいテーマを開始
+			currentTheme = {
+				title: line.replace('### ', '').trim(),
+				abstract: '',
+				papers: [],
+			};
+			abstractLines = [];
+		} else if (line.startsWith('#### abstract')) {
 			currentSection = 'abstract';
-		} else if (line.startsWith('### papers')) {
+		} else if (line.startsWith('#### papers')) {
 			currentSection = 'papers';
 			// abstract を結合
-			if (abstractLines.length > 0) {
-				result.abstract = abstractLines.join('');
+			if (abstractLines.length > 0 && currentTheme) {
+				currentTheme.abstract = abstractLines.join('');
 			}
 		} else if (currentSection === 'abstract' && line && !line.startsWith('#')) {
 			abstractLines.push(line);
 		} else if (currentSection === 'papers' && line.startsWith('title:')) {
 			// 前の論文データを保存
-			if (currentPaper.title) {
-				result.papers.push(currentPaper as Paper);
+			if (currentPaper.title && currentTheme) {
+				currentTheme.papers!.push(currentPaper as Paper);
 			}
 			currentPaper = { title: line.replace('title:', '').trim() };
 		} else if (currentSection === 'papers' && line.startsWith('authors:')) {
@@ -137,15 +198,24 @@ export function parseResearchMarkdown(content: string): ResearchInfo {
 			currentPaper.conference = line.replace('conference:', '').trim();
 		} else if (currentSection === 'papers' && line.startsWith('note:')) {
 			currentPaper.note = line.replace('note:', '').trim();
+		} else if (currentSection === 'papers' && line.startsWith('site-url:')) {
+			const [, ...urlParts] = line.split(':');
+			const url = urlParts.join(':').trim();
+			if (url) {
+				currentPaper.siteUrl = url;
+			}
 		}
 	}
 
-	// 最後の論文データを保存
-	if (currentPaper.title) {
-		result.papers.push(currentPaper as Paper);
+	// 最後のテーマを保存
+	if (currentTheme && currentTheme.title) {
+		if (currentPaper.title) {
+			currentTheme.papers!.push(currentPaper as Paper);
+		}
+		themes.push(currentTheme as ResearchTheme);
 	}
 
-	return result;
+	return { themes };
 }
 
 /**

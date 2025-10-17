@@ -26,32 +26,50 @@ const { items, markerColor = 'primary' } = Astro.props;
 	{items.map((item) => (
 		<div class="timeline-item">
 			<div class={`timeline-marker ${markerColor}`}></div>
-			<div class="timeline-content">
-				<div class="timeline-header">
-					<h3 class="timeline-title">
-						{item.title}
-						{item.link && (
-							<a href={item.link.url} target="_blank" rel="noopener noreferrer" class="timeline-link" aria-label={item.link.label}>
-								<img src="/images/about/external-link.svg" alt="外部リンク" class="external-link-icon" />
-							</a>
-						)}
-					</h3>
-				</div>
-				{item.meta && (
-					<div class="timeline-meta">
-						<span class="timeline-period">{item.meta}</span>
-						{item.subtitle && (
-							<>
-								<span class="timeline-divider">·</span>
-								<span class="timeline-subtitle">{item.subtitle}</span>
-							</>
-						)}
+			{item.link ? (
+				<a href={item.link.url} target="_blank" rel="noopener noreferrer" class="timeline-content timeline-content-link" aria-label={item.link.label}>
+					<div class="timeline-header">
+						<h3 class="timeline-title">
+							{item.title}
+							<img src="/images/about/external-link.svg" alt="外部リンク" class="external-link-icon" />
+						</h3>
 					</div>
-				)}
-				{!item.meta && item.subtitle && (
-					<div class="timeline-subtitle-only">{item.subtitle}</div>
-				)}
-			</div>
+					{item.meta && (
+						<div class="timeline-meta">
+							<span class="timeline-period">{item.meta}</span>
+							{item.subtitle && (
+								<>
+									<span class="timeline-divider">·</span>
+									<span class="timeline-subtitle">{item.subtitle}</span>
+								</>
+							)}
+						</div>
+					)}
+					{!item.meta && item.subtitle && (
+						<div class="timeline-subtitle-only">{item.subtitle}</div>
+					)}
+				</a>
+			) : (
+				<div class="timeline-content">
+					<div class="timeline-header">
+						<h3 class="timeline-title">{item.title}</h3>
+					</div>
+					{item.meta && (
+						<div class="timeline-meta">
+							<span class="timeline-period">{item.meta}</span>
+							{item.subtitle && (
+								<>
+									<span class="timeline-divider">·</span>
+									<span class="timeline-subtitle">{item.subtitle}</span>
+								</>
+							)}
+						</div>
+					)}
+					{!item.meta && item.subtitle && (
+						<div class="timeline-subtitle-only">{item.subtitle}</div>
+					)}
+				</div>
+			)}
 		</div>
 	))}
 </div>
@@ -106,11 +124,22 @@ const { items, markerColor = 'primary' } = Astro.props;
 		border-radius: var(--radius-lg);
 		padding: var(--spacing-lg);
 		transition: all 0.3s ease;
+		display: block;
 	}
 
 	.timeline-content:hover {
 		border-color: var(--color-primary-solid);
 		box-shadow: var(--shadow-md);
+	}
+
+	.timeline-content-link {
+		text-decoration: none;
+		color: inherit;
+		cursor: pointer;
+	}
+
+	.timeline-content-link:hover {
+		transform: translateY(-2px);
 	}
 
 	.timeline-header {
@@ -127,20 +156,16 @@ const { items, markerColor = 'primary' } = Astro.props;
 		margin: 0;
 	}
 
-	.timeline-link {
-		display: inline-flex;
-		align-items: center;
-		transition: opacity 0.2s ease;
-	}
-
-	.timeline-link:hover {
-		opacity: 0.7;
-	}
-
 	.external-link-icon {
 		width: 14px;
 		height: 14px;
 		display: inline-block;
+		opacity: 0.6;
+		transition: opacity 0.3s ease;
+	}
+
+	.timeline-content-link:hover .external-link-icon {
+		opacity: 1;
 	}
 
 	.timeline-meta {

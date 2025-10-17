@@ -4,7 +4,7 @@ import PageContainer from '../components/layout/PageContainer.astro';
 import Timeline from '../components/common/Timeline.astro';
 import EmailDisplay from '../components/common/EmailDisplay.astro';
 import { loadPersonalInfo } from '../functions/dataLoader';
-import { convertEducationToTimeline, convertInternshipToTimeline } from '../utils/timelineHelpers';
+import { convertEducationToTimeline, convertInternshipToTimeline, convertLaboratoryToTimeline } from '../utils/timelineHelpers';
 
 const personalInfo = await loadPersonalInfo();
 
@@ -13,6 +13,9 @@ const educationItems = convertEducationToTimeline(personalInfo.education || []);
 
 // インターンシップをTimelineアイテムに変換
 const internshipItems = convertInternshipToTimeline(personalInfo.internships || []);
+
+// 研究室をTimelineアイテムに変換
+const laboratoryItems = convertLaboratoryToTimeline(personalInfo.laboratories || []);
 ---
 
 <Layout title="About - 中野暁登">
@@ -62,6 +65,14 @@ const internshipItems = convertInternshipToTimeline(personalInfo.internships || 
 				<section class="section">
 					<h2 class="section-title">Education</h2>
 					<Timeline items={educationItems} markerColor="secondary" />
+				</section>
+			)}
+
+			<!-- Laboratory Section -->
+			{laboratoryItems.length > 0 && (
+				<section class="section">
+					<h2 class="section-title">Laboratory</h2>
+					<Timeline items={laboratoryItems} markerColor="accent" />
 				</section>
 			)}
 

@@ -2,6 +2,12 @@
  * 個人情報関連の型定義
  */
 
+export interface Laboratory {
+	name: string;
+	siteUrl?: string;
+	period: string;
+}
+
 export interface PersonalInfo {
 	name: string;
 	affiliation: {
@@ -19,6 +25,7 @@ export interface PersonalInfo {
 	};
 	education?: EducationItem[];
 	internships?: Internship[];
+	laboratories?: Laboratory[];
 }
 
 export interface EducationItem {
@@ -38,4 +45,5 @@ export interface Internship {
 	company: string;
 	period: string;
 	position: string;
+	hpLink?: string;
 }

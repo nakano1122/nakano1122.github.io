@@ -15,7 +15,20 @@ Atcoder: https://atcoder.jp/users/cafkaf
 # Education
 
 2026/04 - : 筑波大学人間総合科学学術院人間総合科学研究群
-2022/04 - 2026/03: 静岡大学情報学部行動情報学科
+2022/04 - 2026/03: 静岡大学情報学部行動情報学
+
+
+# Laboratory
+
+### 筑波大学 加藤研究室
+site-url: https://kasys.slis.tsukuba.ac.jp/
+start-month: 2026-04
+finish-month: 
+
+### 静岡大学 莊司研究室
+site-url: https://shoji-lab.github.io/
+start-month: 2024-08
+finish-month: 2026-03
 
 # Job History
 
@@ -23,12 +36,12 @@ Atcoder: https://atcoder.jp/users/cafkaf
 
 start-month: 2024-08
 finish-month:
-HP-link: "https://nititech.jp/"
+HP-link: https://nititech.jp/
 position: 長期インターン
 
 ## シックスワン株式会社
 
 start-month: 2024-07
 finish-month: 2025-07
-HP-link: "https://six1.jp/"
+HP-link: https://six1.jp/
 position: 長期インターン

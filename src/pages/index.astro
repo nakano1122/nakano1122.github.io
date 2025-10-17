@@ -90,13 +90,26 @@ const awardItems = convertAwardsToTimeline(developmentExp.awards);
 					</div>
 					<div class="papers-list">
 						{researchHistory.papers.map((paper) => (
-							<div class="paper-item">
-								<p class="paper-title">{paper.title}</p>
-								<div class="paper-meta">
-									<span class="paper-conference">{paper.conference}</span>
-									{paper.note && <span class="paper-note">{paper.note}</span>}
+							paper.siteUrl ? (
+								<a href={paper.siteUrl} target="_blank" rel="noopener noreferrer" class="paper-item paper-link">
+									<p class="paper-title">
+										{paper.title}
+										<img src="/images/about/external-link.svg" alt="External link" class="external-link-icon" />
+									</p>
+									<div class="paper-meta">
+										<span class="paper-conference">{paper.conference}</span>
+										{paper.note && <span class="paper-note">{paper.note}</span>}
+									</div>
+								</a>
+							) : (
+								<div class="paper-item">
+									<p class="paper-title">{paper.title}</p>
+									<div class="paper-meta">
+										<span class="paper-conference">{paper.conference}</span>
+										{paper.note && <span class="paper-note">{paper.note}</span>}
+									</div>
 								</div>
-							</div>
+							)
 						))}
 					</div>
 				</section>
@@ -331,12 +344,40 @@ const awardItems = convertAwardsToTimeline(developmentExp.awards);
 		border-left: 3px solid var(--color-primary-solid);
 	}
 
+	.paper-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+		transition: all 0.3s ease;
+	}
+
+	.paper-link:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+		border-left-color: var(--color-secondary-solid);
+	}
+
 	.paper-title {
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
 		margin-bottom: var(--spacing-sm);
 		line-height: 1.6;
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+	}
+
+	.external-link-icon {
+		width: 14px;
+		height: 14px;
+		opacity: 0.6;
+		transition: opacity 0.3s ease;
+		flex-shrink: 0;
+	}
+
+	.paper-link:hover .external-link-icon {
+		opacity: 1;
 	}
 
 	.paper-meta {

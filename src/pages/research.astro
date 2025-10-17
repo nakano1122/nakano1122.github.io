@@ -8,32 +8,58 @@ const researchHistory = await loadResearchHistory();
 
 <Layout title="研究内容 - 中野暁登 Portfolio">
 	<PageContainer title="研究内容" maxWidth="1200px">
-			{researchHistory.researchContent && (
+			{researchHistory.themes && researchHistory.themes.length > 0 && (
 				<section class="section">
-					<h2 class="section-title">研究概要</h2>
-					<div class="research-overview">
-						<p>{researchHistory.researchContent}</p>
+					<h2 class="section-title">研究テーマ</h2>
+					<div class="themes-list">
+						{researchHistory.themes.map((theme) => (
+							<div class="theme-card">
+								<h3 class="theme-title">{theme.title}</h3>
+								{theme.abstract && (
+									<div class="theme-abstract">
+										<p>{theme.abstract}</p>
+									</div>
+								)}
+								{theme.papers && theme.papers.length > 0 && (
+									<div class="theme-papers">
+										<h4 class="papers-subtitle">関連論文</h4>
+										<div class="papers-list">
+											{theme.papers.map((paper) => (
+												paper.siteUrl ? (
+													<a href={paper.siteUrl} target="_blank" rel="noopener noreferrer" class="paper-card paper-card-link">
+														<h5 class="paper-title">
+															{paper.title}
+															<img src="/images/about/external-link.svg" alt="External link" class="external-link-icon" />
+														</h5>
+														{paper.authors && (
+															<p class="paper-authors">{paper.authors}</p>
+														)}
+														<p class="paper-conference">{paper.conference}</p>
+														{paper.note && (
+															<p class="paper-note">{paper.note}</p>
+														)}
+													</a>
+												) : (
+													<article class="paper-card">
+														<h5 class="paper-title">{paper.title}</h5>
+														{paper.authors && (
+															<p class="paper-authors">{paper.authors}</p>
+														)}
+														<p class="paper-conference">{paper.conference}</p>
+														{paper.note && (
+															<p class="paper-note">{paper.note}</p>
+														)}
+													</article>
+												)
+											))}
+										</div>
+									</div>
+								)}
+							</div>
+						))}
 					</div>
 				</section>
 			)}
-
-			<section class="section">
-				<h2 class="section-title">発表済み論文</h2>
-				<div class="papers-list">
-					{researchHistory.papers.map((paper) => (
-						<article class="paper-card">
-							<h3 class="paper-title">{paper.title}</h3>
-							{paper.authors && (
-								<p class="paper-authors">{paper.authors}</p>
-							)}
-							<p class="paper-conference">{paper.conference}</p>
-							{paper.note && (
-								<p class="paper-note">{paper.note}</p>
-							)}
-						</article>
-					))}
-				</div>
-		</section>
 	</PageContainer>
 </Layout>
 
@@ -51,27 +77,61 @@ const researchHistory = await loadResearchHistory();
 		padding-left: var(--spacing-md);
 	}
 
-	.research-overview p {
-		font-size: var(--font-size-lg);
-		line-height: var(--line-height-relaxed);
-		color: var(--color-text-light);
+	/* テーマカード */
+	.themes-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4xl);
+	}
+
+	.theme-card {
 		background: var(--color-bg-card);
 		border: 1px solid var(--color-border);
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
+		border-radius: var(--radius-2xl);
+		padding: var(--spacing-3xl);
+	}
+
+	.theme-title {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+		margin-bottom: var(--spacing-xl);
+		padding-bottom: var(--spacing-lg);
+		border-bottom: 2px solid var(--color-border);
+	}
+
+	.theme-abstract {
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.theme-abstract p {
+		font-size: var(--font-size-base);
+		line-height: var(--line-height-relaxed);
+		color: var(--color-text-light);
+	}
+
+	.theme-papers {
+		margin-top: var(--spacing-2xl);
+	}
+
+	.papers-subtitle {
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text);
+		margin-bottom: var(--spacing-lg);
 	}
 
 	.papers-list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-xl);
+		gap: var(--spacing-lg);
 	}
 
 	.paper-card {
-		background: var(--color-bg-card);
+		background: var(--color-bg);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl);
+		padding: var(--spacing-lg);
 		transition: all 0.3s ease;
 	}
 
@@ -81,12 +141,37 @@ const researchHistory = await loadResearchHistory();
 		box-shadow: var(--shadow-lg);
 	}
 
+	.paper-card-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.paper-card-link:hover {
+		cursor: pointer;
+	}
+
 	.paper-title {
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-text);
 		margin-bottom: var(--spacing-sm);
 		line-height: var(--line-height-snug);
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+	}
+
+	.external-link-icon {
+		width: 16px;
+		height: 16px;
+		opacity: 0.6;
+		transition: opacity 0.3s ease;
+		flex-shrink: 0;
+	}
+
+	.paper-card-link:hover .external-link-icon {
+		opacity: 1;
 	}
 
 	.paper-authors {

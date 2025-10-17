@@ -8,12 +8,13 @@ export type {
 	EducationItem,
 	JobHistoryItem,
 	Internship,
+	Laboratory,
 } from './personal';
 
 // 研究関連
 export type {
-	ResearchInfo,
 	ResearchHistory,
+	ResearchTheme,
 	Paper,
 } from './research';
 

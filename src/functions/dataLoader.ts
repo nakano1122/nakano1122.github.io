@@ -51,7 +51,9 @@ export async function loadPersonalInfo(): Promise<PersonalInfo> {
 			company: job.company,
 			period: job.startMonth + (job.finishMonth ? ' - ' + job.finishMonth : ' - 現在'),
 			position: job.position,
+			hpLink: job.hpLink,
 		})),
+		laboratories: parsed.laboratories,
 	};
 }
 
@@ -90,8 +92,12 @@ export async function loadResearchHistory(): Promise<ResearchHistory> {
 	const content = await loadMarkdownContent('research.md');
 	const parsed = parseResearchMarkdown(content);
 
+	// 全テーマから論文を集約
+	const allPapers = parsed.themes.flatMap((theme) => theme.papers);
+
 	return {
-		papers: parsed.papers,
-		researchContent: parsed.abstract,
+		themes: parsed.themes,
+		papers: allPapers,
+		researchContent: parsed.themes[0]?.abstract || '',
 	};
 }

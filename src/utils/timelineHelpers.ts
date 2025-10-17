@@ -5,6 +5,10 @@ export interface TimelineItem {
 	title: string;
 	subtitle?: string;
 	meta: string;
+	link?: {
+		url: string;
+		label: string;
+	};
 }
 
 /**
@@ -23,12 +27,18 @@ export function convertEducationToTimeline(
  * Convert internship data to timeline items
  */
 export function convertInternshipToTimeline(
-	internships: Array<{ company: string; position: string; period: string }>
+	internships: Array<{ company: string; position: string; period: string; hpLink?: string }>
 ): TimelineItem[] {
 	return internships.map((internship) => ({
 		title: internship.company,
 		subtitle: internship.position,
 		meta: internship.period,
+		...(internship.hpLink && {
+			link: {
+				url: internship.hpLink,
+				label: `${internship.company}のホームページを開く`,
+			},
+		}),
 	}));
 }
 
@@ -42,5 +52,23 @@ export function convertAwardsToTimeline(
 		title: award.event,
 		subtitle: award.award,
 		meta: award.date,
+	}));
+}
+
+/**
+ * Convert laboratory data to timeline items
+ */
+export function convertLaboratoryToTimeline(
+	laboratories: Array<{ name: string; period: string; siteUrl?: string }>
+): TimelineItem[] {
+	return laboratories.map((lab) => ({
+		title: lab.name,
+		meta: lab.period,
+		...(lab.siteUrl && {
+			link: {
+				url: lab.siteUrl,
+				label: `${lab.name}のホームページを開く`,
+			},
+		}),
 	}));
 }
