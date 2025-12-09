@@ -1,0 +1,32 @@
+---
+/**
+ * 外部リンク用のSVGアイコン
+ */
+export interface Props {
+	size?: 'sm' | 'md';
+	class?: string;
+}
+
+const { size = 'md', class: className = '' } = Astro.props;
+const sizeClass = size === 'sm' ? 'external-icon-sm' : 'external-icon';
+---
+
+<img data-theme-icon="external-link" alt="" class={`${sizeClass} ${className} theme-icon`} />
+
+<style>
+	.external-icon {
+		width: 18px;
+		height: 18px;
+		flex-shrink: 0;
+		margin-top: 4px;
+		opacity: 0.6;
+		transition: opacity var(--transition-fast);
+	}
+
+	.external-icon-sm {
+		width: 16px;
+		height: 16px;
+		opacity: 0.6;
+		transition: opacity var(--transition-fast);
+	}
+</style>

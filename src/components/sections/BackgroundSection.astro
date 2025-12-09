@@ -1,0 +1,102 @@
+---
+/**
+ * 背景情報セクションコンポーネント（学歴・資格）
+ */
+import type { ParsedEducation, ParsedSkill } from '../../utils/markdownParser';
+
+export interface Props {
+	education: ParsedEducation[];
+	skills: ParsedSkill[];
+}
+
+const { education, skills } = Astro.props;
+---
+
+<section class="section" id="background">
+	<div class="info-grid">
+		<!-- Education -->
+		<div class="info-block">
+			<h3 class="info-title">Education</h3>
+			<div class="education-list">
+				{education.map((edu) => (
+					<div class="education-item">
+						<span class="education-period">{edu.period}</span>
+						<span class="education-institution">{edu.institution}</span>
+					</div>
+				))}
+			</div>
+		</div>
+
+		<!-- Skills -->
+		<div class="info-block">
+			<h3 class="info-title">Certifications</h3>
+			<div class="skills-list">
+				{skills.map((skill) => (
+					<div class="skill-item">
+						<span class="skill-name">{skill.name}</span>
+						{skill.date && <span class="skill-date">{skill.date}</span>}
+					</div>
+				))}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.section {
+		border-top: 1px solid var(--color-border);
+	}
+
+	.info-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: var(--space-2xl);
+	}
+
+	.info-block {
+		padding: var(--space-xl);
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.info-title {
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--color-text);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: var(--space-lg);
+		padding-bottom: var(--space-md);
+		border-bottom: 2px solid var(--color-border);
+	}
+
+	.education-list,
+	.skills-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.education-item,
+	.skill-item {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.education-period,
+	.skill-date {
+		font-size: 0.9rem;
+		color: var(--color-text-muted);
+		font-weight: 500;
+	}
+
+	.education-institution,
+	.skill-name {
+		font-size: 1.1rem;
+		color: var(--color-text-secondary);
+		font-weight: 500;
+	}
+</style>

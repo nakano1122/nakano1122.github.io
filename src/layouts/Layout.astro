@@ -1,174 +1,165 @@
 ---
-import Header from '../components/layout/Header/Header.astro';
+import ThemeToggle from '../components/ui/ThemeToggle.astro';
 
 export interface Props {
 	title?: string;
-	showHeader?: boolean;
 }
 
-const { title = "中野暁登のポートフォリオ", showHeader = true } = Astro.props;
+const { title = "中野暁登 | Portfolio" } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="ja">
 	<head>
+		<script is:inline>
+			// FOUCを防ぐため、ページ読み込み前にテーマを適用
+			(function() {
+				const stored = localStorage.getItem('theme');
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const theme = stored || (prefersDark ? 'dark' : 'light');
+				document.documentElement.setAttribute('data-theme', theme);
+			})();
+		</script>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content="中野暁登(Akito Nakano)のポートフォリオサイト" />
-		<meta name="keywords" content="中野暁登,Akito Nakano" />
+		<meta name="description" content="中野暁登（Akito Nakano）のポートフォリオサイト。静岡大学/筑波大学大学院で情報学を専攻。研究活動とソフトウェア開発に従事。" />
+		<meta name="keywords" content="中野暁登,Akito Nakano,ポートフォリオ,エンジニア,研究者" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content="中野暁登のポートフォリオサイト" />
+		<meta property="og:type" content="website" />
 		<title>{title}</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 	</head>
 	<body>
-		{showHeader && <Header />}
+		<ThemeToggle />
 		<slot />
 	</body>
 </html>
 
 <style is:global>
-	:root {
-		/* Happy Hues Palette 9 - Base Colors */
-		--hh-background: #fffffe;
-		--hh-headline: #0d0d0d;
-		--hh-subheadline: #2a2a2a;
-		--hh-card-bg: #eff0f3;
-		--hh-card-heading: #0d0d0d;
-		--hh-card-paragraph: #2a2a2a;
-		--hh-highlight: #ff8e3c;
-		--hh-secondary: #fffffe;
-		--hh-tertiary: #d9376e;
+	:root,
+	[data-theme='light'] {
+		/* Color Palette - Light Editorial Theme with High Contrast */
+		--color-bg: #faf9f7;
+		--color-bg-elevated: #ffffff;
+		--color-bg-card: #ffffff;
+		--color-bg-card-hover: #f8f7f5;
+		--color-bg-subtle: #f3f2f0;
 
-		/* Background Colors */
-		--color-bg: #fffffe;
-		--color-bg-secondary: #f7f8fa;
-		--color-bg-tertiary: #eff0f3;
-		--color-bg-card: #eff0f3;
-		--color-bg-card-hover: #e5e6ea;
-		--color-bg-glass: rgba(239, 240, 243, 0.8);
-		--color-bg-header: rgba(255, 255, 254, 0.95);
+		/* High contrast text colors */
+		--color-text: #1a1a1a;
+		--color-text-secondary: #3d3d3d;
+		--color-text-muted: #666666;
 
-		/* Text Colors */
-		--color-text: #0d0d0d;
-		--color-text-light: #2a2a2a;
-		--color-text-lighter: #6b6b6b;
-		--color-text-accent: #ff8e3c;
-		--color-text-secondary: #d9376e;
+		/* Warm accent */
+		--color-accent: #c45d35;
+		--color-accent-soft: rgba(196, 93, 53, 0.12);
+		--color-accent-hover: #a84d2a;
 
-		/* Primary & Accent Colors */
-		--color-primary-solid: #ff8e3c;
-		--color-primary-dark: #e67a2a;
-		--color-secondary-solid: #d9376e;
-		--color-accent-solid: #ff8e3c;
+		/* Cool highlight */
+		--color-highlight: #1d4ed8;
+		--color-highlight-soft: rgba(29, 78, 216, 0.1);
 
-		/* Gradients */
-		--gradient-primary: linear-gradient(135deg, #ff8e3c 0%, #e67a2a 100%);
-		--gradient-secondary: linear-gradient(135deg, #d9376e 0%, #b82959 100%);
-		--gradient-accent: linear-gradient(135deg, #ff8e3c 0%, #d9376e 100%);
-		--gradient-neon: linear-gradient(135deg, #ff8e3c 0%, #d9376e 100%);
-		--gradient-subtle: linear-gradient(135deg, #eff0f3 0%, #f7f8fa 100%);
-
-		/* Border Colors */
-		--color-border: rgba(42, 42, 42, 0.15);
-		--color-border-light: rgba(42, 42, 42, 0.08);
-		--color-border-accent: rgba(255, 142, 60, 0.3);
-
-		/* Status Colors */
-		--color-success: #22c55e;
-		--color-warning: #ff8e3c;
-		--color-error: #d9376e;
-
-		/* Shadows */
-		--shadow-xs: 0 0 0 1px rgba(13, 13, 13, 0.05);
-		--shadow-sm: 0 2px 4px 0 rgba(13, 13, 13, 0.1);
-		--shadow-md: 0 4px 12px -2px rgba(13, 13, 13, 0.12), 0 2px 8px -2px rgba(13, 13, 13, 0.08);
-		--shadow-lg: 0 8px 25px -5px rgba(13, 13, 13, 0.15), 0 4px 12px -4px rgba(13, 13, 13, 0.1);
-		--shadow-xl: 0 16px 40px -8px rgba(13, 13, 13, 0.18), 0 8px 20px -6px rgba(13, 13, 13, 0.12);
-		--shadow-2xl: 0 25px 60px -15px rgba(13, 13, 13, 0.25);
-		--shadow-inner: inset 0 2px 8px 0 rgba(13, 13, 13, 0.06);
-		--shadow-glow: 0 0 20px rgba(255, 142, 60, 0.3);
-		--shadow-glow-secondary: 0 0 20px rgba(217, 55, 110, 0.3);
-		--spacing-xs: 0.25rem;
-		--spacing-sm: 0.5rem;
-		--spacing-md: 0.75rem;
-		--spacing-lg: 1rem;
-		--spacing-xl: 1.25rem;
-		--spacing-2xl: 1.5rem;
-		--spacing-3xl: 2rem;
-		--spacing-4xl: 2.5rem;
-		--spacing-5xl: 3rem;
-		--spacing-6xl: 4rem;
-		--spacing-7xl: 5rem;
-		--spacing-8xl: 6rem;
-		--radius-xs: 0.125rem;
-		--radius-sm: 0.25rem;
-		--radius-md: 0.375rem;
-		--radius-lg: 0.5rem;
-		--radius-xl: 0.75rem;
-		--radius-2xl: 1rem;
-		--radius-3xl: 1.5rem;
-		--radius-full: 9999px;
-		--font-size-xs: 0.75rem;
-		--font-size-sm: 0.875rem;
-		--font-size-base: 1rem;
-		--font-size-lg: 1.125rem;
-		--font-size-xl: 1.25rem;
-		--font-size-2xl: 1.5rem;
-		--font-size-3xl: 1.875rem;
-		--font-size-4xl: 2.25rem;
-		--font-size-5xl: 3rem;
-		--font-size-6xl: 3.75rem;
-		--font-size-7xl: 4.5rem;
-		--font-size-8xl: 6rem;
-		--font-size-9xl: 8rem;
-		--line-height-none: 1;
-		--line-height-tight: 1.25;
-		--line-height-snug: 1.375;
-		--line-height-normal: 1.5;
-		--line-height-relaxed: 1.625;
-		--line-height-loose: 2;
-		--font-weight-thin: 100;
-		--font-weight-extralight: 200;
-		--font-weight-light: 300;
-		--font-weight-normal: 400;
-		--font-weight-medium: 500;
-		--font-weight-semibold: 600;
-		--font-weight-bold: 700;
-		--font-weight-extrabold: 800;
-		--font-weight-black: 900;
+		/* Borders */
+		--color-border: rgba(0, 0, 0, 0.1);
+		--color-border-hover: rgba(0, 0, 0, 0.18);
 	}
 
+	[data-theme='dark'] {
+		/* Color Palette - Dark Theme */
+		--color-bg: #0f0f10;
+		--color-bg-elevated: #1a1a1c;
+		--color-bg-card: #1a1a1c;
+		--color-bg-card-hover: #222224;
+		--color-bg-subtle: #151516;
+
+		/* High contrast text colors */
+		--color-text: #f5f5f5;
+		--color-text-secondary: #c8c8c8;
+		--color-text-muted: #888888;
+
+		/* Warm accent - slightly brighter for dark mode */
+		--color-accent: #e07048;
+		--color-accent-soft: rgba(224, 112, 72, 0.15);
+		--color-accent-hover: #f08058;
+
+		/* Cool highlight */
+		--color-highlight: #5b8def;
+		--color-highlight-soft: rgba(91, 141, 239, 0.15);
+
+		/* Borders */
+		--color-border: rgba(255, 255, 255, 0.1);
+		--color-border-hover: rgba(255, 255, 255, 0.2);
+	}
+
+	/* Shared variables (not theme-dependent) */
+	:root {
+		/* Typography */
+		--font-display: 'Playfair Display', serif;
+		--font-body: 'Source Sans 3', 'Noto Sans JP', sans-serif;
+
+		/* Spacing */
+		--space-xs: 0.25rem;
+		--space-sm: 0.5rem;
+		--space-md: 1rem;
+		--space-lg: 1.5rem;
+		--space-xl: 2rem;
+		--space-2xl: 3rem;
+		--space-3xl: 4rem;
+		--space-4xl: 6rem;
+
+		/* Border Radius */
+		--radius-sm: 6px;
+		--radius-md: 10px;
+		--radius-lg: 14px;
+		--radius-xl: 20px;
+
+		/* Transitions */
+		--transition-fast: 150ms ease;
+		--transition-base: 250ms ease;
+		--transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+		/* Shadows - Light mode defaults */
+		--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+		--shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+		--shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
+	}
+
+	/* Dark mode shadows */
+	[data-theme='dark'] {
+		--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+		--shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);
+		--shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
+	}
 
 	* {
 		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
 	}
 
 	html {
 		scroll-behavior: smooth;
-		font-size: 16px;
-		height: 100vh;
-		overflow: hidden;
+		font-size: 18px;
 	}
 
 	body {
-		margin: 0;
-		padding: 0;
-		height: 100vh;
-		overflow: hidden;
-		display: flex;
-		flex-direction: column;
-		font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		font-family: var(--font-body);
 		background: var(--color-bg);
 		color: var(--color-text);
-		line-height: var(--line-height-relaxed);
-		font-weight: var(--font-weight-normal);
+		line-height: 1.75;
+		min-height: 100vh;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+		font-weight: 400;
+		transition: background-color var(--transition-base), color var(--transition-base);
 	}
 
+	/* Subtle background accent - Light mode */
 	body::before {
 		content: '';
 		position: fixed;
@@ -177,174 +168,72 @@ const { title = "中野暁登のポートフォリオ", showHeader = true } = As
 		width: 100%;
 		height: 100%;
 		background:
-			radial-gradient(circle at 15% 85%, rgba(255, 142, 60, 0.08) 0%, transparent 50%),
-			radial-gradient(circle at 85% 15%, rgba(217, 55, 110, 0.06) 0%, transparent 50%);
+			radial-gradient(ellipse 120% 60% at 50% -30%, rgba(196, 93, 53, 0.06) 0%, transparent 60%),
+			radial-gradient(ellipse 80% 50% at 100% 100%, rgba(29, 78, 216, 0.04) 0%, transparent 50%);
 		pointer-events: none;
 		z-index: -1;
+		transition: background var(--transition-base);
+	}
+
+	/* Subtle background accent - Dark mode */
+	[data-theme='dark'] body::before {
+		background:
+			radial-gradient(ellipse 120% 60% at 50% -30%, rgba(224, 112, 72, 0.08) 0%, transparent 60%),
+			radial-gradient(ellipse 80% 50% at 100% 100%, rgba(91, 141, 239, 0.06) 0%, transparent 50%);
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		margin: 0;
 		font-weight: 600;
-		line-height: 1.2;
+		line-height: 1.35;
+		color: var(--color-text);
 	}
 
 	p {
-		margin: 0;
+		line-height: 1.8;
 	}
 
 	a {
-		color: var(--color-primary-solid);
+		color: inherit;
 		text-decoration: none;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	a:hover {
-		color: var(--color-secondary-solid);
-		text-shadow: 0 0 12px rgba(6, 255, 165, 0.8);
-		transform: translateY(-1px);
-	}
-
-	.container {
-		max-width: 1400px;
-		margin: 0 auto;
-		padding: 0 var(--spacing-lg);
-	}
-
-	.section {
-		padding: var(--spacing-3xl) 0;
-	}
-
-	.section-title {
-		font-size: 1.875rem;
-		font-weight: 600;
-		text-align: left;
-		margin-bottom: var(--spacing-lg);
+	::selection {
+		background: var(--color-accent-soft);
 		color: var(--color-text);
-		position: relative;
-		padding-left: var(--spacing-lg);
 	}
 
-	.section-title::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 4px;
-		height: 24px;
-		background: var(--color-primary);
-		border-radius: 2px;
+	/* Scrollbar styling */
+	::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
 	}
 
-	.card {
-		background: var(--color-bg-card);
-		border-radius: var(--radius-xl);
-		padding: var(--spacing-2xl);
-		box-shadow: var(--shadow-md);
-		border: 1px solid var(--color-border);
-		transition: all 0.3s ease;
+	::-webkit-scrollbar-track {
+		background: var(--color-bg-subtle);
 	}
 
-	.card:hover {
-		transform: translateY(-4px);
-		box-shadow: var(--shadow-xl);
-		border-color: var(--color-border-accent);
+	::-webkit-scrollbar-thumb {
+		background: var(--color-border-hover);
+		border-radius: 5px;
+		border: 2px solid var(--color-bg-subtle);
 	}
 
-	.btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: var(--spacing-sm) var(--spacing-lg);
-		border-radius: var(--radius-md);
-		font-weight: 500;
-		text-decoration: none;
-		transition: all 0.2s ease;
-		cursor: pointer;
-		border: none;
-		font-size: 0.875rem;
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--color-text-muted);
 	}
 
-	.btn-primary {
-		background: var(--gradient-accent);
-		color: #ffffff;
-		box-shadow: var(--shadow-glow);
-		font-weight: 600;
-		transition: all 0.3s ease;
-	}
-
-	.btn-primary:hover {
-		transform: translateY(-2px);
-		box-shadow: var(--shadow-glow-secondary), var(--shadow-lg);
-		background: var(--gradient-primary);
-	}
-
-	.btn-outline {
-		background: transparent;
-		border: 2px solid var(--color-primary-solid);
-		color: var(--color-primary-solid);
-		transition: all 0.3s ease;
-	}
-
-	.btn-outline:hover {
-		background: var(--color-primary-solid);
-		color: #ffffff;
-		border-color: var(--color-primary-dark);
-		box-shadow: var(--shadow-glow);
-	}
-
-	.text-gradient {
-		background: var(--gradient-primary);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-
-	.animate-fade-in {
-		animation: fadeIn 0.6s ease-out;
-	}
-
-	.animate-slide-up {
-		animation: slideUp 0.6s ease-out;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
-	@keyframes slideUp {
-		from {
-			opacity: 0;
-			transform: translateY(30px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	/* Section spacing - モバイルでコンパクトに */
+	.section {
+		padding: var(--space-4xl) 0;
 	}
 
 	@media (max-width: 768px) {
-		.container {
-			padding: 0 var(--spacing-md);
+		html {
+			font-size: 16px;
 		}
 
 		.section {
-			padding: var(--spacing-2xl) 0;
-		}
-
-		.section-title {
-			font-size: 2rem;
-			margin-bottom: var(--spacing-xl);
-		}
-
-		.card {
-			padding: var(--spacing-lg);
+			padding: var(--space-2xl) 0;
 		}
 	}
 </style>

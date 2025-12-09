@@ -1,0 +1,121 @@
+---
+/**
+ * 研究セクションコンポーネント
+ */
+import type { ParsedResearch } from '../../utils/markdownParser';
+import SectionHeader from '../ui/SectionHeader.astro';
+import ExternalLink from '../ui/ExternalLink.astro';
+
+export interface Props {
+	research: ParsedResearch[];
+}
+
+const { research } = Astro.props;
+---
+
+<section class="section" id="research">
+	<SectionHeader title="Research" count={`${research.length} Publications`} />
+	<div class="research-list">
+		{research.map((paper, index) => (
+			<article class="research-item" style={`animation-delay: ${index * 100}ms`}>
+				<div class="research-meta">
+					<span class="research-conference">{paper.conference}</span>
+				</div>
+				<h3 class="research-title">
+					{paper.siteUrl ? (
+						<a href={paper.siteUrl} target="_blank" rel="noopener noreferrer" class="research-link">
+							{paper.title}
+							<ExternalLink />
+						</a>
+					) : (
+						paper.title
+					)}
+				</h3>
+				<p class="research-authors">{paper.authors}</p>
+			</article>
+		))}
+	</div>
+</section>
+
+<style>
+	.section {
+		border-top: 1px solid var(--color-border);
+	}
+
+	.research-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+	}
+
+	.research-item {
+		padding: var(--space-xl);
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		transition: all var(--transition-base);
+		animation: fadeInUp 0.6s ease-out backwards;
+		box-shadow: var(--shadow-sm);
+	}
+
+	.research-item:hover {
+		border-color: var(--color-border-hover);
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.research-meta {
+		margin-bottom: var(--space-md);
+	}
+
+	.research-conference {
+		display: inline-block;
+		padding: var(--space-sm) var(--space-md);
+		background: var(--color-highlight-soft);
+		color: var(--color-highlight);
+		font-size: 0.9rem;
+		font-weight: 600;
+		border-radius: var(--radius-md);
+	}
+
+	.research-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		line-height: 1.6;
+		margin-bottom: var(--space-md);
+		color: var(--color-text);
+	}
+
+	.research-link {
+		display: inline-flex;
+		align-items: flex-start;
+		gap: var(--space-sm);
+		color: var(--color-text);
+		transition: color var(--transition-fast);
+	}
+
+	.research-link:hover {
+		color: var(--color-accent);
+	}
+
+	.research-link:hover :global(.external-icon) {
+		opacity: 1;
+	}
+
+	.research-authors {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		line-height: 1.7;
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+</style>

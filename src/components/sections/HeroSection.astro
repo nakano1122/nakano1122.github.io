@@ -1,0 +1,224 @@
+---
+/**
+ * ヒーローセクションコンポーネント
+ */
+import type { ParsedProfile } from '../../utils/markdownParser';
+
+export interface Props {
+	profile: ParsedProfile;
+}
+
+const { profile } = Astro.props;
+
+// メールアドレスを分割（@の前後）
+const [emailUser, emailDomain] = profile.mail.split(' ');
+
+// GitHubのユーザー名を抽出
+const githubUsername = profile.github.split('/').pop() || '';
+---
+
+<header class="hero">
+	<div class="hero-content">
+		<h1 class="hero-name">
+			<span class="name-ja">{profile.name}</span>
+			<span class="name-en">Akito Nakano</span>
+		</h1>
+		<p class="hero-affiliation">
+			{profile.department} / {profile.grade}
+		</p>
+		<div class="hero-links">
+			<div class="link-item email-display" aria-label="Email">
+				<img data-theme-icon="mail" alt="" class="link-icon theme-icon" />
+				<span class="email-text">
+					{emailUser}<img data-theme-icon="at-mark" alt="@" class="at-mark theme-icon" />{emailDomain}
+				</span>
+			</div>
+			<a href={profile.github} target="_blank" rel="noopener noreferrer" class="link-item" aria-label="GitHub">
+				<img data-theme-icon="github" alt="" class="link-icon theme-icon" />
+				<span>@{githubUsername}</span>
+			</a>
+			{profile.atcoder && (
+				<a href={profile.atcoder} target="_blank" rel="noopener noreferrer" class="link-item" aria-label="AtCoder">
+					<img data-theme-icon="atcoder" alt="" class="link-icon theme-icon" />
+					<span>AtCoder</span>
+				</a>
+			)}
+		</div>
+	</div>
+	<div class="hero-decoration">
+		<div class="decoration-line"></div>
+		<div class="decoration-dot"></div>
+	</div>
+</header>
+
+<style>
+	.hero {
+		min-height: 65vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: var(--space-4xl) 0;
+		position: relative;
+	}
+
+	.hero-content {
+		animation: fadeInUp 0.8s ease-out;
+	}
+
+	.hero-name {
+		font-family: var(--font-display);
+		font-size: clamp(3.5rem, 10vw, 6rem);
+		font-weight: 600;
+		line-height: 1.1;
+		margin-bottom: var(--space-xl);
+		color: var(--color-text);
+	}
+
+	.name-ja {
+		display: block;
+	}
+
+	.name-en {
+		display: block;
+		font-size: 0.32em;
+		font-style: italic;
+		font-weight: 400;
+		color: var(--color-text-muted);
+		margin-top: var(--space-md);
+	}
+
+	.hero-affiliation {
+		font-size: 1.35rem;
+		color: var(--color-text-secondary);
+		margin-bottom: var(--space-2xl);
+		font-weight: 500;
+	}
+
+	.hero-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-md);
+	}
+
+	.link-item {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-md) var(--space-xl);
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		font-size: 1rem;
+		font-weight: 500;
+		color: var(--color-text-secondary);
+		transition: all var(--transition-base);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.link-item:hover {
+		background: var(--color-bg-card-hover);
+		border-color: var(--color-accent);
+		color: var(--color-accent);
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.email-display {
+		cursor: default;
+	}
+
+	.email-display:hover {
+		transform: none;
+		border-color: var(--color-border);
+		color: var(--color-text-secondary);
+	}
+
+	.email-text {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.at-mark {
+		width: 13px;
+		height: 13px;
+		margin: 0 1px;
+		vertical-align: middle;
+		display: inline-block;
+	}
+
+	.link-icon {
+		width: 20px;
+		height: 20px;
+	}
+
+	.hero-decoration {
+		position: absolute;
+		right: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-sm);
+	}
+
+	.decoration-line {
+		width: 2px;
+		height: 100px;
+		background: linear-gradient(to bottom, transparent, var(--color-accent), transparent);
+		border-radius: 1px;
+	}
+
+	.decoration-dot {
+		width: 10px;
+		height: 10px;
+		background: var(--color-accent);
+		border-radius: 50%;
+		box-shadow: 0 0 20px var(--color-accent-soft);
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.hero {
+			min-height: auto;
+			padding: var(--space-2xl) 0 var(--space-xl);
+		}
+
+		.hero-name {
+			font-size: clamp(2.5rem, 12vw, 3.5rem);
+		}
+
+		.hero-affiliation {
+			font-size: 1rem;
+			margin-bottom: var(--space-lg);
+		}
+
+		.hero-links {
+			gap: var(--space-sm);
+		}
+
+		.link-item {
+			padding: var(--space-sm) var(--space-md);
+			font-size: 0.9rem;
+		}
+
+		.link-icon {
+			width: 18px;
+			height: 18px;
+		}
+
+		.hero-decoration {
+			display: none;
+		}
+	}
+</style>

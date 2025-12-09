@@ -1,0 +1,186 @@
+---
+/**
+ * 経験セクションコンポーネント（インターンシップ・研究室）
+ */
+import type { ParsedJobHistory, ParsedLaboratory } from '../../utils/markdownParser';
+import { formatPeriod } from '../../functions/dataLoader';
+import SectionHeader from '../ui/SectionHeader.astro';
+import ExternalLink from '../ui/ExternalLink.astro';
+
+export interface Props {
+	jobHistory: ParsedJobHistory[];
+	laboratories: ParsedLaboratory[];
+}
+
+const { jobHistory, laboratories } = Astro.props;
+---
+
+<section class="section" id="experience">
+	<SectionHeader title="Experience" />
+
+	<div class="experience-grid">
+		<!-- Internships -->
+		<div class="experience-column">
+			<h3 class="experience-subtitle">Internship</h3>
+			<div class="timeline">
+				{jobHistory.map((job, index) => (
+					<div class="timeline-item" style={`animation-delay: ${index * 100}ms`}>
+						<div class="timeline-marker"></div>
+						<div class="timeline-content">
+							<span class="timeline-period">{formatPeriod(job.startMonth, job.finishMonth)}</span>
+							<h4 class="timeline-title">
+								{job.hpLink ? (
+									<a href={job.hpLink} target="_blank" rel="noopener noreferrer" class="timeline-link">
+										{job.company}
+										<ExternalLink size="sm" />
+									</a>
+								) : (
+									job.company
+								)}
+							</h4>
+							<p class="timeline-description">{job.position}</p>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+
+		<!-- Laboratories -->
+		<div class="experience-column">
+			<h3 class="experience-subtitle">Laboratory</h3>
+			<div class="timeline">
+				{laboratories.map((lab, index) => (
+					<div class="timeline-item" style={`animation-delay: ${index * 100}ms`}>
+						<div class="timeline-marker"></div>
+						<div class="timeline-content">
+							<span class="timeline-period">{formatPeriod(lab.startMonth, lab.finishMonth)}</span>
+							<h4 class="timeline-title">
+								{lab.siteUrl ? (
+									<a href={lab.siteUrl} target="_blank" rel="noopener noreferrer" class="timeline-link">
+										{lab.name}
+										<ExternalLink size="sm" />
+									</a>
+								) : (
+									lab.name
+								)}
+							</h4>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.section {
+		border-top: 1px solid var(--color-border);
+	}
+
+	.experience-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+		gap: var(--space-3xl);
+	}
+
+	.experience-subtitle {
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--color-text);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: var(--space-xl);
+	}
+
+	/* Timeline */
+	.timeline {
+		position: relative;
+		padding-left: var(--space-2xl);
+	}
+
+	.timeline::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 10px;
+		bottom: 10px;
+		width: 2px;
+		background: var(--color-border);
+		border-radius: 1px;
+	}
+
+	.timeline-item {
+		position: relative;
+		padding-bottom: var(--space-2xl);
+		animation: fadeInUp 0.6s ease-out backwards;
+	}
+
+	.timeline-item:last-child {
+		padding-bottom: 0;
+	}
+
+	.timeline-marker {
+		position: absolute;
+		left: calc(-1 * var(--space-2xl));
+		top: 10px;
+		width: 12px;
+		height: 12px;
+		background: var(--color-bg);
+		border: 3px solid var(--color-accent);
+		border-radius: 50%;
+		transform: translateX(-5px);
+	}
+
+	.timeline-period {
+		display: block;
+		font-size: 0.9rem;
+		color: var(--color-text-muted);
+		margin-bottom: var(--space-xs);
+		font-weight: 500;
+	}
+
+	.timeline-title {
+		font-size: 1.15rem;
+		font-weight: 600;
+		margin-bottom: var(--space-sm);
+		color: var(--color-text);
+	}
+
+	.timeline-link {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-sm);
+		color: var(--color-text);
+		transition: color var(--transition-fast);
+	}
+
+	.timeline-link:hover {
+		color: var(--color-accent);
+	}
+
+	.timeline-link:hover :global(.external-icon-sm) {
+		opacity: 1;
+	}
+
+	.timeline-description {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.experience-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
