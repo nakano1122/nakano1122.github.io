@@ -15,6 +15,30 @@ const [emailUser, emailDomain] = profile.mail.split(' ');
 
 // GitHubのユーザー名を抽出
 const githubUsername = profile.github.split('/').pop() || '';
+
+// 日本語ランク表記 → CSS変数名のマッピング
+const rankColorMap: Record<string, string> = {
+	'灰': 'gray',
+	'茶': 'brown',
+	'緑': 'green',
+	'水': 'cyan',
+	'青': 'blue',
+	'黄': 'yellow',
+	'橙': 'orange',
+	'赤': 'red',
+};
+
+// AtCoderのランクに応じた色を取得
+const getAtcoderRankColor = (rank?: string): string => {
+	if (!rank) return 'var(--color-border)';
+	const englishRank = rankColorMap[rank];
+	if (englishRank) {
+		return `var(--atcoder-${englishRank})`;
+	}
+	return 'var(--color-border)';
+};
+
+const atcoderBorderColor = getAtcoderRankColor(profile.atcoderRank);
 ---
 
 <header class="hero">
@@ -38,7 +62,14 @@ const githubUsername = profile.github.split('/').pop() || '';
 				<span>@{githubUsername}</span>
 			</a>
 			{profile.atcoder && (
-				<a href={profile.atcoder} target="_blank" rel="noopener noreferrer" class="link-item" aria-label="AtCoder">
+				<a
+					href={profile.atcoder}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link-item atcoder-link"
+					style={`--atcoder-border-color: ${atcoderBorderColor};`}
+					aria-label="AtCoder"
+				>
 					<img data-theme-icon="atcoder" alt="" class="link-icon theme-icon" />
 					<span>AtCoder</span>
 				</a>
@@ -217,8 +248,93 @@ const githubUsername = profile.github.split('/').pop() || '';
 			height: 18px;
 		}
 
-		.hero-decoration {
-			display: none;
-		}
+			.hero-decoration {
+		display: none;
 	}
+}
+
+/* AtCoder rank-specific styling */
+.atcoder-link {
+	position: relative;
+	border: 2px solid var(--atcoder-border-color);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--atcoder-border-color) 8%, transparent) 0%,
+		transparent 100%
+	);
+	overflow: hidden;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ランク色のアクセントバー */
+.atcoder-link::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 4px;
+	background: var(--atcoder-border-color);
+	transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 背景のグロウエフェクト */
+.atcoder-link::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(
+		circle at 50% 50%,
+		color-mix(in srgb, var(--atcoder-border-color) 0%, transparent),
+		transparent 70%
+	);
+	opacity: 0;
+	transition: opacity 0.4s ease;
+}
+
+.atcoder-link:hover {
+	border-color: var(--atcoder-border-color);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--atcoder-border-color) 18%, transparent) 0%,
+		color-mix(in srgb, var(--atcoder-border-color) 8%, transparent) 100%
+	);
+	color: var(--atcoder-border-color);
+	transform: translateY(-3px) scale(1.02);
+	box-shadow:
+		0 8px 24px color-mix(in srgb, var(--atcoder-border-color) 35%, transparent),
+		0 0 40px color-mix(in srgb, var(--atcoder-border-color) 20%, transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--atcoder-border-color) 20%, transparent);
+}
+
+.atcoder-link:hover::before {
+	width: 6px;
+}
+
+.atcoder-link:hover::after {
+	opacity: 1;
+}
+
+/* アイコンとテキストの色をランクカラーに */
+.atcoder-link:hover .link-icon {
+	filter: brightness(1.2) saturate(1.3);
+}
+
+/* アニメーションの追加 */
+@keyframes rankPulse {
+	0%, 100% {
+		box-shadow:
+			0 8px 24px color-mix(in srgb, var(--atcoder-border-color) 35%, transparent),
+			0 0 40px color-mix(in srgb, var(--atcoder-border-color) 20%, transparent);
+	}
+	50% {
+		box-shadow:
+			0 8px 28px color-mix(in srgb, var(--atcoder-border-color) 45%, transparent),
+			0 0 50px color-mix(in srgb, var(--atcoder-border-color) 30%, transparent);
+	}
+}
+
+.atcoder-link:hover {
+	animation: rankPulse 2s ease-in-out infinite;
+}
 </style>

@@ -13,6 +13,7 @@ export interface ParsedProfile {
 	mail: string;
 	github: string;
 	atcoder?: string;
+	atcoderRank?: string;
 }
 
 export interface ParsedSkill {
@@ -169,8 +170,11 @@ export function parsePersonalMarkdown(content: string): ParsedPersonalData {
 					result.profile.github = value;
 					break;
 				case 'atcoder':
-					result.profile.atcoder = value;
-					break;
+				result.profile.atcoder = value;
+				break;
+			case 'atcoderrank':
+				result.profile.atcoderRank = value;
+				break;
 			}
 		}
 

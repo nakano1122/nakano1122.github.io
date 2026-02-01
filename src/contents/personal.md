@@ -6,6 +6,7 @@ grade: 4年
 mail: nakano2998.jobs gmail.com
 GitHub: https://github.com/nakano1122
 Atcoder: https://atcoder.jp/users/cafkaf
+AtcoderRank: 茶
 
 # Skills
 
@@ -23,7 +24,7 @@ Atcoder: https://atcoder.jp/users/cafkaf
 
 site-url: https://kasys.slis.tsukuba.ac.jp/
 start-month: 2026-04
-finish-month:
+finish-month: 2028-03
 
 ## 静岡大学 莊司研究室
 
