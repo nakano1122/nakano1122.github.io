@@ -36,7 +36,7 @@ finish-month: 2026-03
 
 ## 株式会社 NITI Technology
 
-start-month: 2024-08
+start-month: 2025-08
 finish-month:
 HP-link: https://nititech.jp/
 position: 長期インターン
@@ -49,6 +49,11 @@ HP-link: https://six1.jp/
 position: 長期インターン
 
 # Research
+
+title: ミュージアム再訪促進のための鑑賞した展示物と意外な共通点を持つ展示物の発見
+authors: 中野暁登、莊司慶行、山本岳洋、山本祐輔、大島裕明、相原健郎、神門典子
+conference: DEIM 2026
+site-url: https://pub.confit.atlas.jp/ja/event/deim2026/presentation/2G-05
 
 title: Question-Based Viewing with LLM-Powered Personified Characters: A Role-Playing Dialogue System for Perspective-Taking in Museums
 authors: Akito Nakano, Shio Takidaira, Tsukasa Sawaura, Yoshiyuki Shoji, Takehiro Yamamoto, Yusuke Yamamoto, Hiroaki Ohshima, Kenro Aihara, Noriko Kando
@@ -80,4 +85,4 @@ site-url: https://pub.confit.atlas.jp/ja/event/deim2025/presentation/1H-01
 
 title: はまはくAI 開発担当
 description: 浜松市博物館、株式会社ワンビシアーカイブズ、静岡大学の産官学連携プロジェクトの開発担当として、博物館が発行する図録に興味を持ってもらえるようなアプリを作成しました。アプリ内で、図録を持ったキャラクターと対話することで、AIが内部知識として持たない情報についても会話することができます。工夫点として、AIが間違ったことを言った時にユーザが信じないよう、子供のキャラクターを採用したり、語尾を断定しないものにしました。
-site-url: https://news.yahoo.co.jp/articles/ba13b6b9bfd920dc72e6c7f9a628e322a7401c2c
+site-url: https://www.inf.shizuoka.ac.jp/news/4506/
