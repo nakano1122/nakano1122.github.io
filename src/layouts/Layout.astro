@@ -30,6 +30,42 @@ const { title = "中野暁登 | Portfolio" } = Astro.props;
 		<meta property="og:description" content="中野暁登のポートフォリオサイト" />
 		<meta property="og:type" content="website" />
 		<title>{title}</title>
+		<!-- Canonical URL -->
+		<link rel="canonical" href="https://nakano1122.github.io/" />
+		<!-- Open Graph 補完 -->
+		<meta property="og:url" content="https://nakano1122.github.io/" />
+		<meta property="og:locale" content="ja_JP" />
+		<meta property="og:site_name" content="中野暁登 Portfolio" />
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content="中野暁登（Akito Nakano）のポートフォリオサイト。静岡大学/筑波大学大学院で情報学を専攻。研究活動とソフトウェア開発に従事。" />
+		<!-- JSON-LD 構造化データ -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "ProfilePage",
+			"mainEntity": {
+				"@type": "Person",
+				"name": "中野暁登",
+				"alternateName": "Akito Nakano",
+				"url": "https://nakano1122.github.io/",
+				"jobTitle": "Software Engineer & Researcher",
+				"affiliation": [
+					{
+						"@type": "EducationalOrganization",
+						"name": "筑波大学人間総合科学学術院"
+					},
+					{
+						"@type": "EducationalOrganization",
+						"name": "静岡大学情報学部"
+					}
+				],
+				"sameAs": [
+					"https://github.com/nakano1122"
+				],
+				"knowsAbout": ["情報検索", "自然言語処理", "ミュージアム情報学", "ソフトウェア開発"]
+			}
+		})} />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">

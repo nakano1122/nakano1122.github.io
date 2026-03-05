@@ -5,7 +5,6 @@
 import type { ParsedJobHistory, ParsedLaboratory } from '../../utils/markdownParser';
 import { formatPeriod } from '../../functions/dataLoader';
 import SectionHeader from '../ui/SectionHeader.astro';
-import ExternalLink from '../ui/ExternalLink.astro';
 
 export interface Props {
 	jobHistory: ParsedJobHistory[];
@@ -23,25 +22,45 @@ const { jobHistory, laboratories } = Astro.props;
 		<div class="experience-column">
 			<h3 class="experience-subtitle">Internship</h3>
 			<div class="timeline">
-				{jobHistory.map((job, index) => (
-					<div class="timeline-item" style={`animation-delay: ${index * 100}ms`}>
-						<div class="timeline-marker"></div>
-						<div class="timeline-content">
-							<span class="timeline-period">{formatPeriod(job.startMonth, job.finishMonth)}</span>
-							<h4 class="timeline-title">
-								{job.hpLink ? (
-									<a href={job.hpLink} target="_blank" rel="noopener noreferrer" class="timeline-link">
-										{job.company}
-										<ExternalLink size="sm" />
-									</a>
-								) : (
-									job.company
-								)}
-							</h4>
-							<p class="timeline-description">{job.position}</p>
+				{jobHistory.map((job, index) => {
+					const url = job.hpLink || '';
+
+					return url ? (
+						<a
+							class="timeline-item timeline-link"
+							href={url}
+							target="_blank"
+							rel="noopener noreferrer"
+							style={`animation-delay: ${index * 100}ms`}
+						>
+							<div class="timeline-marker"></div>
+							<div class="timeline-content">
+								<span class="timeline-period">{formatPeriod(job.startMonth, job.finishMonth)}</span>
+								<h4 class="timeline-title">{job.company}</h4>
+								<p class="timeline-description">{job.position}</p>
+							</div>
+							<span class="external-indicator" aria-label="外部サイトへ移動">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+									<polyline points="15 3 21 3 21 9" />
+									<line x1="10" y1="14" x2="21" y2="3" />
+								</svg>
+							</span>
+						</a>
+					) : (
+						<div
+							class="timeline-item"
+							style={`animation-delay: ${index * 100}ms`}
+						>
+							<div class="timeline-marker"></div>
+							<div class="timeline-content">
+								<span class="timeline-period">{formatPeriod(job.startMonth, job.finishMonth)}</span>
+								<h4 class="timeline-title">{job.company}</h4>
+								<p class="timeline-description">{job.position}</p>
+							</div>
 						</div>
-					</div>
-				))}
+					);
+				})}
 			</div>
 		</div>
 
@@ -49,24 +68,43 @@ const { jobHistory, laboratories } = Astro.props;
 		<div class="experience-column">
 			<h3 class="experience-subtitle">Laboratory</h3>
 			<div class="timeline">
-				{laboratories.map((lab, index) => (
-					<div class="timeline-item" style={`animation-delay: ${index * 100}ms`}>
-						<div class="timeline-marker"></div>
-						<div class="timeline-content">
-							<span class="timeline-period">{formatPeriod(lab.startMonth, lab.finishMonth)}</span>
-							<h4 class="timeline-title">
-								{lab.siteUrl ? (
-									<a href={lab.siteUrl} target="_blank" rel="noopener noreferrer" class="timeline-link">
-										{lab.name}
-										<ExternalLink size="sm" />
-									</a>
-								) : (
-									lab.name
-								)}
-							</h4>
+				{laboratories.map((lab, index) => {
+					const url = lab.siteUrl || '';
+
+					return url ? (
+						<a
+							class="timeline-item timeline-link"
+							href={url}
+							target="_blank"
+							rel="noopener noreferrer"
+							style={`animation-delay: ${index * 100}ms`}
+						>
+							<div class="timeline-marker"></div>
+							<div class="timeline-content">
+								<span class="timeline-period">{formatPeriod(lab.startMonth, lab.finishMonth)}</span>
+								<h4 class="timeline-title">{lab.name}</h4>
+							</div>
+							<span class="external-indicator" aria-label="外部サイトへ移動">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+									<polyline points="15 3 21 3 21 9" />
+									<line x1="10" y1="14" x2="21" y2="3" />
+								</svg>
+							</span>
+						</a>
+					) : (
+						<div
+							class="timeline-item"
+							style={`animation-delay: ${index * 100}ms`}
+						>
+							<div class="timeline-marker"></div>
+							<div class="timeline-content">
+								<span class="timeline-period">{formatPeriod(lab.startMonth, lab.finishMonth)}</span>
+								<h4 class="timeline-title">{lab.name}</h4>
+							</div>
 						</div>
-					</div>
-				))}
+					);
+				})}
 			</div>
 		</div>
 	</div>
@@ -113,10 +151,38 @@ const { jobHistory, laboratories } = Astro.props;
 		position: relative;
 		padding-bottom: var(--space-2xl);
 		animation: fadeInUp 0.6s ease-out backwards;
+		border-radius: var(--radius-md);
+		transition: all var(--transition-base);
 	}
 
 	.timeline-item:last-child {
-		padding-bottom: 0;
+		padding-bottom: var(--space-xl);
+	}
+
+	.timeline-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+		cursor: pointer;
+		padding: var(--space-md) var(--space-2xl) var(--space-md) var(--space-md);
+	}
+
+	.timeline-link:hover {
+		background: var(--color-bg-card);
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.timeline-link:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+	}
+
+	.external-indicator {
+		position: absolute;
+		right: var(--space-md);
+		top: 10px;
+		color: var(--color-text-muted);
 	}
 
 	.timeline-marker {
@@ -144,22 +210,6 @@ const { jobHistory, laboratories } = Astro.props;
 		font-weight: 600;
 		margin-bottom: var(--space-sm);
 		color: var(--color-text);
-	}
-
-	.timeline-link {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-sm);
-		color: var(--color-text);
-		transition: color var(--transition-fast);
-	}
-
-	.timeline-link:hover {
-		color: var(--color-accent);
-	}
-
-	.timeline-link:hover :global(.external-icon-sm) {
-		opacity: 1;
 	}
 
 	.timeline-description {

@@ -1,6 +1,7 @@
 ---
 /**
- * プロジェクトセクションコンポーネント
+ * Development セクションコンポーネント
+ * ハッカソン・開発イベントの成果を表示
  */
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
@@ -13,12 +14,13 @@ export interface Props {
 const { entries } = Astro.props;
 
 // 各エントリをレンダリング
-const projects = await Promise.all(
+const development = await Promise.all(
 	entries.map(async (entry) => {
 		const { Content } = await render(entry);
 		const data = entry.data as {
 			name?: string;
 			title?: string;
+			award?: string;
 			links?: string[];
 		};
 		return { slug: entry.id, Content, ...data };
@@ -26,55 +28,56 @@ const projects = await Promise.all(
 );
 ---
 
-{projects.length > 0 && (
-	<section class="section" id="projects">
-		<SectionHeader title="Projects" />
-		<div class="project-list">
-			{projects.map((project, index) => (
-				<div
-					class="project-item modal-trigger"
-					style={`animation-delay: ${index * 100}ms`}
-					data-modal-trigger={project.slug}
-					role="button"
-					tabindex="0"
-				>
-					<div class="project-content">
-						<span class="project-name">{project.name}</span>
-						<span class="project-title">{project.title}</span>
-					</div>
-					<span class="detail-indicator">詳細を見る →</span>
-				</div>
-			))}
-		</div>
-
-		{/* Template elements for modal content */}
-		{projects.map((project) => (
-			<template
-				id={`detail-${project.slug}`}
-				data-title={project.name}
-				data-presentation=""
-				data-award=""
-				data-links={(project.links || []).join('|')}
+<section class="section" id="development">
+	<SectionHeader title="Development" count={`${development.length} Projects`} />
+	<div class="dev-list">
+		{development.map((item, index) => (
+			<div
+				class="dev-item modal-trigger"
+				style={`animation-delay: ${index * 100}ms`}
+				data-modal-trigger={item.slug}
+				role="button"
+				tabindex="0"
 			>
-				<project.Content />
-			</template>
+				<div class="dev-content">
+					<span class="dev-event">{item.name}</span>
+					<span class="dev-title">{item.title}</span>
+				</div>
+				<div class="dev-right">
+					{item.award && <span class="dev-award-badge">{item.award}</span>}
+				</div>
+				<span class="detail-indicator">詳細を見る →</span>
+			</div>
 		))}
-	</section>
-)}
+	</div>
+
+	{/* Template elements for modal content */}
+	{development.map((item) => (
+		<template
+			id={`detail-${item.slug}`}
+			data-title={item.title}
+			data-presentation={item.name || ''}
+			data-award={item.award || ''}
+			data-links={(item.links || []).join('|')}
+		>
+			<item.Content />
+		</template>
+	))}
+</section>
 
 <style>
 	.section {
 		border-top: 1px solid var(--color-border);
 	}
 
-	.project-list {
+	.dev-list {
 		display: flex;
 		flex-direction: column;
 		border-left: 3px solid var(--color-accent);
 		padding-left: var(--space-xl);
 	}
 
-	.project-item {
+	.dev-item {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -86,11 +89,11 @@ const projects = await Promise.all(
 		position: relative;
 	}
 
-	.project-item + .project-item {
+	.dev-item + .dev-item {
 		margin-top: 1px;
 	}
 
-	.project-item + .project-item::before {
+	.dev-item + .dev-item::before {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -101,25 +104,25 @@ const projects = await Promise.all(
 		transition: opacity var(--transition-fast);
 	}
 
-	.project-item:hover {
+	.dev-item:hover {
 		background: var(--color-bg-card);
 		transform: translateY(-3px);
 		box-shadow: var(--shadow-md);
 	}
 
-	.project-item:hover + .project-item::before,
-	.project-item:hover::before {
+	.dev-item:hover + .dev-item::before,
+	.dev-item:hover::before {
 		opacity: 0;
 	}
 
-	.project-content {
+	.dev-content {
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
 		min-width: 0;
 	}
 
-	.project-name {
+	.dev-event {
 		font-size: 0.8rem;
 		font-weight: 600;
 		letter-spacing: 0.03em;
@@ -127,14 +130,32 @@ const projects = await Promise.all(
 		line-height: 1.4;
 	}
 
-	.project-title {
+	.dev-title {
 		font-size: 1.05rem;
 		font-weight: 500;
 		color: var(--color-text);
 		line-height: 1.5;
 	}
 
-	.project-item:focus-visible {
+	.dev-right {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		flex-shrink: 0;
+	}
+
+	.dev-award-badge {
+		display: inline-block;
+		padding: var(--space-sm) var(--space-md);
+		background: var(--color-accent-soft);
+		color: var(--color-accent);
+		font-size: 0.85rem;
+		font-weight: 600;
+		border-radius: var(--radius-md);
+		white-space: nowrap;
+	}
+
+	.dev-item:focus-visible {
 		outline: 2px solid var(--color-accent);
 		outline-offset: 2px;
 	}
@@ -151,9 +172,14 @@ const projects = await Promise.all(
 	}
 
 	@media (max-width: 768px) {
-		.project-item {
+		.dev-item {
 			flex-direction: column;
 			align-items: flex-start;
+		}
+
+		.dev-right {
+			width: 100%;
+			justify-content: space-between;
 		}
 	}
 </style>

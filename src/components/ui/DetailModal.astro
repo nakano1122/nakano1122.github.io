@@ -1,0 +1,479 @@
+---
+/**
+ * 詳細モーダルコンポーネント
+ * <dialog> 要素によるネイティブモーダル実装
+ * ビルド時に生成された <template> からコンテンツを注入する
+ */
+---
+
+<dialog id="detail-modal" class="detail-modal">
+	<div class="modal-container">
+		<header class="modal-header">
+			<h2 class="modal-title" id="modal-title"></h2>
+			<button class="modal-close" aria-label="閉じる">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<line x1="18" y1="6" x2="6" y2="18"></line>
+					<line x1="6" y1="6" x2="18" y2="18"></line>
+				</svg>
+			</button>
+		</header>
+		<div class="modal-meta" id="modal-meta"></div>
+		<div class="modal-body" id="modal-body"></div>
+		<footer class="modal-footer" id="modal-footer"></footer>
+	</div>
+</dialog>
+
+<style is:global>
+	/* Modal base */
+	.detail-modal {
+		max-width: 720px;
+		width: calc(100% - var(--space-xl) * 2);
+		max-height: 85vh;
+		position: fixed;
+		inset: 0;
+		margin: auto;
+		border: none;
+		border-radius: var(--radius-xl);
+		background: var(--color-bg-elevated);
+		color: var(--color-text);
+		padding: 0;
+		box-shadow: var(--shadow-lg);
+		overflow: hidden;
+	}
+
+	.detail-modal::backdrop {
+		background: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+	}
+
+	/* Open/Close animations */
+	.detail-modal[open] {
+		animation: modalFadeIn 0.3s ease-out;
+	}
+
+	.detail-modal[open]::backdrop {
+		animation: backdropFadeIn 0.3s ease-out;
+	}
+
+	@keyframes modalFadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(20px) scale(0.97);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes backdropFadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	/* Container */
+	.modal-container {
+		display: flex;
+		flex-direction: column;
+		max-height: 85vh;
+	}
+
+	/* Header */
+	.modal-header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: var(--space-md);
+		padding: var(--space-xl) var(--space-2xl);
+		border-bottom: 1px solid var(--color-border);
+		flex-shrink: 0;
+	}
+
+	.modal-title {
+		font-family: var(--font-body);
+		font-size: 1.3rem;
+		font-weight: 600;
+		line-height: 1.5;
+		color: var(--color-text);
+		flex: 1;
+	}
+
+	.modal-close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border: none;
+		border-radius: var(--radius-sm);
+		background: transparent;
+		color: var(--color-text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		flex-shrink: 0;
+	}
+
+	.modal-close:hover {
+		background: var(--color-bg-subtle);
+		color: var(--color-text);
+	}
+
+	/* Meta */
+	.modal-meta {
+		padding: var(--space-md) var(--space-2xl);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+		flex-shrink: 0;
+	}
+
+	.modal-meta:empty {
+		display: none;
+	}
+
+	.modal-meta-tag {
+		display: inline-block;
+		padding: var(--space-xs) var(--space-md);
+		background: var(--color-highlight-soft);
+		color: var(--color-highlight);
+		font-size: 0.85rem;
+		font-weight: 600;
+		border-radius: var(--radius-md);
+	}
+
+	/* Body */
+	.modal-body {
+		padding: var(--space-xl) var(--space-2xl);
+		overflow-y: auto;
+		flex: 1;
+		min-height: 0;
+	}
+
+	/* Markdown content styling */
+	.modal-body h2 {
+		font-size: 1.15rem;
+		font-weight: 600;
+		color: var(--color-text);
+		margin-top: var(--space-xl);
+		margin-bottom: var(--space-md);
+		padding-bottom: var(--space-sm);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.modal-body h2:first-child {
+		margin-top: 0;
+	}
+
+	.modal-meta-tag--presentation {
+		background: var(--color-highlight-soft);
+		color: var(--color-highlight);
+	}
+
+	.modal-meta-tag--award {
+		background: var(--color-accent-soft);
+		color: var(--color-accent);
+	}
+
+	.modal-body h3 {
+		font-size: 1.05rem;
+		font-weight: 600;
+		color: var(--color-text);
+		margin-top: var(--space-lg);
+		margin-bottom: var(--space-sm);
+	}
+
+	.modal-body p {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		line-height: 1.8;
+		margin-bottom: var(--space-md);
+	}
+
+	.modal-body ul,
+	.modal-body ol {
+		padding-left: var(--space-xl);
+		margin-bottom: var(--space-md);
+	}
+
+	.modal-body li {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		line-height: 1.8;
+		margin-bottom: var(--space-xs);
+	}
+
+	.modal-body a {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		transition: color var(--transition-fast);
+	}
+
+	.modal-body a:hover {
+		color: var(--color-accent-hover);
+	}
+
+	.modal-body blockquote {
+		border-left: 3px solid var(--color-accent);
+		padding-left: var(--space-lg);
+		margin: var(--space-lg) 0;
+		color: var(--color-text-muted);
+		font-style: italic;
+	}
+
+	.modal-body code {
+		background: var(--color-bg-subtle);
+		padding: 0.15em 0.4em;
+		border-radius: var(--radius-sm);
+		font-size: 0.9em;
+	}
+
+	.modal-body strong {
+		color: var(--color-text);
+		font-weight: 600;
+	}
+
+	/* Embedded content styling */
+	.modal-body iframe {
+		width: 100%;
+		border: none;
+		border-radius: var(--radius-md);
+		margin: var(--space-lg) 0;
+	}
+
+	.modal-body img {
+		max-width: 100%;
+		height: auto;
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-sm);
+		margin: var(--space-md) 0;
+	}
+
+	/* Footer */
+	.modal-footer {
+		padding: var(--space-lg) var(--space-2xl);
+		border-top: 1px solid var(--color-border);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+		flex-shrink: 0;
+	}
+
+	.modal-footer:empty {
+		display: none;
+	}
+
+	.modal-link-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-md) var(--space-lg);
+		background: var(--color-accent-soft);
+		color: var(--color-accent);
+		font-size: 0.95rem;
+		font-weight: 600;
+		border-radius: var(--radius-md);
+		transition: all var(--transition-base);
+		text-decoration: none;
+	}
+
+	.modal-link-btn:hover {
+		background: var(--color-accent);
+		color: white;
+		text-decoration: none;
+	}
+
+	.modal-link-btn svg {
+		width: 16px;
+		height: 16px;
+		flex-shrink: 0;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.detail-modal {
+			width: calc(100% - var(--space-lg) * 2);
+			max-height: 90vh;
+			border-radius: var(--radius-lg);
+		}
+
+		.modal-container {
+			max-height: 90vh;
+		}
+
+		.modal-header {
+			padding: var(--space-lg) var(--space-lg);
+		}
+
+		.modal-title {
+			font-size: 1.15rem;
+		}
+
+		.modal-meta {
+			padding: var(--space-sm) var(--space-lg);
+		}
+
+		.modal-body {
+			padding: var(--space-lg) var(--space-lg);
+		}
+
+		.modal-footer {
+			padding: var(--space-md) var(--space-lg);
+		}
+
+		.modal-body iframe {
+			height: 250px;
+		}
+	}
+
+	/* Clickable card styles */
+	.modal-trigger {
+		cursor: pointer;
+		position: relative;
+	}
+
+	.modal-trigger .detail-indicator {
+		position: absolute;
+		bottom: var(--space-md);
+		right: var(--space-lg);
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--color-accent);
+		opacity: 0;
+		transform: translateX(-4px);
+		transition: all var(--transition-base);
+		pointer-events: none;
+	}
+
+	.modal-trigger:hover .detail-indicator,
+	.modal-trigger:focus-visible .detail-indicator {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.modal-trigger:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+	}
+</style>
+
+<script>
+	function initModal() {
+		const dialog = document.getElementById('detail-modal') as HTMLDialogElement;
+		if (!dialog) return;
+
+		const titleEl = document.getElementById('modal-title')!;
+		const metaEl = document.getElementById('modal-meta')!;
+		const bodyEl = document.getElementById('modal-body')!;
+		const footerEl = document.getElementById('modal-footer')!;
+		const closeBtn = dialog.querySelector('.modal-close')!;
+
+		// クリックイベント: data-modal-trigger を持つ要素
+		document.addEventListener('click', (e) => {
+			const trigger = (e.target as HTMLElement).closest('[data-modal-trigger]') as HTMLElement;
+			if (!trigger) return;
+
+			// リンクのクリックはモーダルを開かない
+			if ((e.target as HTMLElement).closest('a')) return;
+
+			const slug = trigger.dataset.modalTrigger;
+			if (!slug) return;
+
+			const template = document.getElementById(`detail-${slug}`) as HTMLTemplateElement;
+			if (!template) return;
+
+			// template の data 属性からメタ情報を取得
+			const title = template.dataset.title || '';
+			const presentation = template.dataset.presentation || '';
+			const award = template.dataset.award || '';
+			const links = template.dataset.links || '';
+
+			// タイトル設定
+			titleEl.textContent = title;
+
+			// メタ情報設定（フロントマターから）
+			metaEl.innerHTML = '';
+			if (presentation) {
+				const span = document.createElement('span');
+				span.className = 'modal-meta-tag modal-meta-tag--presentation';
+				span.textContent = presentation;
+				metaEl.appendChild(span);
+			}
+			if (award) {
+				const span = document.createElement('span');
+				span.className = 'modal-meta-tag modal-meta-tag--award';
+				span.textContent = award;
+				metaEl.appendChild(span);
+			}
+
+			// ボディにコンテンツを注入
+			const content = template.content.cloneNode(true);
+			bodyEl.innerHTML = '';
+			bodyEl.appendChild(content);
+
+			// フッターのリンクボタン設定（フロントマターから）
+			footerEl.innerHTML = '';
+			if (links) {
+				const linkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+				links.split('|').forEach((url) => {
+					const trimmed = url.trim();
+					if (!trimmed) return;
+					const a = document.createElement('a');
+					a.href = trimmed;
+					a.target = '_blank';
+					a.rel = 'noopener noreferrer';
+					a.className = 'modal-link-btn';
+					a.innerHTML = `外部リンク${linkIcon}`;
+					footerEl.appendChild(a);
+				});
+			}
+
+			// iframe/画像に loading="lazy" を付与
+			bodyEl.querySelectorAll('iframe').forEach((iframe) => {
+				iframe.setAttribute('loading', 'lazy');
+			});
+			bodyEl.querySelectorAll('img').forEach((img) => {
+				img.setAttribute('loading', 'lazy');
+			});
+
+			// スクロールロック & モーダル表示
+			document.body.style.overflow = 'hidden';
+			dialog.showModal();
+
+			// ボディのスクロール位置をリセット
+			bodyEl.scrollTop = 0;
+		});
+
+		// キーボードでもトリガーを起動
+		document.addEventListener('keydown', (e) => {
+			if (e.key !== 'Enter' && e.key !== ' ') return;
+			const trigger = (e.target as HTMLElement).closest('[data-modal-trigger]');
+			if (!trigger) return;
+			e.preventDefault();
+			trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+		});
+
+		// 閉じるボタン
+		closeBtn.addEventListener('click', () => {
+			dialog.close();
+		});
+
+		// backdrop クリックで閉じる
+		dialog.addEventListener('click', (e) => {
+			if (e.target === dialog) {
+				dialog.close();
+			}
+		});
+
+		// close イベントでスクロールロック解除
+		dialog.addEventListener('close', () => {
+			document.body.style.overflow = '';
+		});
+	}
+
+	// DOMContentLoaded 後に初期化
+	document.addEventListener('DOMContentLoaded', initModal);
+	// View Transitions 対応
+	document.addEventListener('astro:after-swap', initModal);
+</script>

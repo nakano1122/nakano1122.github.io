@@ -1,17 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { loadPersonalData } from '../functions/dataLoader';
+import { loadPersonalData, loadAllDetails, getEntriesBySection } from '../functions/dataLoader';
 
 // Sections
 import HeroSection from '../components/sections/HeroSection.astro';
 import ResearchSection from '../components/sections/ResearchSection.astro';
-import AwardsSection from '../components/sections/AwardsSection.astro';
+import DevelopmentSection from '../components/sections/DevelopmentSection.astro';
 import ExperienceSection from '../components/sections/ExperienceSection.astro';
 import ProjectsSection from '../components/sections/ProjectsSection.astro';
 import BackgroundSection from '../components/sections/BackgroundSection.astro';
 import Footer from '../components/sections/Footer.astro';
+import DetailModal from '../components/ui/DetailModal.astro';
 
 const data = await loadPersonalData();
+const allEntries = await loadAllDetails();
+
+const researchEntries = getEntriesBySection(allEntries, 'research');
+const developmentEntries = getEntriesBySection(allEntries, 'development');
+const projectEntries = getEntriesBySection(allEntries, 'projects');
 ---
 
 <Layout title="中野暁登 | Software Engineer & Researcher">
@@ -19,15 +25,17 @@ const data = await loadPersonalData();
 		<HeroSection profile={data.profile} />
 
 		<div class="content">
-			<ResearchSection research={data.research} />
-			<AwardsSection awards={data.awards} />
-			<ProjectsSection projects={data.projects} />
+			<ResearchSection entries={researchEntries} />
+			<DevelopmentSection entries={developmentEntries} />
+			<ProjectsSection entries={projectEntries} />
 			<ExperienceSection jobHistory={data.jobHistory} laboratories={data.laboratories} />
 			<BackgroundSection education={data.education} skills={data.skills} />
 		</div>
 
 		<Footer />
 	</main>
+
+	<DetailModal />
 </Layout>
 
 <style>
