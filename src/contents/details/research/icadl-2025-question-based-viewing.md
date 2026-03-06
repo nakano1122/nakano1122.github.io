@@ -1,5 +1,6 @@
 ---
-order: 2
+startDate: 2025-12-01
+endDate: 2025-12-01
 title: "Question-Based Viewing with LLM-Powered Personified Characters: A Role-Playing Dialogue System for Perspective-Taking in Museums"
 authors: "Akito Nakano, Shio Takidaira, Tsukasa Sawaura, Yoshiyuki Shoji, Takehiro Yamamoto, Yusuke Yamamoto, Hiroaki Ohshima, Kenro Aihara, Noriko Kando"
 conference: "ICADL 2025"

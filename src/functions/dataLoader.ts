@@ -23,7 +23,7 @@ export async function loadAllDetails(): Promise<DetailEntry[]> {
 }
 
 /**
- * 指定ディレクトリのエントリを order 順で取得
+ * 指定ディレクトリのエントリを startDate 降順（新しい順）で取得
  */
 export function getEntriesBySection(
 	entries: DetailEntry[],
@@ -32,9 +32,9 @@ export function getEntriesBySection(
 	return entries
 		.filter((e) => e.id.startsWith(`${section}/`))
 		.sort((a, b) => {
-			const orderA = (a.data as { order?: number }).order ?? 999;
-			const orderB = (b.data as { order?: number }).order ?? 999;
-			return orderA - orderB;
+			const dateA = (a.data as { startDate: Date }).startDate.getTime();
+			const dateB = (b.data as { startDate: Date }).startDate.getTime();
+			return dateB - dateA;
 		});
 }
 

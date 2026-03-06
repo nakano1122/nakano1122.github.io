@@ -1,5 +1,6 @@
 ---
-order: 1
+startDate: 2024-09-12
+endDate: 2024-09-14
 name: "TechSummerCamp2024"
 title: "「色んなアプリから通知が来ると管理が大変！」を解決するための、通知一括管理アプリ"
 award: "最優秀賞"
