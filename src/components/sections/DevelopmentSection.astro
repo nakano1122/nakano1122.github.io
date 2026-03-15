@@ -8,7 +8,7 @@ import { render } from 'astro:content';
 import SectionHeader from '../ui/SectionHeader.astro';
 
 export interface Props {
-	entries: CollectionEntry<'details'>[];
+	entries: CollectionEntry<'development'>[];
 }
 
 const { entries } = Astro.props;
@@ -17,13 +17,7 @@ const { entries } = Astro.props;
 const development = await Promise.all(
 	entries.map(async (entry) => {
 		const { Content } = await render(entry);
-		const data = entry.data as {
-			name?: string;
-			title?: string;
-			award?: string;
-			links?: string[];
-		};
-		return { slug: entry.id, Content, ...data };
+		return { slug: entry.id, Content, ...entry.data };
 	})
 );
 ---
@@ -31,10 +25,9 @@ const development = await Promise.all(
 <section class="section" id="development">
 	<SectionHeader title="Development" count={`${development.length} Projects`} />
 	<div class="dev-list">
-		{development.map((item, index) => (
+		{development.map((item) => (
 			<div
 				class="dev-item modal-trigger"
-				style={`animation-delay: ${index * 100}ms`}
 				data-modal-trigger={item.slug}
 				role="button"
 				tabindex="0"
@@ -43,15 +36,12 @@ const development = await Promise.all(
 					<span class="dev-event">{item.name}</span>
 					<span class="dev-title">{item.title}</span>
 				</div>
-				<div class="dev-right">
-					{item.award && <span class="dev-award-badge">{item.award}</span>}
-				</div>
+				{item.award && <span class="dev-award">{item.award}</span>}
 				<span class="detail-indicator">詳細を見る →</span>
 			</div>
 		))}
 	</div>
 
-	{/* Template elements for modal content */}
 	{development.map((item) => (
 		<template
 			id={`detail-${item.slug}`}
@@ -66,15 +56,9 @@ const development = await Promise.all(
 </section>
 
 <style>
-	.section {
-		border-top: 1px solid var(--color-border);
-	}
-
 	.dev-list {
 		display: flex;
 		flex-direction: column;
-		border-left: 3px solid var(--color-accent);
-		padding-left: var(--space-xl);
 	}
 
 	.dev-item {
@@ -82,37 +66,18 @@ const development = await Promise.all(
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-md);
-		padding: var(--space-md) var(--space-md) var(--space-2xl) var(--space-md);
-		border-radius: var(--radius-md);
-		transition: all var(--transition-base);
-		animation: fadeInUp 0.5s ease-out backwards;
+		padding: var(--space-lg) 0;
+		border-bottom: 1px solid var(--color-border);
+		transition: color var(--transition-base);
 		position: relative;
 	}
 
-	.dev-item + .dev-item {
-		margin-top: 1px;
+	.dev-item:first-child {
+		padding-top: 0;
 	}
 
-	.dev-item + .dev-item::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: var(--space-md);
-		right: var(--space-md);
-		height: 1px;
-		background: var(--color-border);
-		transition: opacity var(--transition-fast);
-	}
-
-	.dev-item:hover {
-		background: var(--color-bg-card);
-		transform: translateY(-3px);
-		box-shadow: var(--shadow-md);
-	}
-
-	.dev-item:hover + .dev-item::before,
-	.dev-item:hover::before {
-		opacity: 0;
+	.dev-item:hover .dev-title {
+		color: var(--color-text);
 	}
 
 	.dev-content {
@@ -124,62 +89,37 @@ const development = await Promise.all(
 
 	.dev-event {
 		font-size: 0.8rem;
-		font-weight: 600;
-		letter-spacing: 0.03em;
-		color: var(--color-accent);
+		font-weight: 500;
+		color: var(--color-text-muted);
 		line-height: 1.4;
 	}
 
 	.dev-title {
-		font-size: 1.05rem;
+		font-size: 1rem;
 		font-weight: 500;
 		color: var(--color-text);
 		line-height: 1.5;
+		transition: color var(--transition-base);
 	}
 
-	.dev-right {
-		display: flex;
-		align-items: center;
-		gap: var(--space-md);
-		flex-shrink: 0;
-	}
-
-	.dev-award-badge {
-		display: inline-block;
-		padding: var(--space-sm) var(--space-md);
-		background: var(--color-accent-soft);
-		color: var(--color-accent);
-		font-size: 0.85rem;
-		font-weight: 600;
-		border-radius: var(--radius-md);
+	.dev-award {
+		font-size: 0.8rem;
+		font-weight: 500;
+		color: var(--color-award);
 		white-space: nowrap;
+		flex-shrink: 0;
 	}
 
 	.dev-item:focus-visible {
 		outline: 2px solid var(--color-accent);
-		outline-offset: 2px;
-	}
-
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(12px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+		outline-offset: 4px;
 	}
 
 	@media (max-width: 768px) {
 		.dev-item {
 			flex-direction: column;
 			align-items: flex-start;
-		}
-
-		.dev-right {
-			width: 100%;
-			justify-content: space-between;
+			gap: var(--space-xs);
 		}
 	}
 </style>

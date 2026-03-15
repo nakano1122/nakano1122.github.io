@@ -2,16 +2,14 @@
 /**
  * ヒーローセクションコンポーネント
  */
-import type { ParsedProfile } from '../../utils/markdownParser';
+import type { PersonalData } from '../../functions/dataLoader';
+import { Icon } from 'astro-icon/components';
 
 export interface Props {
-	profile: ParsedProfile;
+	profile: PersonalData;
 }
 
 const { profile } = Astro.props;
-
-// メールアドレスを分割（@の前後）
-const [emailUser, emailDomain] = profile.mail.split(' ');
 
 // GitHubのユーザー名を抽出
 const githubUsername = profile.github.split('/').pop() || '';
@@ -28,80 +26,63 @@ const rankColorMap: Record<string, string> = {
 	'赤': 'red',
 };
 
-// AtCoderのランクに応じた色を取得
 const getAtcoderRankColor = (rank?: string): string => {
-	if (!rank) return 'var(--color-border)';
+	if (!rank) return 'var(--color-text-secondary)';
 	const englishRank = rankColorMap[rank];
-	if (englishRank) {
-		return `var(--atcoder-${englishRank})`;
-	}
-	return 'var(--color-border)';
+	return englishRank ? `var(--atcoder-${englishRank})` : 'var(--color-text-secondary)';
 };
 
-const atcoderBorderColor = getAtcoderRankColor(profile.atcoderRank);
+const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 ---
 
 <header class="hero">
 	<div class="hero-content">
 		<h1 class="hero-name">
 			<span class="name-ja">{profile.name}</span>
-			<span class="name-en">Akito Nakano</span>
+			<span class="name-en">{profile.nameEn}</span>
 		</h1>
 		<p class="hero-affiliation">
 			{profile.department} / {profile.grade}
 		</p>
 		<div class="hero-links">
-			<div class="link-item email-display" aria-label="Email">
-				<img data-theme-icon="mail" alt="" class="link-icon theme-icon" />
-				<span class="email-text">
-					{emailUser}<img data-theme-icon="at-mark" alt="@" class="at-mark theme-icon" />{emailDomain}
-				</span>
-			</div>
-			<a href={profile.github} target="_blank" rel="noopener noreferrer" class="link-item" aria-label="GitHub">
-				<img data-theme-icon="github" alt="" class="link-icon theme-icon" />
-				<span>@{githubUsername}</span>
+			<span class="link-item">
+				<Icon name="mdi:email-outline" class="link-icon" />
+				{profile.email.user}@{profile.email.domain}
+			</span>
+			<a href={profile.github} target="_blank" rel="noopener noreferrer" class="link-item">
+				<Icon name="mdi:github" class="link-icon" />
+				@{githubUsername}
 			</a>
 			{profile.atcoder && (
 				<a
-					href={profile.atcoder}
+					href={profile.atcoder.url}
 					target="_blank"
 					rel="noopener noreferrer"
 					class="link-item atcoder-link"
-					style={`--atcoder-border-color: ${atcoderBorderColor};`}
-					aria-label="AtCoder"
+					style={`color: ${atcoderColor};`}
 				>
-					<img data-theme-icon="atcoder" alt="" class="link-icon theme-icon" />
-					<span>AtCoder</span>
+					AtCoder
 				</a>
 			)}
 		</div>
-	</div>
-	<div class="hero-decoration">
-		<div class="decoration-line"></div>
-		<div class="decoration-dot"></div>
 	</div>
 </header>
 
 <style>
 	.hero {
-		min-height: 65vh;
+		min-height: 90vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		padding: var(--space-4xl) 0;
-		position: relative;
-	}
-
-	.hero-content {
-		animation: fadeInUp 0.8s ease-out;
 	}
 
 	.hero-name {
 		font-family: var(--font-display);
-		font-size: clamp(3.5rem, 10vw, 6rem);
-		font-weight: 600;
-		line-height: 1.1;
-		margin-bottom: var(--space-xl);
+		font-size: clamp(2.5rem, 8vw, 4rem);
+		font-weight: 700;
+		line-height: 1.15;
+		margin-bottom: var(--space-lg);
 		color: var(--color-text);
 	}
 
@@ -111,230 +92,73 @@ const atcoderBorderColor = getAtcoderRankColor(profile.atcoderRank);
 
 	.name-en {
 		display: block;
-		font-size: 0.32em;
-		font-style: italic;
-		font-weight: 400;
+		font-size: 0.35em;
+		font-weight: 300;
 		color: var(--color-text-muted);
-		margin-top: var(--space-md);
+		margin-top: var(--space-sm);
+		letter-spacing: 0.05em;
 	}
 
 	.hero-affiliation {
-		font-size: 1.35rem;
+		font-size: 1rem;
 		color: var(--color-text-secondary);
-		margin-bottom: var(--space-2xl);
-		font-weight: 500;
+		margin-bottom: var(--space-xl);
+		font-weight: 400;
 	}
 
 	.hero-links {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-md);
+		gap: var(--space-lg);
+		align-items: center;
 	}
 
 	.link-item {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-sm);
-		padding: var(--space-md) var(--space-xl);
-		background: var(--color-bg-card);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-md);
-		font-size: 1rem;
-		font-weight: 500;
-		color: var(--color-text-secondary);
-		transition: all var(--transition-base);
-		box-shadow: var(--shadow-sm);
-	}
-
-	.link-item:hover {
-		background: var(--color-bg-card-hover);
-		border-color: var(--color-accent);
-		color: var(--color-accent);
-		transform: translateY(-3px);
-		box-shadow: var(--shadow-md);
-	}
-
-	.email-display {
-		cursor: default;
-	}
-
-	.email-display:hover {
-		transform: none;
-		border-color: var(--color-border);
+		gap: 0.4rem;
+		font-size: 0.9rem;
 		color: var(--color-text-secondary);
 	}
 
-	.email-text {
-		display: inline-flex;
-		align-items: center;
+	a.link-item {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		text-decoration-color: var(--color-border);
+		transition: color var(--transition-base), text-decoration-color var(--transition-base);
 	}
 
-	.at-mark {
-		width: 13px;
-		height: 13px;
-		margin: 0 1px;
-		vertical-align: middle;
-		display: inline-block;
+	a.link-item:hover {
+		color: var(--color-text);
+		text-decoration-color: var(--color-text);
 	}
 
 	.link-icon {
-		width: 20px;
-		height: 20px;
+		width: 16px;
+		height: 16px;
+		flex-shrink: 0;
 	}
 
-	.hero-decoration {
-		position: absolute;
-		right: 0;
-		top: 50%;
-		transform: translateY(-50%);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--space-sm);
-	}
-
-	.decoration-line {
-		width: 2px;
-		height: 100px;
-		background: linear-gradient(to bottom, transparent, var(--color-accent), transparent);
-		border-radius: 1px;
-	}
-
-	.decoration-dot {
-		width: 10px;
-		height: 10px;
-		background: var(--color-accent);
-		border-radius: 50%;
-		box-shadow: 0 0 20px var(--color-accent-soft);
-	}
-
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(30px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	.atcoder-link {
+		font-weight: 500;
 	}
 
 	@media (max-width: 768px) {
 		.hero {
 			min-height: auto;
-			padding: var(--space-2xl) 0 var(--space-xl);
+			padding: var(--space-3xl) 0 var(--space-xl);
 		}
 
 		.hero-name {
-			font-size: clamp(2.5rem, 12vw, 3.5rem);
-		}
-
-		.hero-affiliation {
-			font-size: 1rem;
-			margin-bottom: var(--space-lg);
+			font-size: clamp(2rem, 10vw, 2.5rem);
 		}
 
 		.hero-links {
-			gap: var(--space-sm);
+			gap: var(--space-md);
 		}
 
 		.link-item {
-			padding: var(--space-sm) var(--space-md);
-			font-size: 0.9rem;
+			font-size: 0.85rem;
 		}
-
-		.link-icon {
-			width: 18px;
-			height: 18px;
-		}
-
-			.hero-decoration {
-		display: none;
 	}
-}
-
-/* AtCoder rank-specific styling */
-.atcoder-link {
-	position: relative;
-	border: 2px solid var(--atcoder-border-color);
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--atcoder-border-color) 8%, transparent) 0%,
-		transparent 100%
-	);
-	overflow: hidden;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ランク色のアクセントバー */
-.atcoder-link::before {
-	content: '';
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	width: 4px;
-	background: var(--atcoder-border-color);
-	transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 背景のグロウエフェクト */
-.atcoder-link::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	background: radial-gradient(
-		circle at 50% 50%,
-		color-mix(in srgb, var(--atcoder-border-color) 0%, transparent),
-		transparent 70%
-	);
-	opacity: 0;
-	transition: opacity 0.4s ease;
-}
-
-.atcoder-link:hover {
-	border-color: var(--atcoder-border-color);
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--atcoder-border-color) 18%, transparent) 0%,
-		color-mix(in srgb, var(--atcoder-border-color) 8%, transparent) 100%
-	);
-	color: var(--atcoder-border-color);
-	transform: translateY(-3px) scale(1.02);
-	box-shadow:
-		0 8px 24px color-mix(in srgb, var(--atcoder-border-color) 35%, transparent),
-		0 0 40px color-mix(in srgb, var(--atcoder-border-color) 20%, transparent),
-		inset 0 1px 0 color-mix(in srgb, var(--atcoder-border-color) 20%, transparent);
-}
-
-.atcoder-link:hover::before {
-	width: 6px;
-}
-
-.atcoder-link:hover::after {
-	opacity: 1;
-}
-
-/* アイコンとテキストの色をランクカラーに */
-.atcoder-link:hover .link-icon {
-	filter: brightness(1.2) saturate(1.3);
-}
-
-/* アニメーションの追加 */
-@keyframes rankPulse {
-	0%, 100% {
-		box-shadow:
-			0 8px 24px color-mix(in srgb, var(--atcoder-border-color) 35%, transparent),
-			0 0 40px color-mix(in srgb, var(--atcoder-border-color) 20%, transparent);
-	}
-	50% {
-		box-shadow:
-			0 8px 28px color-mix(in srgb, var(--atcoder-border-color) 45%, transparent),
-			0 0 50px color-mix(in srgb, var(--atcoder-border-color) 30%, transparent);
-	}
-}
-
-.atcoder-link:hover {
-	animation: rankPulse 2s ease-in-out infinite;
-}
 </style>

@@ -2,13 +2,14 @@
 /**
  * 経験セクションコンポーネント（インターンシップ・研究室）
  */
-import type { ParsedJobHistory, ParsedLaboratory } from '../../utils/markdownParser';
+import type { PersonalData } from '../../functions/dataLoader';
 import { formatPeriod } from '../../functions/dataLoader';
+import { Icon } from 'astro-icon/components';
 import SectionHeader from '../ui/SectionHeader.astro';
 
 export interface Props {
-	jobHistory: ParsedJobHistory[];
-	laboratories: ParsedLaboratory[];
+	jobHistory: PersonalData['jobHistory'];
+	laboratories: PersonalData['laboratories'];
 }
 
 const { jobHistory, laboratories } = Astro.props;
@@ -22,7 +23,7 @@ const { jobHistory, laboratories } = Astro.props;
 		<div class="experience-column">
 			<h3 class="experience-subtitle">Internship</h3>
 			<div class="timeline">
-				{jobHistory.map((job, index) => {
+				{jobHistory.map((job) => {
 					const url = job.hpLink || '';
 
 					return url ? (
@@ -31,7 +32,6 @@ const { jobHistory, laboratories } = Astro.props;
 							href={url}
 							target="_blank"
 							rel="noopener noreferrer"
-							style={`animation-delay: ${index * 100}ms`}
 						>
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
@@ -39,19 +39,10 @@ const { jobHistory, laboratories } = Astro.props;
 								<h4 class="timeline-title">{job.company}</h4>
 								<p class="timeline-description">{job.position}</p>
 							</div>
-							<span class="external-indicator" aria-label="外部サイトへ移動">
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-									<polyline points="15 3 21 3 21 9" />
-									<line x1="10" y1="14" x2="21" y2="3" />
-								</svg>
-							</span>
+							<Icon name="mdi:open-in-new" class="external-icon" />
 						</a>
 					) : (
-						<div
-							class="timeline-item"
-							style={`animation-delay: ${index * 100}ms`}
-						>
+						<div class="timeline-item">
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
 								<span class="timeline-period">{formatPeriod(job.startMonth, job.finishMonth)}</span>
@@ -68,7 +59,7 @@ const { jobHistory, laboratories } = Astro.props;
 		<div class="experience-column">
 			<h3 class="experience-subtitle">Laboratory</h3>
 			<div class="timeline">
-				{laboratories.map((lab, index) => {
+				{laboratories.map((lab) => {
 					const url = lab.siteUrl || '';
 
 					return url ? (
@@ -77,26 +68,16 @@ const { jobHistory, laboratories } = Astro.props;
 							href={url}
 							target="_blank"
 							rel="noopener noreferrer"
-							style={`animation-delay: ${index * 100}ms`}
 						>
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
 								<span class="timeline-period">{formatPeriod(lab.startMonth, lab.finishMonth)}</span>
 								<h4 class="timeline-title">{lab.name}</h4>
 							</div>
-							<span class="external-indicator" aria-label="外部サイトへ移動">
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-									<polyline points="15 3 21 3 21 9" />
-									<line x1="10" y1="14" x2="21" y2="3" />
-								</svg>
-							</span>
+							<Icon name="mdi:open-in-new" class="external-icon" />
 						</a>
 					) : (
-						<div
-							class="timeline-item"
-							style={`animation-delay: ${index * 100}ms`}
-						>
+						<div class="timeline-item">
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
 								<span class="timeline-period">{formatPeriod(lab.startMonth, lab.finishMonth)}</span>
@@ -111,52 +92,44 @@ const { jobHistory, laboratories } = Astro.props;
 </section>
 
 <style>
-	.section {
-		border-top: 1px solid var(--color-border);
-	}
-
 	.experience-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		gap: var(--space-3xl);
 	}
 
 	.experience-subtitle {
-		font-size: 1.1rem;
+		font-size: 0.85rem;
 		font-weight: 600;
-		color: var(--color-text);
+		color: var(--color-text-muted);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		margin-bottom: var(--space-xl);
+		letter-spacing: 0.08em;
+		margin-bottom: var(--space-lg);
 	}
 
 	/* Timeline */
 	.timeline {
 		position: relative;
-		padding-left: var(--space-2xl);
+		padding-left: var(--space-xl);
 	}
 
 	.timeline::before {
 		content: '';
 		position: absolute;
 		left: 0;
-		top: 10px;
-		bottom: 10px;
-		width: 2px;
+		top: 4px;
+		bottom: 4px;
+		width: 1px;
 		background: var(--color-border);
-		border-radius: 1px;
 	}
 
 	.timeline-item {
 		position: relative;
-		padding-bottom: var(--space-2xl);
-		animation: fadeInUp 0.6s ease-out backwards;
-		border-radius: var(--radius-md);
-		transition: all var(--transition-base);
+		padding-bottom: var(--space-xl);
 	}
 
 	.timeline-item:last-child {
-		padding-bottom: var(--space-xl);
+		padding-bottom: var(--space-md);
 	}
 
 	.timeline-link {
@@ -164,13 +137,13 @@ const { jobHistory, laboratories } = Astro.props;
 		text-decoration: none;
 		color: inherit;
 		cursor: pointer;
-		padding: var(--space-md) var(--space-2xl) var(--space-md) var(--space-md);
+		padding: var(--space-sm) var(--space-xl) var(--space-sm) var(--space-sm);
+		border-radius: 6px;
+		transition: background var(--transition-base);
 	}
 
 	.timeline-link:hover {
-		background: var(--color-bg-card);
-		transform: translateY(-3px);
-		box-shadow: var(--shadow-md);
+		background: var(--color-accent-soft);
 	}
 
 	.timeline-link:focus-visible {
@@ -178,54 +151,50 @@ const { jobHistory, laboratories } = Astro.props;
 		outline-offset: 2px;
 	}
 
-	.external-indicator {
+	.external-icon {
 		position: absolute;
-		right: var(--space-md);
-		top: 10px;
+		right: var(--space-sm);
+		top: var(--space-sm);
+		width: 14px;
+		height: 14px;
 		color: var(--color-text-muted);
+		opacity: 0;
+		transition: opacity var(--transition-base);
+	}
+
+	.timeline-link:hover .external-icon {
+		opacity: 1;
 	}
 
 	.timeline-marker {
 		position: absolute;
-		left: calc(-1 * var(--space-2xl));
-		top: 10px;
-		width: 12px;
-		height: 12px;
-		background: var(--color-bg);
-		border: 3px solid var(--color-accent);
+		left: calc(-1 * var(--space-xl));
+		top: 8px;
+		width: 8px;
+		height: 8px;
+		background: var(--color-text-muted);
 		border-radius: 50%;
-		transform: translateX(-5px);
+		transform: translateX(-3.5px);
 	}
 
 	.timeline-period {
 		display: block;
-		font-size: 0.9rem;
+		font-size: 0.8rem;
 		color: var(--color-text-muted);
-		margin-bottom: var(--space-xs);
-		font-weight: 500;
+		margin-bottom: 2px;
+		font-weight: 400;
 	}
 
 	.timeline-title {
-		font-size: 1.15rem;
+		font-size: 1rem;
 		font-weight: 600;
-		margin-bottom: var(--space-sm);
+		margin-bottom: 2px;
 		color: var(--color-text);
 	}
 
 	.timeline-description {
-		font-size: 1rem;
+		font-size: 0.9rem;
 		color: var(--color-text-secondary);
-	}
-
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
 	}
 
 	@media (max-width: 768px) {

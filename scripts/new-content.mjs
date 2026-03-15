@@ -7,7 +7,7 @@ import { createInterface } from 'node:readline';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const DETAILS_DIR = join(ROOT, 'src', 'contents', 'details');
+const CONTENTS_DIR = join(ROOT, 'src', 'contents');
 
 const SECTIONS = ['research', 'development', 'projects'];
 
@@ -106,7 +106,7 @@ async function main() {
 		process.exit(1);
 	}
 
-	const dirPath = join(DETAILS_DIR, section);
+	const dirPath = join(CONTENTS_DIR, section);
 	const filePath = join(dirPath, `${filename}.md`);
 
 	if (existsSync(filePath)) {
@@ -117,7 +117,7 @@ async function main() {
 	mkdirSync(dirPath, { recursive: true });
 	writeFileSync(filePath, TEMPLATES[section], 'utf-8');
 
-	console.log(`作成しました: src/contents/details/${section}/${filename}.md`);
+	console.log(`作成しました: src/contents/${section}/${filename}.md`);
 }
 
 main();

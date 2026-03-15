@@ -7,7 +7,7 @@ import { render } from 'astro:content';
 import SectionHeader from '../ui/SectionHeader.astro';
 
 export interface Props {
-	entries: CollectionEntry<'details'>[];
+	entries: CollectionEntry<'projects'>[];
 }
 
 const { entries } = Astro.props;
@@ -16,12 +16,7 @@ const { entries } = Astro.props;
 const projects = await Promise.all(
 	entries.map(async (entry) => {
 		const { Content } = await render(entry);
-		const data = entry.data as {
-			name?: string;
-			title?: string;
-			links?: string[];
-		};
-		return { slug: entry.id, Content, ...data };
+		return { slug: entry.id, Content, ...entry.data };
 	})
 );
 ---
@@ -30,10 +25,9 @@ const projects = await Promise.all(
 	<section class="section" id="projects">
 		<SectionHeader title="Projects" />
 		<div class="project-list">
-			{projects.map((project, index) => (
+			{projects.map((project) => (
 				<div
 					class="project-item modal-trigger"
-					style={`animation-delay: ${index * 100}ms`}
 					data-modal-trigger={project.slug}
 					role="button"
 					tabindex="0"
@@ -47,7 +41,6 @@ const projects = await Promise.all(
 			))}
 		</div>
 
-		{/* Template elements for modal content */}
 		{projects.map((project) => (
 			<template
 				id={`detail-${project.slug}`}
@@ -63,15 +56,9 @@ const projects = await Promise.all(
 )}
 
 <style>
-	.section {
-		border-top: 1px solid var(--color-border);
-	}
-
 	.project-list {
 		display: flex;
 		flex-direction: column;
-		border-left: 3px solid var(--color-accent);
-		padding-left: var(--space-xl);
 	}
 
 	.project-item {
@@ -79,37 +66,18 @@ const projects = await Promise.all(
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-md);
-		padding: var(--space-md) var(--space-md) var(--space-2xl) var(--space-md);
-		border-radius: var(--radius-md);
-		transition: all var(--transition-base);
-		animation: fadeInUp 0.5s ease-out backwards;
+		padding: var(--space-lg) 0;
+		border-bottom: 1px solid var(--color-border);
+		transition: color var(--transition-base);
 		position: relative;
 	}
 
-	.project-item + .project-item {
-		margin-top: 1px;
+	.project-item:first-child {
+		padding-top: 0;
 	}
 
-	.project-item + .project-item::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: var(--space-md);
-		right: var(--space-md);
-		height: 1px;
-		background: var(--color-border);
-		transition: opacity var(--transition-fast);
-	}
-
-	.project-item:hover {
-		background: var(--color-bg-card);
-		transform: translateY(-3px);
-		box-shadow: var(--shadow-md);
-	}
-
-	.project-item:hover + .project-item::before,
-	.project-item:hover::before {
-		opacity: 0;
+	.project-item:hover .project-title {
+		color: var(--color-text);
 	}
 
 	.project-content {
@@ -121,33 +89,22 @@ const projects = await Promise.all(
 
 	.project-name {
 		font-size: 0.8rem;
-		font-weight: 600;
-		letter-spacing: 0.03em;
-		color: var(--color-accent);
+		font-weight: 500;
+		color: var(--color-text-muted);
 		line-height: 1.4;
 	}
 
 	.project-title {
-		font-size: 1.05rem;
+		font-size: 1rem;
 		font-weight: 500;
 		color: var(--color-text);
 		line-height: 1.5;
+		transition: color var(--transition-base);
 	}
 
 	.project-item:focus-visible {
 		outline: 2px solid var(--color-accent);
-		outline-offset: 2px;
-	}
-
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(12px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+		outline-offset: 4px;
 	}
 
 	@media (max-width: 768px) {

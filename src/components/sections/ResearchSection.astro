@@ -7,7 +7,7 @@ import { render } from 'astro:content';
 import SectionHeader from '../ui/SectionHeader.astro';
 
 export interface Props {
-	entries: CollectionEntry<'details'>[];
+	entries: CollectionEntry<'research'>[];
 }
 
 const { entries } = Astro.props;
@@ -26,14 +26,7 @@ function splitAwardName(name: string): { event: string; prize: string } {
 const research = await Promise.all(
 	entries.map(async (entry) => {
 		const { Content } = await render(entry);
-		const data = entry.data as {
-			title?: string;
-			authors?: string;
-			conference?: string;
-			award?: string;
-			links?: string[];
-		};
-		return { slug: entry.id, Content, ...data };
+		return { slug: entry.id, Content, ...entry.data };
 	})
 );
 ---
@@ -41,10 +34,9 @@ const research = await Promise.all(
 <section class="section" id="research">
 	<SectionHeader title="Research" count={`${research.length} Publications`} />
 	<div class="research-list">
-		{research.map((paper, index) => (
+		{research.map((paper) => (
 			<article
 				class="research-item modal-trigger"
-				style={`animation-delay: ${index * 100}ms`}
 				data-modal-trigger={paper.slug}
 				role="button"
 				tabindex="0"
@@ -52,7 +44,7 @@ const research = await Promise.all(
 				<div class="research-meta">
 					<span class="research-conference">{paper.conference}</span>
 					{paper.award && (
-						<span class="research-award-badge">
+						<span class="research-award">
 							{splitAwardName(paper.award).prize}
 						</span>
 					)}
@@ -64,7 +56,6 @@ const research = await Promise.all(
 		))}
 	</div>
 
-	{/* Template elements for modal content */}
 	{research.map((paper) => (
 		<template
 			id={`detail-${paper.slug}`}
@@ -79,79 +70,61 @@ const research = await Promise.all(
 </section>
 
 <style>
-	.section {
-		border-top: 1px solid var(--color-border);
-	}
-
 	.research-list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-xl);
 	}
 
 	.research-item {
-		padding: var(--space-xl);
-		background: var(--color-bg-card);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-lg);
-		transition: all var(--transition-base);
-		animation: fadeInUp 0.6s ease-out backwards;
-		box-shadow: var(--shadow-sm);
+		padding: var(--space-lg) 0;
+		border-bottom: 1px solid var(--color-border);
+		transition: color var(--transition-base);
+		position: relative;
+	}
+
+	.research-item:first-child {
+		padding-top: 0;
 	}
 
 	.research-item:hover {
-		border-color: var(--color-border-hover);
-		transform: translateY(-3px);
-		box-shadow: var(--shadow-md);
+		color: var(--color-text-muted);
 	}
 
-	.research-meta {
-		margin-bottom: var(--space-md);
-	}
-
-	.research-conference {
-		display: inline-block;
-		padding: var(--space-sm) var(--space-md);
-		background: var(--color-highlight-soft);
-		color: var(--color-highlight);
-		font-size: 0.9rem;
-		font-weight: 600;
-		border-radius: var(--radius-md);
-	}
-
-	.research-award-badge {
-		display: inline-block;
-		padding: var(--space-sm) var(--space-md);
-		background: var(--color-accent-soft);
-		color: var(--color-accent);
-		font-size: 0.9rem;
-		font-weight: 600;
-		border-radius: var(--radius-md);
-		margin-left: var(--space-sm);
-	}
-
-	.research-title {
-		font-size: 1.25rem;
-		font-weight: 600;
-		line-height: 1.6;
-		margin-bottom: var(--space-md);
+	.research-item:hover .research-title {
 		color: var(--color-text);
 	}
 
-	.research-authors {
-		font-size: 1rem;
-		color: var(--color-text-secondary);
-		line-height: 1.7;
+	.research-meta {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		margin-bottom: var(--space-sm);
 	}
 
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	.research-conference {
+		font-size: 0.8rem;
+		color: var(--color-text-muted);
+		font-weight: 500;
+	}
+
+	.research-award {
+		font-size: 0.8rem;
+		color: var(--color-award);
+		font-weight: 500;
+	}
+
+	.research-title {
+		font-size: 1.05rem;
+		font-weight: 600;
+		line-height: 1.6;
+		margin-bottom: var(--space-xs);
+		color: var(--color-text);
+		transition: color var(--transition-base);
+	}
+
+	.research-authors {
+		font-size: 0.9rem;
+		color: var(--color-text-muted);
+		line-height: 1.6;
 	}
 </style>

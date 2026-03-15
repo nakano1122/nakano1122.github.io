@@ -25,29 +25,28 @@ const { title, count } = Astro.props;
 
 	.section-title {
 		font-family: var(--font-display);
-		font-size: 2.5rem;
-		font-weight: 600;
-		letter-spacing: -0.02em;
+		font-size: 1.75rem;
+		font-weight: 700;
+		letter-spacing: -0.01em;
 		color: var(--color-text);
 	}
 
 	.section-count {
-		font-size: 0.9rem;
+		font-size: 0.8rem;
 		color: var(--color-text-muted);
-		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		font-weight: 500;
+		font-weight: 400;
 	}
 
 	@media (max-width: 768px) {
 		.section-header {
 			flex-direction: column;
 			align-items: flex-start;
-			gap: var(--space-sm);
+			gap: var(--space-xs);
 		}
 
 		.section-title {
-			font-size: 2rem;
+			font-size: 1.5rem;
 		}
 	}
 </style>

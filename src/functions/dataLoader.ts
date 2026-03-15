@@ -1,41 +1,46 @@
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-import { parsePersonalMarkdown, type ParsedPersonalData } from '../utils/markdownParser';
 
 /**
- * personal.md から全てのデータを読み込む
+ * personal.md からプロフィールデータを読み込む
  */
-export async function loadPersonalData(): Promise<ParsedPersonalData> {
-	const filePath = join(process.cwd(), 'src', 'contents', 'personal.md');
-	const content = await readFile(filePath, 'utf-8');
-	return parsePersonalMarkdown(content);
+export async function loadPersonalData() {
+	const entries = await getCollection('personal');
+	return entries[0].data;
 }
 
-export type DetailEntry = CollectionEntry<'details'>;
+export type PersonalData = Awaited<ReturnType<typeof loadPersonalData>>;
 
 /**
- * 全詳細コンテンツを読み込む
+ * 研究エントリを startDate 降順で取得
  */
-export async function loadAllDetails(): Promise<DetailEntry[]> {
-	return await getCollection('details');
+export async function loadResearch(): Promise<CollectionEntry<'research'>[]> {
+	const entries = await getCollection('research');
+	return entries.sort(
+		(a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
+	);
 }
 
 /**
- * 指定ディレクトリのエントリを startDate 降順（新しい順）で取得
+ * 開発イベントエントリを startDate 降順で取得
  */
-export function getEntriesBySection(
-	entries: DetailEntry[],
-	section: string,
-): DetailEntry[] {
-	return entries
-		.filter((e) => e.id.startsWith(`${section}/`))
-		.sort((a, b) => {
-			const dateA = (a.data as { startDate: Date }).startDate.getTime();
-			const dateB = (b.data as { startDate: Date }).startDate.getTime();
-			return dateB - dateA;
-		});
+export async function loadDevelopment(): Promise<
+	CollectionEntry<'development'>[]
+> {
+	const entries = await getCollection('development');
+	return entries.sort(
+		(a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
+	);
+}
+
+/**
+ * プロジェクトエントリを startDate 降順で取得
+ */
+export async function loadProjects(): Promise<CollectionEntry<'projects'>[]> {
+	const entries = await getCollection('projects');
+	return entries.sort(
+		(a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
+	);
 }
 
 /**

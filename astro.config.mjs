@@ -9,6 +9,8 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://nakano1122.github.io/",
   integrations: [icon({
-    iconDir: "node_modules/@iconify/json",
+    include: {
+      mdi: ['weather-sunny', 'weather-night', 'email-outline', 'github', 'open-in-new', 'close'],
+    },
   }), sitemap()],
 });

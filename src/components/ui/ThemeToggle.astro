@@ -2,6 +2,7 @@
 /**
  * テーマ切り替えボタンコンポーネント
  */
+import { Icon } from 'astro-icon/components';
 ---
 
 <button
@@ -10,8 +11,8 @@
 	aria-label="テーマを切り替える"
 	title="テーマを切り替える"
 >
-	<img data-toggle-icon="sun" alt="" class="toggle-icon sun-icon" />
-	<img data-toggle-icon="moon" alt="" class="toggle-icon moon-icon" />
+	<Icon name="mdi:weather-sunny" class="toggle-icon sun-icon" />
+	<Icon name="mdi:weather-night" class="toggle-icon moon-icon" />
 </button>
 
 <script>
@@ -19,50 +20,25 @@
 		const toggle = document.querySelector('.theme-toggle');
 		if (!toggle) return;
 
-		// 保存されたテーマまたはシステム設定を取得
 		const getPreferredTheme = (): 'light' | 'dark' => {
 			const stored = localStorage.getItem('theme');
 			if (stored === 'light' || stored === 'dark') return stored;
 			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 		};
 
-		// テーマに応じたアイコンパスを更新
-		const updateThemeIcons = (theme: 'light' | 'dark') => {
-			// テーマ切り替えボタンのアイコン
-			document.querySelectorAll<HTMLImageElement>('[data-toggle-icon]').forEach((img) => {
-				const iconName = img.dataset.toggleIcon;
-				if (iconName) {
-					img.src = `/images/${theme}/${iconName}.svg`;
-				}
-			});
-
-			// 全てのテーマ対応アイコン
-			document.querySelectorAll<HTMLImageElement>('[data-theme-icon]').forEach((img) => {
-				const iconName = img.dataset.themeIcon;
-				if (iconName) {
-					img.src = `/images/${theme}/${iconName}.svg`;
-				}
-			});
-		};
-
-		// テーマを適用
 		const applyTheme = (theme: 'light' | 'dark') => {
 			document.documentElement.setAttribute('data-theme', theme);
 			localStorage.setItem('theme', theme);
-			updateThemeIcons(theme);
 		};
 
-		// 初期テーマを適用
 		applyTheme(getPreferredTheme());
 
-		// トグルボタンのクリックイベント
 		toggle.addEventListener('click', () => {
 			const current = document.documentElement.getAttribute('data-theme');
 			const next = current === 'dark' ? 'light' : 'dark';
 			applyTheme(next);
 		});
 
-		// システム設定の変更を監視
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
 			if (!localStorage.getItem('theme')) {
 				applyTheme(e.matches ? 'dark' : 'light');
@@ -70,7 +46,6 @@
 		});
 	}
 
-	// ページ読み込み時とViewTransition後に初期化
 	initTheme();
 	document.addEventListener('astro:after-swap', initTheme);
 </script>
@@ -80,35 +55,32 @@
 		position: fixed;
 		top: var(--space-lg);
 		right: var(--space-lg);
-		width: 44px;
-		height: 44px;
+		width: 40px;
+		height: 40px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: var(--color-bg-card);
-		border: 1px solid var(--color-border);
-		border-radius: 50%;
+		background: transparent;
+		border: none;
+		border-radius: 8px;
 		cursor: pointer;
-		transition: all var(--transition-base);
-		box-shadow: var(--shadow-sm);
+		color: var(--color-text-muted);
+		transition: color var(--transition-base);
 		z-index: 100;
 	}
 
 	.theme-toggle:hover {
-		background: var(--color-bg-card-hover);
-		border-color: var(--color-accent);
-		transform: scale(1.05);
-		box-shadow: var(--shadow-md);
+		color: var(--color-text);
 	}
 
 	.toggle-icon {
 		width: 20px;
 		height: 20px;
-		transition: opacity var(--transition-fast), transform var(--transition-fast);
 		position: absolute;
+		transition: opacity var(--transition-fast), transform var(--transition-fast);
 	}
 
-	/* ライトモード: 月アイコンを表示 */
+	/* ライトモード: 月アイコンを表示（クリックでダークへ） */
 	.sun-icon {
 		opacity: 0;
 		transform: rotate(-90deg) scale(0.5);
@@ -119,7 +91,7 @@
 		transform: rotate(0) scale(1);
 	}
 
-	/* ダークモード: 太陽アイコンを表示 */
+	/* ダークモード: 太陽アイコンを表示（クリックでライトへ） */
 	:global([data-theme='dark']) .sun-icon {
 		opacity: 1;
 		transform: rotate(0) scale(1);
@@ -134,13 +106,6 @@
 		.theme-toggle {
 			top: var(--space-md);
 			right: var(--space-md);
-			width: 40px;
-			height: 40px;
-		}
-
-		.toggle-icon {
-			width: 18px;
-			height: 18px;
 		}
 	}
 </style>
