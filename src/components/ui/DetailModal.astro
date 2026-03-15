@@ -143,14 +143,6 @@ import { Icon } from 'astro-icon/components';
 		color: var(--color-text-muted);
 	}
 
-	.modal-meta-tag--presentation {
-		color: var(--color-text-muted);
-	}
-
-	.modal-meta-tag--award {
-		color: var(--color-award);
-	}
-
 	/* Body */
 	.modal-body {
 		padding: var(--space-lg) var(--space-xl);
@@ -254,13 +246,40 @@ import { Icon } from 'astro-icon/components';
 		padding: var(--space-md) var(--space-xl);
 		border-top: 1px solid var(--color-border);
 		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-sm);
+		align-items: center;
 		flex-shrink: 0;
 	}
 
 	.modal-footer:empty {
 		display: none;
+	}
+
+	.modal-footer-links {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-sm);
+		flex: 1;
+	}
+
+	.modal-repo-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: auto;
+		padding: var(--space-xs);
+		border-radius: 6px;
+		color: var(--color-text-muted);
+		transition: color var(--transition-base);
+	}
+
+	.modal-repo-btn:hover {
+		color: var(--color-text);
+	}
+
+	.modal-repo-btn img {
+		width: 22px;
+		height: 22px;
 	}
 
 	.modal-link-btn {
@@ -378,31 +397,20 @@ import { Icon } from 'astro-icon/components';
 			if (!template) return;
 
 			const title = template.dataset.title || '';
-			const presentation = template.dataset.presentation || '';
-			const award = template.dataset.award || '';
+			const repository = template.dataset.repository || '';
 			const links = template.dataset.links || '';
 
 			titleEl.textContent = title;
 
 			metaEl.innerHTML = '';
-			if (presentation) {
-				const span = document.createElement('span');
-				span.className = 'modal-meta-tag modal-meta-tag--presentation';
-				span.textContent = presentation;
-				metaEl.appendChild(span);
-			}
-			if (award) {
-				const span = document.createElement('span');
-				span.className = 'modal-meta-tag modal-meta-tag--award';
-				span.textContent = award;
-				metaEl.appendChild(span);
-			}
 
 			const content = template.content.cloneNode(true);
 			bodyEl.innerHTML = '';
 			bodyEl.appendChild(content);
 
 			footerEl.innerHTML = '';
+			const linksContainer = document.createElement('div');
+			linksContainer.className = 'modal-footer-links';
 			if (links) {
 				links.split('|').forEach((url) => {
 					const trimmed = url.trim();
@@ -413,8 +421,19 @@ import { Icon } from 'astro-icon/components';
 					a.rel = 'noopener noreferrer';
 					a.className = 'modal-link-btn';
 					a.innerHTML = `<span>外部リンク</span><img src="/icons/external-link.svg" alt="" width="14" height="14" />`;
-					footerEl.appendChild(a);
+					linksContainer.appendChild(a);
 				});
+			}
+			footerEl.appendChild(linksContainer);
+			if (repository) {
+				const a = document.createElement('a');
+				a.href = repository;
+				a.target = '_blank';
+				a.rel = 'noopener noreferrer';
+				a.className = 'modal-repo-btn';
+				a.setAttribute('aria-label', 'GitHub Repository');
+				a.innerHTML = `<img src="/icons/github.svg" alt="GitHub" width="22" height="22" />`;
+				footerEl.appendChild(a);
 			}
 
 			bodyEl.querySelectorAll('iframe').forEach((iframe) => {

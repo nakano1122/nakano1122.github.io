@@ -9,7 +9,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const CONTENTS_DIR = join(ROOT, 'src', 'contents');
 
-const SECTIONS = ['research', 'development', 'projects'];
+const SECTIONS = ['research', 'development', 'projects', 'awards', 'education', 'certifications'];
 
 const today = new Date().toISOString().split('T')[0];
 
@@ -36,7 +36,7 @@ startDate: ${today}
 endDate:
 name: ""
 title: ""
-award: ""
+repository: ""
 links:
   - ""
 ---
@@ -57,6 +57,30 @@ links:
 ## 工夫点
 
 -
+`,
+	awards: `---
+date: ${today}
+title: ""
+summary: ""
+links:
+  - ""
+---
+
+（ここに受賞の概要を記述）
+`,
+	education: `---
+startDate: ${today}
+endDate:
+institution: ""
+laboratory:
+  name: ""
+  siteUrl: ""
+---
+`,
+	certifications: `---
+date: ${today}
+name: ""
+---
 `,
 };
 

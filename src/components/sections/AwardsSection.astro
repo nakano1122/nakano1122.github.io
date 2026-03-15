@@ -1,20 +1,19 @@
 ---
 /**
- * Development セクションコンポーネント
- * ハッカソン・開発イベントの成果を表示
+ * 受賞セクションコンポーネント
  */
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import SectionHeader from '../ui/SectionHeader.astro';
 
 export interface Props {
-	entries: CollectionEntry<'development'>[];
+	entries: CollectionEntry<'awards'>[];
 }
 
 const { entries } = Astro.props;
 
 // 各エントリをレンダリング
-const development = await Promise.all(
+const awards = await Promise.all(
 	entries.map(async (entry) => {
 		const { Content } = await render(entry);
 		return { slug: entry.id, Content, ...entry.data };
@@ -22,30 +21,29 @@ const development = await Promise.all(
 );
 ---
 
-<section class="section" id="development">
-	<SectionHeader title="Development" count={`${development.length} Projects`} />
-	<div class="dev-list">
-		{development.map((item) => (
+<section class="section" id="awards">
+	<SectionHeader title="Awards" count={`${awards.length} Awards`} />
+	<div class="award-list">
+		{awards.map((item) => (
 			<div
-				class="dev-item modal-trigger"
+				class="award-item modal-trigger"
 				data-modal-trigger={item.slug}
 				role="button"
 				tabindex="0"
 			>
-				<div class="dev-content">
-					<span class="dev-event">{item.name}</span>
-					<span class="dev-title">{item.title}</span>
+				<div class="award-content">
+					<span class="award-title">{item.title}</span>
+					{item.summary && <span class="award-subtitle">{item.summary}</span>}
 				</div>
 				<span class="detail-indicator">詳細を見る →</span>
 			</div>
 		))}
 	</div>
 
-	{development.map((item) => (
+	{awards.map((item) => (
 		<template
 			id={`detail-${item.slug}`}
 			data-title={item.title}
-			data-repository={item.repository || ''}
 			data-links={(item.links || []).join('|')}
 		>
 			<item.Content />
@@ -54,12 +52,12 @@ const development = await Promise.all(
 </section>
 
 <style>
-	.dev-list {
+	.award-list {
 		display: flex;
 		flex-direction: column;
 	}
 
-	.dev-item {
+	.award-item {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -70,29 +68,22 @@ const development = await Promise.all(
 		position: relative;
 	}
 
-	.dev-item:first-child {
+	.award-item:first-child {
 		padding-top: 0;
 	}
 
-	.dev-item:hover .dev-title {
+	.award-item:hover .award-title {
 		color: var(--color-text);
 	}
 
-	.dev-content {
+	.award-content {
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
 		min-width: 0;
 	}
 
-	.dev-event {
-		font-size: 0.8rem;
-		font-weight: 500;
-		color: var(--color-text-muted);
-		line-height: 1.4;
-	}
-
-	.dev-title {
+	.award-title {
 		font-size: 1rem;
 		font-weight: 500;
 		color: var(--color-text);
@@ -100,13 +91,19 @@ const development = await Promise.all(
 		transition: color var(--transition-base);
 	}
 
-	.dev-item:focus-visible {
+	.award-subtitle {
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+		line-height: 1.5;
+	}
+
+	.award-item:focus-visible {
 		outline: 2px solid var(--color-accent);
 		outline-offset: 4px;
 	}
 
 	@media (max-width: 768px) {
-		.dev-item {
+		.award-item {
 			flex-direction: column;
 			align-items: flex-start;
 			gap: var(--space-xs);

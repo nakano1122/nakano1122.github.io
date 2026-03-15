@@ -1,18 +1,19 @@
 ---
 /**
- * 経験セクションコンポーネント（インターンシップ・研究室）
+ * 経験セクションコンポーネント（インターンシップ・学歴）
  */
+import type { CollectionEntry } from 'astro:content';
 import type { PersonalData } from '../../functions/dataLoader';
-import { formatPeriod } from '../../functions/dataLoader';
+import { formatPeriod, formatDate } from '../../functions/dataLoader';
 import { Icon } from 'astro-icon/components';
 import SectionHeader from '../ui/SectionHeader.astro';
 
 export interface Props {
 	jobHistory: PersonalData['jobHistory'];
-	laboratories: PersonalData['laboratories'];
+	education: CollectionEntry<'education'>[];
 }
 
-const { jobHistory, laboratories } = Astro.props;
+const { jobHistory, education } = Astro.props;
 ---
 
 <section class="section" id="experience">
@@ -55,12 +56,14 @@ const { jobHistory, laboratories } = Astro.props;
 			</div>
 		</div>
 
-		<!-- Laboratories -->
+		<!-- Education -->
 		<div class="experience-column">
-			<h3 class="experience-subtitle">Laboratory</h3>
+			<h3 class="experience-subtitle">Education</h3>
 			<div class="timeline">
-				{laboratories.map((lab) => {
-					const url = lab.siteUrl || '';
+				{education.map((edu) => {
+					const period = `${formatDate(edu.data.startDate)} - ${edu.data.endDate ? formatDate(edu.data.endDate) : '現在'}`;
+					const lab = edu.data.laboratory;
+					const url = lab?.siteUrl || '';
 
 					return url ? (
 						<a
@@ -71,8 +74,9 @@ const { jobHistory, laboratories } = Astro.props;
 						>
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
-								<span class="timeline-period">{formatPeriod(lab.startMonth, lab.finishMonth)}</span>
-								<h4 class="timeline-title">{lab.name}</h4>
+								<span class="timeline-period">{period}</span>
+								<h4 class="timeline-title">{edu.data.institution}</h4>
+								{lab && <p class="timeline-description">{lab.name}</p>}
 							</div>
 							<Icon name="mdi:open-in-new" class="external-icon" />
 						</a>
@@ -80,8 +84,9 @@ const { jobHistory, laboratories } = Astro.props;
 						<div class="timeline-item">
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
-								<span class="timeline-period">{formatPeriod(lab.startMonth, lab.finishMonth)}</span>
-								<h4 class="timeline-title">{lab.name}</h4>
+								<span class="timeline-period">{period}</span>
+								<h4 class="timeline-title">{edu.data.institution}</h4>
+								{lab && <p class="timeline-description">{lab.name}</p>}
 							</div>
 						</div>
 					);

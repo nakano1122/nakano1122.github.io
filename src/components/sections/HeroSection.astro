@@ -37,33 +37,44 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 
 <header class="hero">
 	<div class="hero-content">
-		<h1 class="hero-name">
-			<span class="name-ja">{profile.name}</span>
-			<span class="name-en">{profile.nameEn}</span>
-		</h1>
-		<p class="hero-affiliation">
-			{profile.department} / {profile.grade}
-		</p>
-		<div class="hero-links">
-			<span class="link-item">
-				<Icon name="mdi:email-outline" class="link-icon" />
-				{profile.email.user}@{profile.email.domain}
-			</span>
-			<a href={profile.github} target="_blank" rel="noopener noreferrer" class="link-item">
-				<Icon name="mdi:github" class="link-icon" />
-				@{githubUsername}
-			</a>
-			{profile.atcoder && (
-				<a
-					href={profile.atcoder.url}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="link-item atcoder-link"
-					style={`color: ${atcoderColor};`}
-				>
-					AtCoder
+		{profile.avatar && (
+			<img
+				src={profile.avatar}
+				alt={profile.name}
+				class="hero-avatar"
+				width="120"
+				height="120"
+			/>
+		)}
+		<div class="hero-text">
+			<h1 class="hero-name">
+				<span class="name-ja">{profile.name}</span>
+				<span class="name-en">{profile.nameEn}</span>
+			</h1>
+			<p class="hero-affiliation">
+				{profile.department} / {profile.grade}
+			</p>
+			<div class="hero-links">
+				<span class="link-item">
+					<Icon name="mdi:email-outline" class="link-icon" />
+					{profile.email.user}@{profile.email.domain}
+				</span>
+				<a href={profile.github} target="_blank" rel="noopener noreferrer" class="link-item">
+					<Icon name="mdi:github" class="link-icon" />
+					@{githubUsername}
 				</a>
-			)}
+				{profile.atcoder && (
+					<a
+						href={profile.atcoder.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="link-item atcoder-link"
+						style={`color: ${atcoderColor};`}
+					>
+						AtCoder
+					</a>
+				)}
+			</div>
 		</div>
 	</div>
 </header>
@@ -75,6 +86,20 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		flex-direction: column;
 		justify-content: center;
 		padding: var(--space-4xl) 0;
+	}
+
+	.hero-content {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2xl);
+	}
+
+	.hero-avatar {
+		width: 120px;
+		height: 120px;
+		border-radius: 50%;
+		object-fit: cover;
+		flex-shrink: 0;
 	}
 
 	.hero-name {
@@ -149,12 +174,24 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 			padding: var(--space-3xl) 0 var(--space-xl);
 		}
 
+		.hero-content {
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+		}
+
+		.hero-avatar {
+			width: 100px;
+			height: 100px;
+		}
+
 		.hero-name {
 			font-size: clamp(2rem, 10vw, 2.5rem);
 		}
 
 		.hero-links {
 			gap: var(--space-md);
+			justify-content: center;
 		}
 
 		.link-item {

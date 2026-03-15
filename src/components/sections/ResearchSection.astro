@@ -12,16 +12,6 @@ export interface Props {
 
 const { entries } = Astro.props;
 
-// 受賞名を「イベント名: 賞名」に分離
-function splitAwardName(name: string): { event: string; prize: string } {
-	const colonIndex = name.indexOf(':');
-	if (colonIndex === -1) return { event: '', prize: name };
-	return {
-		event: name.substring(0, colonIndex).trim(),
-		prize: name.substring(colonIndex + 1).trim(),
-	};
-}
-
 // 各エントリをレンダリング
 const research = await Promise.all(
 	entries.map(async (entry) => {
@@ -43,11 +33,6 @@ const research = await Promise.all(
 			>
 				<div class="research-meta">
 					<span class="research-conference">{paper.conference}</span>
-					{paper.award && (
-						<span class="research-award">
-							{splitAwardName(paper.award).prize}
-						</span>
-					)}
 				</div>
 				<h3 class="research-title">{paper.title}</h3>
 				<p class="research-authors">{paper.authors}</p>
@@ -104,12 +89,6 @@ const research = await Promise.all(
 	.research-conference {
 		font-size: 0.8rem;
 		color: var(--color-text-muted);
-		font-weight: 500;
-	}
-
-	.research-award {
-		font-size: 0.8rem;
-		color: var(--color-award);
 		font-weight: 500;
 	}
 

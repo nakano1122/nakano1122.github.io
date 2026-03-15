@@ -44,6 +44,45 @@ export async function loadProjects(): Promise<CollectionEntry<'projects'>[]> {
 }
 
 /**
+ * 受賞エントリを date 降順で取得
+ */
+export async function loadAwards(): Promise<CollectionEntry<'awards'>[]> {
+	const entries = await getCollection('awards');
+	return entries.sort(
+		(a, b) => b.data.date.getTime() - a.data.date.getTime(),
+	);
+}
+
+/**
+ * 学歴エントリを startDate 降順で取得
+ */
+export async function loadEducation(): Promise<CollectionEntry<'education'>[]> {
+	const entries = await getCollection('education');
+	return entries.sort(
+		(a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
+	);
+}
+
+/**
+ * 資格エントリを date 降順で取得
+ */
+export async function loadCertifications(): Promise<CollectionEntry<'certifications'>[]> {
+	const entries = await getCollection('certifications');
+	return entries.sort(
+		(a, b) => b.data.date.getTime() - a.data.date.getTime(),
+	);
+}
+
+/**
+ * Date を "YYYY/MM" 形式にフォーマットする
+ */
+export function formatDate(date: Date): string {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	return `${year}/${month}`;
+}
+
+/**
  * 期間を表示用にフォーマットする
  */
 export function formatPeriod(startMonth: string, finishMonth?: string): string {

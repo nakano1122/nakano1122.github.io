@@ -4,6 +4,7 @@ import { glob } from 'astro/loaders';
 const personal = defineCollection({
 	loader: glob({ pattern: 'personal.md', base: './src/contents' }),
 	schema: z.object({
+		avatar: z.string().optional(),
 		name: z.string(),
 		nameEn: z.string(),
 		department: z.string(),
@@ -16,26 +17,6 @@ const personal = defineCollection({
 				rank: z.string(),
 			})
 			.optional(),
-		education: z.array(
-			z.object({
-				period: z.string(),
-				institution: z.string(),
-			}),
-		),
-		skills: z.array(
-			z.object({
-				name: z.string(),
-				date: z.string().optional(),
-			}),
-		),
-		laboratories: z.array(
-			z.object({
-				name: z.string(),
-				siteUrl: z.string().optional(),
-				startMonth: z.string(),
-				finishMonth: z.string().optional(),
-			}),
-		),
 		jobHistory: z.array(
 			z.object({
 				company: z.string(),
@@ -68,7 +49,7 @@ const development = defineCollection({
 		endDate: z.coerce.date().optional(),
 		name: z.string(),
 		title: z.string(),
-		award: z.string().optional(),
+		repository: z.string().optional(),
 		links: z.array(z.string()).optional(),
 	}),
 });
@@ -84,4 +65,37 @@ const projects = defineCollection({
 	}),
 });
 
-export const collections = { personal, research, development, projects };
+const awards = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/contents/awards' }),
+	schema: z.object({
+		date: z.coerce.date(),
+		title: z.string(),
+		summary: z.string().optional(),
+		links: z.array(z.string()).optional(),
+	}),
+});
+
+const education = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/contents/education' }),
+	schema: z.object({
+		startDate: z.coerce.date(),
+		endDate: z.coerce.date().optional(),
+		institution: z.string(),
+		laboratory: z
+			.object({
+				name: z.string(),
+				siteUrl: z.string().optional(),
+			})
+			.optional(),
+	}),
+});
+
+const certifications = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/contents/certifications' }),
+	schema: z.object({
+		date: z.coerce.date(),
+		name: z.string(),
+	}),
+});
+
+export const collections = { personal, research, development, projects, awards, education, certifications };
