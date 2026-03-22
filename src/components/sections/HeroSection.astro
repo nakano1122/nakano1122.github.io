@@ -57,7 +57,7 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 			<div class="hero-links">
 				<span class="link-item">
 					<Icon name="mdi:email-outline" class="link-icon" />
-					{profile.email.user}@{profile.email.domain}
+					{profile.email.user}<Icon name="mdi:at" class="at-icon" />{profile.email.domain}
 				</span>
 				<a href={profile.github} target="_blank" rel="noopener noreferrer" class="link-item">
 					<Icon name="mdi:github" class="link-icon" />
@@ -162,6 +162,14 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		width: 16px;
 		height: 16px;
 		flex-shrink: 0;
+	}
+
+	.at-icon {
+		width: 1em;
+		height: 1em;
+		vertical-align: -0.125em;
+		flex-shrink: 0;
+		margin-inline: -0.3rem;
 	}
 
 	.atcoder-link {
