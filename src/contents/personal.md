@@ -2,8 +2,8 @@
 avatar: /images/avatars.webp
 name: 中野暁登
 nameEn: Akito Nakano
-department: 静岡大学情報学部
-grade: 4年
+department: 筑波大学 大学院
+grade: 1年
 email:
   user: nakano2998.jobs
   domain: gmail.com

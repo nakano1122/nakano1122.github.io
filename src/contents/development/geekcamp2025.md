@@ -1,7 +1,7 @@
 ---
 startDate: 2025-02-01
 endDate: 2025-02-01
-name: "技育CAMP 2025 vol.20"
+name: "技育CAMP2025 vol.20"
 title: "「エンジニア交流会でアカウントを共有したいけどIDが長すぎて面倒！」を解決するための、アカウント共有アプリ"
 repository: "https://github.com/kaitobq/giiku-camp"
 links:

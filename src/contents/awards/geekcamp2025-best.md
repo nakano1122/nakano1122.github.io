@@ -1,6 +1,6 @@
 ---
 date: 2025-01-19
-title: "技育CAMP 2025 vol.20 最優秀賞"
+title: "技育CAMP2025 vol.20 最優秀賞"
 summary: "エンジニア向けアカウント共有アプリ"
 links:
   - "https://x.com/geek_pjt/status/1880901781447901331"
