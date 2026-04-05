@@ -30,7 +30,7 @@ const educationEntries = await loadEducation();
 const certificationEntries = await loadCertifications();
 ---
 
-<Layout title={personalData.title} description={personalData.description}>
+<Layout title={personalData.title} description={personalData.description} keywords={personalData.keywords}>
 	<main class="main">
 		<HeroSection profile={personalData} />
 

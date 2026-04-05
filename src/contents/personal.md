@@ -1,6 +1,7 @@
 ---
 title: 中野暁登 | Software Engineer & Researcher
-description: 中野暁登（Akito Nakano）のポートフォリオサイト。静岡大学/筑波大学大学院で情報学を専攻。研究活動とソフトウェア開発に従事。
+description: 中野暁登（Akito Nakano）のポートフォリオサイト。筑波大学大学院にて情報アクセスに関する研究に従事。Webエンジニア（BE、FE）としての実務経験あり。
+keywords: 中野暁登,Akito Nakano,ポートフォリオ,KASYS,加藤誠研究室,莊司研究室,kato-lab,shoji-lab
 avatar: /images/avatars.webp
 name_ja: 中野暁登
 name_en: Akito Nakano
