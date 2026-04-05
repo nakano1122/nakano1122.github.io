@@ -30,7 +30,7 @@ const educationEntries = await loadEducation();
 const certificationEntries = await loadCertifications();
 ---
 
-<Layout title="中野暁登 | Software Engineer & Researcher">
+<Layout title={personalData.title} description={personalData.description}>
 	<main class="main">
 		<HeroSection profile={personalData} />
 

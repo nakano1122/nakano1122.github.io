@@ -4,6 +4,8 @@ import { glob } from 'astro/loaders';
 const personal = defineCollection({
 	loader: glob({ pattern: 'personal.md', base: './src/contents' }),
 	schema: z.object({
+		title: z.string().optional(),
+		description: z.string().optional(),
 		avatar: z.string().optional(),
 		name_ja: z.string(),
 		name_en: z.string(),

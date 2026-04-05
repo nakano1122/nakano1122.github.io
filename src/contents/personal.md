@@ -1,11 +1,11 @@
 ---
+title: 中野暁登 | Software Engineer & Researcher
+description: 中野暁登（Akito Nakano）のポートフォリオサイト。静岡大学/筑波大学大学院で情報学を専攻。研究活動とソフトウェア開発に従事。
 avatar: /images/avatars.webp
 name_ja: 中野暁登
 name_en: Akito Nakano
-department_ja: 筑波大学 大学院
-department_en: University of Tsukuba, Graduate School
-grade_ja: 1年
-grade_en: 1st grade
+department_ja: 筑波大学 修士1年
+department_en: University of Tsukuba, 1st year of Graduate School
 email:
   user: nakano2998.jobs
   domain: gmail.com
