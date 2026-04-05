@@ -48,14 +48,8 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		)}
 		<div class="hero-text">
 			<h1 class="hero-name">
-				<span class="lang-ja">
-					<span class="name-main">{profile.name_ja}</span>
-					<span class="name-sub">{profile.name_en}</span>
-				</span>
-				<span class="lang-en">
-					<span class="name-main">{profile.name_en}</span>
-					<span class="name-sub">{profile.name_ja}</span>
-				</span>
+				<span class="lang-ja">{profile.name_ja}</span>
+				<span class="lang-en">{profile.name_en}</span>
 			</h1>
 			<p class="hero-affiliation">
 				<span class="lang-ja">{profile.department_ja} / {profile.grade_ja}</span>
@@ -114,21 +108,8 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		font-size: clamp(2.5rem, 8vw, 4rem);
 		font-weight: 700;
 		line-height: 1.15;
-		margin-bottom: var(--space-lg);
+		margin-bottom: var(--space-xl);
 		color: var(--color-text);
-	}
-
-	.name-main {
-		display: block;
-	}
-
-	.name-sub {
-		display: block;
-		font-size: 0.35em;
-		font-weight: 300;
-		color: var(--color-text-muted);
-		margin-top: var(--space-sm);
-		letter-spacing: 0.05em;
 	}
 
 	.hero-affiliation {
