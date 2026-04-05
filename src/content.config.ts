@@ -9,8 +9,6 @@ const personal = defineCollection({
 		name_en: z.string(),
 		department_ja: z.string(),
 		department_en: z.string().optional(),
-		grade_ja: z.string(),
-		grade_en: z.string().optional(),
 		email: z.object({ user: z.string(), domain: z.string() }),
 		github: z.string(),
 		atcoder: z
