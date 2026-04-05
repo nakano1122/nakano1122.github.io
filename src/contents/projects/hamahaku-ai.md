@@ -1,8 +1,10 @@
 ---
 startDate: 2024-10-01
 endDate: 2025-03-01
-name: "産官学連携プロジェクト 開発担当"
-title: "図録に興味を持ってもらうための博物館チャットボット開発"
+name_ja: "産官学連携プロジェクト 開発担当"
+name_en: "Industry-Academia-Government Collaborative Project"
+title_ja: "図録に興味を持ってもらうための博物館チャットボット開発"
+title_en: "AI chatbot for promoting museum exhibition catalogs"
 links:
   - "https://www.inf.shizuoka.ac.jp/news/4506/"
 ---
@@ -16,3 +18,14 @@ links:
 
 チームのメンバーは私以外エンジニアではないので、「クライアントの要望を聞いて、それを技術に翻訳する」という能力を鍛えることができました。
 また、キャラクターに口パクアニメーションをつけたり、メッセージをタイプライター表示するなど、ユーザビリティを意識して開発することの重要性についても学ぶことができました。
+
+<!-- lang:en -->
+
+Led development for an industry-academia-government collaborative project between Hamamatsu City Museum, NX Wanbishi Archives, and Shizuoka University's Faculty of Informatics.
+Built an AI chat application to engage museum visitors with exhibition catalogs.
+
+The chat app features a child character holding a catalog that visitors can ask questions to, referencing the actual catalog content for accurate and detailed answers.
+Users can toggle the catalog reference on/off to demonstrate its value, and source page numbers are appended to responses to encourage opening the catalog.
+
+Since I was the only engineer on the team, I developed the ability to translate client requirements into technical solutions.
+I also learned the importance of UX-focused development, implementing features like lip-sync animations and typewriter-style message display.

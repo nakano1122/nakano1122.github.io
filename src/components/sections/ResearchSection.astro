@@ -34,9 +34,18 @@ const research = await Promise.all(
 				<div class="research-meta">
 					<span class="research-conference">{paper.conference}</span>
 				</div>
-				<h3 class="research-title">{paper.title}</h3>
-				<p class="research-authors">{paper.authors}</p>
-				<span class="detail-indicator">詳細を見る →</span>
+				<h3 class="research-title">
+					<span class="lang-ja">{paper.title_ja}</span>
+					<span class="lang-en">{paper.title_en || paper.title_ja}</span>
+				</h3>
+				<p class="research-authors">
+					<span class="lang-ja">{paper.authors_ja}</span>
+					<span class="lang-en">{paper.authors_en || paper.authors_ja}</span>
+				</p>
+				<span class="detail-indicator">
+					<span class="lang-ja">詳細を見る →</span>
+					<span class="lang-en">View details →</span>
+				</span>
 			</article>
 		))}
 	</div>
@@ -44,9 +53,11 @@ const research = await Promise.all(
 	{research.map((paper) => (
 		<template
 			id={`detail-${paper.slug}`}
-			data-title={paper.title}
+			data-title-ja={paper.title_ja}
+			data-title-en={paper.title_en || paper.title_ja}
 			data-presentation={paper.conference || ''}
-			data-award={paper.award || ''}
+			data-award-ja={paper.award_ja || ''}
+			data-award-en={paper.award_en || paper.award_ja || ''}
 			data-links={(paper.links || []).join('|')}
 		>
 			<paper.Content />

@@ -52,9 +52,7 @@ import { Icon } from 'astro-icon/components';
 
 <style>
 	.theme-toggle {
-		position: fixed;
-		top: var(--space-lg);
-		right: var(--space-lg);
+		position: relative;
 		width: 40px;
 		height: 40px;
 		display: flex;
@@ -66,7 +64,6 @@ import { Icon } from 'astro-icon/components';
 		cursor: pointer;
 		color: var(--color-text-muted);
 		transition: color var(--transition-base);
-		z-index: 100;
 	}
 
 	.theme-toggle:hover {
@@ -102,10 +99,4 @@ import { Icon } from 'astro-icon/components';
 		transform: rotate(90deg) scale(0.5);
 	}
 
-	@media (max-width: 768px) {
-		.theme-toggle {
-			top: var(--space-md);
-			right: var(--space-md);
-		}
-	}
 </style>

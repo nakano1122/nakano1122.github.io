@@ -33,10 +33,19 @@ const projects = await Promise.all(
 					tabindex="0"
 				>
 					<div class="project-content">
-						<span class="project-name">{project.name}</span>
-						<span class="project-title">{project.title}</span>
+						<span class="project-name">
+							<span class="lang-ja">{project.name_ja}</span>
+							<span class="lang-en">{project.name_en || project.name_ja}</span>
+						</span>
+						<span class="project-title">
+							<span class="lang-ja">{project.title_ja}</span>
+							<span class="lang-en">{project.title_en || project.title_ja}</span>
+						</span>
 					</div>
-					<span class="detail-indicator">詳細を見る →</span>
+					<span class="detail-indicator">
+						<span class="lang-ja">詳細を見る →</span>
+						<span class="lang-en">View details →</span>
+					</span>
 				</div>
 			))}
 		</div>
@@ -44,9 +53,11 @@ const projects = await Promise.all(
 		{projects.map((project) => (
 			<template
 				id={`detail-${project.slug}`}
-				data-title={project.name}
+				data-title-ja={project.name_ja}
+				data-title-en={project.name_en || project.name_ja}
 				data-presentation=""
-				data-award=""
+				data-award-ja=""
+				data-award-en=""
 				data-links={(project.links || []).join('|')}
 			>
 				<project.Content />

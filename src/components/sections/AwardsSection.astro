@@ -32,10 +32,21 @@ const awards = await Promise.all(
 				tabindex="0"
 			>
 				<div class="award-content">
-					<span class="award-title">{item.title}</span>
-					{item.summary && <span class="award-subtitle">{item.summary}</span>}
+					<span class="award-title">
+						<span class="lang-ja">{item.title_ja}</span>
+						<span class="lang-en">{item.title_en || item.title_ja}</span>
+					</span>
+					{(item.summary_ja || item.summary_en) && (
+						<span class="award-subtitle">
+							<span class="lang-ja">{item.summary_ja}</span>
+							<span class="lang-en">{item.summary_en || item.summary_ja}</span>
+						</span>
+					)}
 				</div>
-				<span class="detail-indicator">詳細を見る →</span>
+				<span class="detail-indicator">
+					<span class="lang-ja">詳細を見る →</span>
+					<span class="lang-en">View details →</span>
+				</span>
 			</div>
 		))}
 	</div>
@@ -43,7 +54,8 @@ const awards = await Promise.all(
 	{awards.map((item) => (
 		<template
 			id={`detail-${item.slug}`}
-			data-title={item.title}
+			data-title-ja={item.title_ja}
+			data-title-en={item.title_en || item.title_ja}
 			data-links={(item.links || []).join('|')}
 		>
 			<item.Content />

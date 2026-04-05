@@ -83,15 +83,26 @@ export function formatDate(date: Date): string {
 }
 
 /**
- * 期間を表示用にフォーマットする
+ * 期間を表示用にフォーマットする（日英対応）
  */
-export function formatPeriod(startMonth: string, finishMonth?: string): string {
+export function formatPeriodBilingual(startMonth: string, finishMonth?: string): { ja: string; en: string } {
 	const formatMonth = (month: string) => {
 		const [year, m] = month.split('-');
 		return `${year}/${m}`;
 	};
 
 	const start = formatMonth(startMonth);
-	const end = finishMonth ? formatMonth(finishMonth) : '現在';
-	return `${start} - ${end}`;
+	const endJa = finishMonth ? formatMonth(finishMonth) : '現在';
+	const endEn = finishMonth ? formatMonth(finishMonth) : 'Present';
+	return {
+		ja: `${start} - ${endJa}`,
+		en: `${start} - ${endEn}`,
+	};
+}
+
+/**
+ * 期間を表示用にフォーマットする
+ */
+export function formatPeriod(startMonth: string, finishMonth?: string): string {
+	return formatPeriodBilingual(startMonth, finishMonth).ja;
 }

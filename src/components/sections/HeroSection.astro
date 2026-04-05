@@ -40,7 +40,7 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		{profile.avatar && (
 			<img
 				src={profile.avatar}
-				alt={profile.name}
+				alt={profile.name_ja}
 				class="hero-avatar"
 				width="120"
 				height="120"
@@ -48,11 +48,18 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		)}
 		<div class="hero-text">
 			<h1 class="hero-name">
-				<span class="name-ja">{profile.name}</span>
-				<span class="name-en">{profile.nameEn}</span>
+				<span class="lang-ja">
+					<span class="name-main">{profile.name_ja}</span>
+					<span class="name-sub">{profile.name_en}</span>
+				</span>
+				<span class="lang-en">
+					<span class="name-main">{profile.name_en}</span>
+					<span class="name-sub">{profile.name_ja}</span>
+				</span>
 			</h1>
 			<p class="hero-affiliation">
-				{profile.department} / {profile.grade}
+				<span class="lang-ja">{profile.department_ja} / {profile.grade_ja}</span>
+				<span class="lang-en">{profile.department_en || profile.department_ja} / {profile.grade_en || profile.grade_ja}</span>
 			</p>
 			<div class="hero-links">
 				<span class="link-item">
@@ -111,11 +118,11 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		color: var(--color-text);
 	}
 
-	.name-ja {
+	.name-main {
 		display: block;
 	}
 
-	.name-en {
+	.name-sub {
 		display: block;
 		font-size: 0.35em;
 		font-weight: 300;

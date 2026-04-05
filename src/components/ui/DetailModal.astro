@@ -385,6 +385,10 @@ import { Icon } from 'astro-icon/components';
 		const footerEl = document.getElementById('modal-footer')!;
 		const closeBtn = dialog.querySelector('.modal-close')!;
 
+		const getLang = (): string => {
+			return document.documentElement.getAttribute('data-lang') || 'ja';
+		};
+
 		document.addEventListener('click', (e) => {
 			const trigger = (e.target as HTMLElement).closest('[data-modal-trigger]') as HTMLElement;
 			if (!trigger) return;
@@ -396,7 +400,10 @@ import { Icon } from 'astro-icon/components';
 			const template = document.getElementById(`detail-${slug}`) as HTMLTemplateElement;
 			if (!template) return;
 
-			const title = template.dataset.title || '';
+			const lang = getLang();
+			const titleJa = template.dataset.titleJa || '';
+			const titleEn = template.dataset.titleEn || titleJa;
+			const title = lang === 'en' ? titleEn : titleJa;
 			const repository = template.dataset.repository || '';
 			const links = template.dataset.links || '';
 
@@ -420,7 +427,8 @@ import { Icon } from 'astro-icon/components';
 					a.target = '_blank';
 					a.rel = 'noopener noreferrer';
 					a.className = 'modal-link-btn';
-					a.innerHTML = `<span>外部リンク</span><img src="/icons/external-link.svg" alt="" width="14" height="14" />`;
+					const linkText = lang === 'en' ? 'External link' : '外部リンク';
+					a.innerHTML = `<span>${linkText}</span><img src="/icons/external-link.svg" alt="" width="14" height="14" />`;
 					linksContainer.appendChild(a);
 				});
 			}

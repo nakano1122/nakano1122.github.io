@@ -1,9 +1,11 @@
 ---
 avatar: /images/avatars.webp
-name: 中野暁登
-nameEn: Akito Nakano
-department: 筑波大学 大学院
-grade: 1年
+name_ja: 中野暁登
+name_en: Akito Nakano
+department_ja: 筑波大学 大学院
+department_en: University of Tsukuba, Graduate School
+grade_ja: 1年
+grade_en: 1st grade
 email:
   user: nakano2998.jobs
   domain: gmail.com
@@ -12,13 +14,17 @@ atcoder:
   url: https://atcoder.jp/users/cafkaf
   rank: 茶
 jobHistory:
-  - company: 株式会社 NITI Technology
+  - company_ja: 株式会社 NITI Technology
+    company_en: NITI Technology
     startMonth: "2025-08"
     hpLink: https://nititech.jp/
-    position: 長期インターン
-  - company: シックスワン株式会社
+    position_ja: 長期インターン
+    position_en: Long-term Internship
+  - company_ja: シックスワン株式会社
+    company_en: SIX1 inc.
     startMonth: "2024-07"
     finishMonth: "2025-07"
     hpLink: https://six1.jp/
-    position: 長期インターン
+    position_ja: 長期インターン
+    position_en: Long-term Internship
 ---

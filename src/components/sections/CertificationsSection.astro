@@ -19,7 +19,10 @@ const { entries } = Astro.props;
 		{entries.map((entry) => (
 			<div class="cert-item">
 				<span class="cert-date">{formatDate(entry.data.date)}</span>
-				<span class="cert-name">{entry.data.name}</span>
+				<span class="cert-name">
+					<span class="lang-ja">{entry.data.name_ja}</span>
+					<span class="lang-en">{entry.data.name_en || entry.data.name_ja}</span>
+				</span>
 			</div>
 		))}
 	</div>

@@ -1,0 +1,98 @@
+---
+/**
+ * 言語切り替えボタンコンポーネント
+ * ThemeToggle と同じパターンで実装
+ */
+import { Icon } from 'astro-icon/components';
+---
+
+<button
+	class="lang-toggle"
+	type="button"
+	aria-label="Switch language"
+	title="日本語 / English"
+>
+	<span class="lang-toggle-label lang-toggle-ja">EN</span>
+	<span class="lang-toggle-label lang-toggle-en">JA</span>
+</button>
+
+<script>
+	function initLang() {
+		const toggle = document.querySelector('.lang-toggle');
+		if (!toggle) return;
+
+		const getLang = (): 'ja' | 'en' => {
+			const stored = localStorage.getItem('lang');
+			if (stored === 'ja' || stored === 'en') return stored;
+			return 'ja';
+		};
+
+		const applyLang = (lang: 'ja' | 'en') => {
+			document.documentElement.setAttribute('data-lang', lang);
+			document.documentElement.setAttribute('lang', lang);
+			localStorage.setItem('lang', lang);
+		};
+
+		applyLang(getLang());
+
+		toggle.addEventListener('click', () => {
+			const current = document.documentElement.getAttribute('data-lang');
+			const next = current === 'ja' ? 'en' : 'ja';
+			applyLang(next);
+		});
+	}
+
+	initLang();
+	document.addEventListener('astro:after-swap', initLang);
+</script>
+
+<style>
+	.lang-toggle {
+		position: relative;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: transparent;
+		border: none;
+		border-radius: 8px;
+		cursor: pointer;
+		color: var(--color-text-muted);
+		transition: color var(--transition-base);
+	}
+
+	.lang-toggle:hover {
+		color: var(--color-text);
+	}
+
+	.lang-toggle-label {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		position: absolute;
+		transition: opacity var(--transition-fast), transform var(--transition-fast);
+	}
+
+	/* 日本語モード: "EN" を表示（クリックで英語へ） */
+	.lang-toggle-ja {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	.lang-toggle-en {
+		opacity: 0;
+		transform: scale(0.5);
+	}
+
+	/* 英語モード: "JA" を表示（クリックで日本語へ） */
+	:global([data-lang='en']) .lang-toggle-ja {
+		opacity: 0;
+		transform: scale(0.5);
+	}
+
+	:global([data-lang='en']) .lang-toggle-en {
+		opacity: 1;
+		transform: scale(1);
+	}
+</style>

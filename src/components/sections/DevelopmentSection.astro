@@ -33,10 +33,19 @@ const development = await Promise.all(
 				tabindex="0"
 			>
 				<div class="dev-content">
-					<span class="dev-event">{item.name}</span>
-					<span class="dev-title">{item.title}</span>
+					<span class="dev-event">
+						<span class="lang-ja">{item.name_ja}</span>
+						<span class="lang-en">{item.name_en || item.name_ja}</span>
+					</span>
+					<span class="dev-title">
+						<span class="lang-ja">{item.title_ja}</span>
+						<span class="lang-en">{item.title_en || item.title_ja}</span>
+					</span>
 				</div>
-				<span class="detail-indicator">詳細を見る →</span>
+				<span class="detail-indicator">
+					<span class="lang-ja">詳細を見る →</span>
+					<span class="lang-en">View details →</span>
+				</span>
 			</div>
 		))}
 	</div>
@@ -44,7 +53,8 @@ const development = await Promise.all(
 	{development.map((item) => (
 		<template
 			id={`detail-${item.slug}`}
-			data-title={item.title}
+			data-title-ja={item.title_ja}
+			data-title-en={item.title_en || item.title_ja}
 			data-repository={item.repository || ''}
 			data-links={(item.links || []).join('|')}
 		>

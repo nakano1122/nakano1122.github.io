@@ -4,7 +4,7 @@
  */
 import type { CollectionEntry } from 'astro:content';
 import type { PersonalData } from '../../functions/dataLoader';
-import { formatPeriod, formatDate } from '../../functions/dataLoader';
+import { formatPeriodBilingual, formatDate } from '../../functions/dataLoader';
 import { Icon } from 'astro-icon/components';
 import SectionHeader from '../ui/SectionHeader.astro';
 
@@ -26,6 +26,7 @@ const { jobHistory, education } = Astro.props;
 			<div class="timeline">
 				{jobHistory.map((job) => {
 					const url = job.hpLink || '';
+					const period = formatPeriodBilingual(job.startMonth, job.finishMonth);
 
 					return url ? (
 						<a
@@ -36,9 +37,18 @@ const { jobHistory, education } = Astro.props;
 						>
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
-								<span class="timeline-period">{formatPeriod(job.startMonth, job.finishMonth)}</span>
-								<h4 class="timeline-title">{job.company}</h4>
-								<p class="timeline-description">{job.position}</p>
+								<span class="timeline-period">
+									<span class="lang-ja">{period.ja}</span>
+									<span class="lang-en">{period.en}</span>
+								</span>
+								<h4 class="timeline-title">
+									<span class="lang-ja">{job.company_ja}</span>
+									<span class="lang-en">{job.company_en || job.company_ja}</span>
+								</h4>
+								<p class="timeline-description">
+									<span class="lang-ja">{job.position_ja}</span>
+									<span class="lang-en">{job.position_en || job.position_ja}</span>
+								</p>
 							</div>
 							<Icon name="mdi:open-in-new" class="external-icon" />
 						</a>
@@ -46,9 +56,18 @@ const { jobHistory, education } = Astro.props;
 						<div class="timeline-item">
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
-								<span class="timeline-period">{formatPeriod(job.startMonth, job.finishMonth)}</span>
-								<h4 class="timeline-title">{job.company}</h4>
-								<p class="timeline-description">{job.position}</p>
+								<span class="timeline-period">
+									<span class="lang-ja">{period.ja}</span>
+									<span class="lang-en">{period.en}</span>
+								</span>
+								<h4 class="timeline-title">
+									<span class="lang-ja">{job.company_ja}</span>
+									<span class="lang-en">{job.company_en || job.company_ja}</span>
+								</h4>
+								<p class="timeline-description">
+									<span class="lang-ja">{job.position_ja}</span>
+									<span class="lang-en">{job.position_en || job.position_ja}</span>
+								</p>
 							</div>
 						</div>
 					);
@@ -61,7 +80,9 @@ const { jobHistory, education } = Astro.props;
 			<h3 class="experience-subtitle">Education</h3>
 			<div class="timeline">
 				{education.map((edu) => {
-					const period = `${formatDate(edu.data.startDate)} - ${edu.data.endDate ? formatDate(edu.data.endDate) : '現在'}`;
+					const startFormatted = formatDate(edu.data.startDate);
+					const endJa = edu.data.endDate ? formatDate(edu.data.endDate) : '現在';
+					const endEn = edu.data.endDate ? formatDate(edu.data.endDate) : 'Present';
 					const lab = edu.data.laboratory;
 					const url = lab?.siteUrl || '';
 
@@ -74,9 +95,20 @@ const { jobHistory, education } = Astro.props;
 						>
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
-								<span class="timeline-period">{period}</span>
-								<h4 class="timeline-title">{edu.data.institution}</h4>
-								{lab && <p class="timeline-description">{lab.name}</p>}
+								<span class="timeline-period">
+									<span class="lang-ja">{startFormatted} - {endJa}</span>
+									<span class="lang-en">{startFormatted} - {endEn}</span>
+								</span>
+								<h4 class="timeline-title">
+									<span class="lang-ja">{edu.data.institution_ja}</span>
+									<span class="lang-en">{edu.data.institution_en || edu.data.institution_ja}</span>
+								</h4>
+								{lab && (
+									<p class="timeline-description">
+										<span class="lang-ja">{lab.name_ja}</span>
+										<span class="lang-en">{lab.name_en || lab.name_ja}</span>
+									</p>
+								)}
 							</div>
 							<Icon name="mdi:open-in-new" class="external-icon" />
 						</a>
@@ -84,9 +116,20 @@ const { jobHistory, education } = Astro.props;
 						<div class="timeline-item">
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
-								<span class="timeline-period">{period}</span>
-								<h4 class="timeline-title">{edu.data.institution}</h4>
-								{lab && <p class="timeline-description">{lab.name}</p>}
+								<span class="timeline-period">
+									<span class="lang-ja">{startFormatted} - {endJa}</span>
+									<span class="lang-en">{startFormatted} - {endEn}</span>
+								</span>
+								<h4 class="timeline-title">
+									<span class="lang-ja">{edu.data.institution_ja}</span>
+									<span class="lang-en">{edu.data.institution_en || edu.data.institution_ja}</span>
+								</h4>
+								{lab && (
+									<p class="timeline-description">
+										<span class="lang-ja">{lab.name_ja}</span>
+										<span class="lang-en">{lab.name_en || lab.name_ja}</span>
+									</p>
+								)}
 							</div>
 						</div>
 					);
