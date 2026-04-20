@@ -20,6 +20,7 @@ const personal = defineCollection({
 				rank: z.string(),
 			})
 			.optional(),
+		zenn: z.string().optional(),
 		jobHistory: z.array(
 			z.object({
 				company_ja: z.string(),

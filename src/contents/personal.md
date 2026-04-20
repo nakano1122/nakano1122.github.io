@@ -14,6 +14,7 @@ github: https://github.com/nakano1122
 atcoder:
   url: https://atcoder.jp/users/cafkaf
   rank: 茶
+zenn: https://zenn.dev/cafkaf
 jobHistory:
   - company_ja: 株式会社 NITI Technology
     company_en: NITI Technology

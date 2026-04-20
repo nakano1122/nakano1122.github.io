@@ -31,6 +31,9 @@ function formatPublishedDate(dateString: string): string {
         target="_blank"
         rel="noopener noreferrer"
       >
+        <div class="blog-icon" aria-hidden="true">
+          <img src="/icons/zenn.svg" alt="" width="24" height="24" />
+        </div>
         <div class="blog-content">
           <span class="blog-title">{article.title}</span>
           <span class="blog-date">{formatPublishedDate(article.published_at)}</span>
@@ -73,6 +76,18 @@ function formatPublishedDate(dateString: string): string {
 
   .blog-item:hover .blog-link {
     color: var(--color-text);
+  }
+
+  .blog-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+  }
+
+  .blog-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   .blog-content {

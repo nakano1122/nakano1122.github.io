@@ -75,6 +75,17 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 						AtCoder
 					</a>
 				)}
+				{profile.zenn && (
+					<a
+						href={profile.zenn}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="link-item zenn-link"
+					>
+						<img src="/icons/zenn.svg" alt="" class="zenn-icon" width="16" height="16" />
+						Zenn
+					</a>
+				)}
 			</div>
 		</div>
 	</div>
@@ -162,6 +173,16 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 
 	.atcoder-link {
 		font-weight: 500;
+	}
+
+	.zenn-link {
+		font-weight: 500;
+	}
+
+	.zenn-icon {
+		width: 16px;
+		height: 16px;
+		flex-shrink: 0;
 	}
 
 	@media (max-width: 768px) {
