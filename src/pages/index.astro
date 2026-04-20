@@ -4,19 +4,19 @@ import {
 	loadPersonalData,
 	loadResearch,
 	loadDevelopment,
-	loadProjects,
 	loadAwards,
 	loadEducation,
 	loadCertifications,
 } from '../functions/dataLoader';
+import { loadZennArticles } from '../functions/zennApi';
 
 // Sections
 import HeroSection from '../components/sections/HeroSection.astro';
 import ResearchSection from '../components/sections/ResearchSection.astro';
 import DevelopmentSection from '../components/sections/DevelopmentSection.astro';
 import AwardsSection from '../components/sections/AwardsSection.astro';
+import BlogsSection from '../components/sections/BlogsSection.astro';
 import ExperienceSection from '../components/sections/ExperienceSection.astro';
-import ProjectsSection from '../components/sections/ProjectsSection.astro';
 import CertificationsSection from '../components/sections/CertificationsSection.astro';
 import Footer from '../components/sections/Footer.astro';
 import DetailModal from '../components/ui/DetailModal.astro';
@@ -24,8 +24,8 @@ import DetailModal from '../components/ui/DetailModal.astro';
 const personalData = await loadPersonalData();
 const researchEntries = await loadResearch();
 const developmentEntries = await loadDevelopment();
-const projectEntries = await loadProjects();
 const awardEntries = await loadAwards();
+const zennArticles = await loadZennArticles();
 const educationEntries = await loadEducation();
 const certificationEntries = await loadCertifications();
 ---
@@ -37,7 +37,7 @@ const certificationEntries = await loadCertifications();
 		<div class="content">
 			<ResearchSection entries={researchEntries} />
 			<DevelopmentSection entries={developmentEntries} />
-			<ProjectsSection entries={projectEntries} />
+			<BlogsSection articles={zennArticles} />
 			<AwardsSection entries={awardEntries} />
 			<ExperienceSection
 				jobHistory={personalData.jobHistory}

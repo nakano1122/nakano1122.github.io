@@ -1,0 +1,119 @@
+---
+/**
+ * ブログセクションコンポーネント
+ * Zenn記事を外部リンクとして表示
+ */
+import { loadZennArticles } from '../../functions/zennApi';
+import type { ZennArticle } from '../../functions/zennApi';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const articles: ZennArticle[] = await loadZennArticles();
+
+/**
+ * 公開日を YYYY/MM/DD 形式にフォーマット
+ */
+function formatPublishedDate(dateString: string): string {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}/${month}/${day}`;
+}
+---
+
+<section class="section" id="blogs">
+  <SectionHeader title="Blogs" count={`${articles.length} Articles`} />
+  <div class="blog-list">
+    {articles.map((article) => (
+      <a
+        class="blog-item"
+        href={`https://zenn.dev${article.path}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div class="blog-content">
+          <span class="blog-title">{article.title}</span>
+          <span class="blog-date">{formatPublishedDate(article.published_at)}</span>
+        </div>
+        <span class="blog-link">
+          <span class="lang-ja">記事を読む →</span>
+          <span class="lang-en">Read article →</span>
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-border);
+    transition: color var(--transition-base);
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .blog-item:first-child {
+    padding-top: 0;
+  }
+
+  .blog-item:hover .blog-title {
+    color: var(--color-text);
+  }
+
+  .blog-item:hover .blog-link {
+    color: var(--color-text);
+  }
+
+  .blog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .blog-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.5;
+    transition: color var(--transition-base);
+  }
+
+  .blog-date {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .blog-link {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: color var(--transition-base);
+  }
+
+  .blog-item:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .blog-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-xs);
+    }
+  }
+</style>

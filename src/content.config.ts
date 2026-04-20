@@ -64,19 +64,6 @@ const development = defineCollection({
 	}),
 });
 
-const projects = defineCollection({
-	loader: glob({ pattern: '*.md', base: './src/contents/projects' }),
-	schema: z.object({
-		startDate: z.coerce.date(),
-		endDate: z.coerce.date().optional(),
-		name_ja: z.string(),
-		name_en: z.string().optional(),
-		title_ja: z.string(),
-		title_en: z.string().optional(),
-		links: z.array(z.string()).optional(),
-	}),
-});
-
 const awards = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/contents/awards' }),
 	schema: z.object({
@@ -115,4 +102,4 @@ const certifications = defineCollection({
 	}),
 });
 
-export const collections = { personal, research, development, projects, awards, education, certifications };
+export const collections = { personal, research, development, awards, education, certifications };

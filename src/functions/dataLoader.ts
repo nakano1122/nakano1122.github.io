@@ -34,16 +34,6 @@ export async function loadDevelopment(): Promise<
 }
 
 /**
- * プロジェクトエントリを startDate 降順で取得
- */
-export async function loadProjects(): Promise<CollectionEntry<'projects'>[]> {
-	const entries = await getCollection('projects');
-	return entries.sort(
-		(a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
-	);
-}
-
-/**
  * 受賞エントリを date 降順で取得
  */
 export async function loadAwards(): Promise<CollectionEntry<'awards'>[]> {
