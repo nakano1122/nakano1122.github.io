@@ -17,33 +17,18 @@ import { Icon } from 'astro-icon/components';
 </button>
 
 <script>
-	function initLang() {
+	import { initLanguage, toggleLanguage } from '../../hooks/useLanguage';
+
+	function setupLanguageToggle() {
 		const toggle = document.querySelector('.lang-toggle');
 		if (!toggle) return;
 
-		const getLang = (): 'ja' | 'en' => {
-			const stored = localStorage.getItem('lang');
-			if (stored === 'ja' || stored === 'en') return stored;
-			return 'ja';
-		};
-
-		const applyLang = (lang: 'ja' | 'en') => {
-			document.documentElement.setAttribute('data-lang', lang);
-			document.documentElement.setAttribute('lang', lang);
-			localStorage.setItem('lang', lang);
-		};
-
-		applyLang(getLang());
-
-		toggle.addEventListener('click', () => {
-			const current = document.documentElement.getAttribute('data-lang');
-			const next = current === 'ja' ? 'en' : 'ja';
-			applyLang(next);
-		});
+		initLanguage();
+		toggle.addEventListener('click', toggleLanguage);
 	}
 
-	initLang();
-	document.addEventListener('astro:after-swap', initLang);
+	setupLanguageToggle();
+	document.addEventListener('astro:after-swap', setupLanguageToggle);
 </script>
 
 <style>

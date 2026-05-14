@@ -1,52 +1,52 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '@/components/layouts/Layout.astro';
 import {
-	loadPersonalData,
-	loadResearch,
-	loadDevelopment,
-	loadAwards,
-	loadEducation,
+	loadProfile,
+	loadJobHistory,
+	loadResearchWithContent,
+	loadDevelopmentWithContent,
+	loadAwardsWithContent,
+	loadEducationWithContent,
 	loadCertifications,
-} from '../functions/dataLoader';
-import { loadZennArticles } from '../functions/zennApi';
+} from '@/domain';
 
 // Sections
-import HeroSection from '../components/sections/HeroSection.astro';
-import ResearchSection from '../components/sections/ResearchSection.astro';
-import DevelopmentSection from '../components/sections/DevelopmentSection.astro';
-import AwardsSection from '../components/sections/AwardsSection.astro';
-import BlogsSection from '../components/sections/BlogsSection.astro';
-import ExperienceSection from '../components/sections/ExperienceSection.astro';
-import CertificationsSection from '../components/sections/CertificationsSection.astro';
-import Footer from '../components/sections/Footer.astro';
-import DetailModal from '../components/ui/DetailModal.astro';
+import HeroSection from '@/components/sections/HeroSection.astro';
+import ResearchSection from '@/components/sections/ResearchSection.astro';
+import DevelopmentSection from '@/components/sections/DevelopmentSection.astro';
+import AwardsSection from '@/components/sections/AwardsSection.astro';
+import BlogsSection from '@/components/sections/BlogsSection.astro';
+import ExperienceSection from '@/components/sections/ExperienceSection.astro';
+import CertificationsSection from '@/components/sections/CertificationsSection.astro';
+import Footer from '@/components/sections/Footer.astro';
+import DetailModal from '@/components/ui/DetailModal.astro';
 
-const personalData = await loadPersonalData();
-const researchEntries = await loadResearch();
-const developmentEntries = await loadDevelopment();
-const awardEntries = await loadAwards();
-const zennArticles = await loadZennArticles();
-const educationEntries = await loadEducation();
+const profile = await loadProfile();
+const jobHistory = await loadJobHistory();
+const researchEntries = await loadResearchWithContent();
+const developmentEntries = await loadDevelopmentWithContent();
+const awardEntries = await loadAwardsWithContent();
+const educationEntries = await loadEducationWithContent();
 const certificationEntries = await loadCertifications();
 ---
 
-<Layout title={personalData.title} description={personalData.description} keywords={personalData.keywords}>
+<Layout title={profile.seo.title} description={profile.seo.description} keywords={profile.seo.keywords}>
 	<main class="main">
-		<HeroSection profile={personalData} />
+		<HeroSection profile={profile} />
 
 		<div class="content">
 			<ResearchSection entries={researchEntries} />
 			<DevelopmentSection entries={developmentEntries} />
-			<BlogsSection articles={zennArticles} />
+			<BlogsSection />
 			<AwardsSection entries={awardEntries} />
 			<ExperienceSection
-				jobHistory={personalData.jobHistory}
+				jobHistory={jobHistory}
 				education={educationEntries}
 			/>
 			<CertificationsSection entries={certificationEntries} />
 		</div>
 
-		<Footer />
+		<Footer profile={profile} />
 	</main>
 
 	<DetailModal />

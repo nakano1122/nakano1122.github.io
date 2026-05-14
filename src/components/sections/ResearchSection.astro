@@ -2,45 +2,37 @@
 /**
  * 研究セクションコンポーネント
  */
-import type { CollectionEntry } from 'astro:content';
-import { render } from 'astro:content';
-import SectionHeader from '../ui/SectionHeader.astro';
+import type { Research } from '@/domain';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
 
 export interface Props {
-	entries: CollectionEntry<'research'>[];
+	entries: { research: Research; Content: AstroComponentFactory }[];
 }
 
 const { entries } = Astro.props;
-
-// 各エントリをレンダリング
-const research = await Promise.all(
-	entries.map(async (entry) => {
-		const { Content } = await render(entry);
-		return { slug: entry.id, Content, ...entry.data };
-	})
-);
 ---
 
 <section class="section" id="research">
-	<SectionHeader title="Research" count={`${research.length} Publications`} />
+	<SectionHeader title="Research" count={`${entries.length} Publications`} />
 	<div class="research-list">
-		{research.map((paper) => (
+		{entries.map(({ research }, index) => (
 			<article
 				class="research-item modal-trigger"
-				data-modal-trigger={paper.slug}
+				data-modal-trigger={`research-${index}`}
 				role="button"
 				tabindex="0"
 			>
 				<div class="research-meta">
-					<span class="research-conference">{paper.conference}</span>
+					<span class="research-conference">{research.conference}</span>
 				</div>
 				<h3 class="research-title">
-					<span class="lang-ja">{paper.title_ja}</span>
-					<span class="lang-en">{paper.title_en || paper.title_ja}</span>
+					<span class="lang-ja">{research.title.ja}</span>
+					<span class="lang-en">{research.title.en || research.title.ja}</span>
 				</h3>
 				<p class="research-authors">
-					<span class="lang-ja">{paper.authors_ja}</span>
-					<span class="lang-en">{paper.authors_en || paper.authors_ja}</span>
+					<span class="lang-ja">{research.authors.ja}</span>
+					<span class="lang-en">{research.authors.en || research.authors.ja}</span>
 				</p>
 				<span class="detail-indicator">
 					<span class="lang-ja">詳細を見る →</span>
@@ -50,17 +42,17 @@ const research = await Promise.all(
 		))}
 	</div>
 
-	{research.map((paper) => (
+	{entries.map(({ research, Content }, index) => (
 		<template
-			id={`detail-${paper.slug}`}
-			data-title-ja={paper.title_ja}
-			data-title-en={paper.title_en || paper.title_ja}
-			data-presentation={paper.conference || ''}
-			data-award-ja={paper.award_ja || ''}
-			data-award-en={paper.award_en || paper.award_ja || ''}
-			data-links={(paper.links || []).join('|')}
+			id={`detail-research-${index}`}
+			data-title-ja={research.title.ja}
+			data-title-en={research.title.en || research.title.ja}
+			data-presentation={research.conference || ''}
+			data-award-ja={research.award?.ja || ''}
+			data-award-en={research.award?.en || research.award?.ja || ''}
+			data-links={(research.links || []).join('|')}
 		>
-			<paper.Content />
+			<Content />
 		</template>
 	))}
 </section>

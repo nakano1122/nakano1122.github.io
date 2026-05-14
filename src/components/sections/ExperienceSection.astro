@@ -2,18 +2,25 @@
 /**
  * 経験セクションコンポーネント（インターンシップ・学歴）
  */
-import type { CollectionEntry } from 'astro:content';
-import type { PersonalData } from '../../functions/dataLoader';
-import { formatPeriodBilingual, formatDate } from '../../functions/dataLoader';
+import type { JobHistory, Education } from '@/domain';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import { formatYearMonth } from '@/domain/infrastructure/formatters/date';
 import { Icon } from 'astro-icon/components';
-import SectionHeader from '../ui/SectionHeader.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
 
 export interface Props {
-	jobHistory: PersonalData['jobHistory'];
-	education: CollectionEntry<'education'>[];
+	jobHistory: JobHistory;
+	education: { education: Education; Content: AstroComponentFactory }[];
 }
 
 const { jobHistory, education } = Astro.props;
+
+function formatPeriod(startDate: Date, endDate?: Date): { ja: string; en: string } {
+	const start = formatYearMonth(startDate);
+	const endJa = endDate ? formatYearMonth(endDate) : '現在';
+	const endEn = endDate ? formatYearMonth(endDate) : 'Present';
+	return { ja: `${start} - ${endJa}`, en: `${start} - ${endEn}` };
+}
 ---
 
 <section class="section" id="experience">
@@ -24,9 +31,9 @@ const { jobHistory, education } = Astro.props;
 		<div class="experience-column">
 			<h3 class="experience-subtitle">Internship</h3>
 			<div class="timeline">
-				{jobHistory.map((job) => {
-					const url = job.hpLink || '';
-					const period = formatPeriodBilingual(job.startMonth, job.finishMonth);
+				{jobHistory.entries.map((job) => {
+					const url = job.website || '';
+					const period = formatPeriod(job.period.startDate, job.period.endDate);
 
 					return url ? (
 						<a
@@ -42,12 +49,12 @@ const { jobHistory, education } = Astro.props;
 									<span class="lang-en">{period.en}</span>
 								</span>
 								<h4 class="timeline-title">
-									<span class="lang-ja">{job.company_ja}</span>
-									<span class="lang-en">{job.company_en || job.company_ja}</span>
+									<span class="lang-ja">{job.company.ja}</span>
+									<span class="lang-en">{job.company.en || job.company.ja}</span>
 								</h4>
 								<p class="timeline-description">
-									<span class="lang-ja">{job.position_ja}</span>
-									<span class="lang-en">{job.position_en || job.position_ja}</span>
+									<span class="lang-ja">{job.position.ja}</span>
+									<span class="lang-en">{job.position.en || job.position.ja}</span>
 								</p>
 							</div>
 							<Icon name="mdi:open-in-new" class="external-icon" />
@@ -61,12 +68,12 @@ const { jobHistory, education } = Astro.props;
 									<span class="lang-en">{period.en}</span>
 								</span>
 								<h4 class="timeline-title">
-									<span class="lang-ja">{job.company_ja}</span>
-									<span class="lang-en">{job.company_en || job.company_ja}</span>
+									<span class="lang-ja">{job.company.ja}</span>
+									<span class="lang-en">{job.company.en || job.company.ja}</span>
 								</h4>
 								<p class="timeline-description">
-									<span class="lang-ja">{job.position_ja}</span>
-									<span class="lang-en">{job.position_en || job.position_ja}</span>
+									<span class="lang-ja">{job.position.ja}</span>
+									<span class="lang-en">{job.position.en || job.position.ja}</span>
 								</p>
 							</div>
 						</div>
@@ -79,12 +86,10 @@ const { jobHistory, education } = Astro.props;
 		<div class="experience-column">
 			<h3 class="experience-subtitle">Education</h3>
 			<div class="timeline">
-				{education.map((edu) => {
-					const startFormatted = formatDate(edu.data.startDate);
-					const endJa = edu.data.endDate ? formatDate(edu.data.endDate) : '現在';
-					const endEn = edu.data.endDate ? formatDate(edu.data.endDate) : 'Present';
-					const lab = edu.data.laboratory;
-					const url = lab?.siteUrl || '';
+				{education.map(({ education: edu }) => {
+					const period = formatPeriod(edu.period.startDate, edu.period.endDate);
+					const lab = edu.laboratory;
+					const url = lab?.website || '';
 
 					return url ? (
 						<a
@@ -96,17 +101,17 @@ const { jobHistory, education } = Astro.props;
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
 								<span class="timeline-period">
-									<span class="lang-ja">{startFormatted} - {endJa}</span>
-									<span class="lang-en">{startFormatted} - {endEn}</span>
+									<span class="lang-ja">{period.ja}</span>
+									<span class="lang-en">{period.en}</span>
 								</span>
 								<h4 class="timeline-title">
-									<span class="lang-ja">{edu.data.institution_ja}</span>
-									<span class="lang-en">{edu.data.institution_en || edu.data.institution_ja}</span>
+									<span class="lang-ja">{edu.institution.ja}</span>
+									<span class="lang-en">{edu.institution.en || edu.institution.ja}</span>
 								</h4>
 								{lab && (
 									<p class="timeline-description">
-										<span class="lang-ja">{lab.name_ja}</span>
-										<span class="lang-en">{lab.name_en || lab.name_ja}</span>
+										<span class="lang-ja">{lab.name.ja}</span>
+										<span class="lang-en">{lab.name.en || lab.name.ja}</span>
 									</p>
 								)}
 							</div>
@@ -117,17 +122,17 @@ const { jobHistory, education } = Astro.props;
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
 								<span class="timeline-period">
-									<span class="lang-ja">{startFormatted} - {endJa}</span>
-									<span class="lang-en">{startFormatted} - {endEn}</span>
+									<span class="lang-ja">{period.ja}</span>
+									<span class="lang-en">{period.en}</span>
 								</span>
 								<h4 class="timeline-title">
-									<span class="lang-ja">{edu.data.institution_ja}</span>
-									<span class="lang-en">{edu.data.institution_en || edu.data.institution_ja}</span>
+									<span class="lang-ja">{edu.institution.ja}</span>
+									<span class="lang-en">{edu.institution.en || edu.institution.ja}</span>
 								</h4>
 								{lab && (
 									<p class="timeline-description">
-										<span class="lang-ja">{lab.name_ja}</span>
-										<span class="lang-en">{lab.name_en || lab.name_ja}</span>
+										<span class="lang-ja">{lab.name.ja}</span>
+										<span class="lang-en">{lab.name.en || lab.name.ja}</span>
 									</p>
 								)}
 							</div>

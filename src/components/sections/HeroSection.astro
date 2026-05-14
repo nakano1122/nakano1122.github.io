@@ -2,17 +2,17 @@
 /**
  * ヒーローセクションコンポーネント
  */
-import type { PersonalData } from '../../functions/dataLoader';
+import type { Profile } from '@/domain';
 import { Icon } from 'astro-icon/components';
 
 export interface Props {
-	profile: PersonalData;
+	profile: Profile;
 }
 
 const { profile } = Astro.props;
 
 // GitHubのユーザー名を抽出
-const githubUsername = profile.github.split('/').pop() || '';
+const githubUsername = profile.socialLinks.github.split('/').pop() || '';
 
 // 日本語ランク表記 → CSS変数名のマッピング
 const rankColorMap: Record<string, string> = {
@@ -32,7 +32,7 @@ const getAtcoderRankColor = (rank?: string): string => {
 	return englishRank ? `var(--atcoder-${englishRank})` : 'var(--color-text-secondary)';
 };
 
-const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
+const atcoderColor = getAtcoderRankColor(profile.socialLinks.atcoder?.rank);
 ---
 
 <header class="hero">
@@ -40,7 +40,7 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		{profile.avatar && (
 			<img
 				src={profile.avatar}
-				alt={profile.name_ja}
+				alt={profile.personalInfo.name.ja}
 				class="hero-avatar"
 				width="120"
 				height="120"
@@ -48,25 +48,25 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 		)}
 		<div class="hero-text">
 			<h1 class="hero-name">
-				<span class="lang-ja">{profile.name_ja}</span>
-				<span class="lang-en">{profile.name_en}</span>
+				<span class="lang-ja">{profile.personalInfo.name.ja}</span>
+				<span class="lang-en">{profile.personalInfo.name.en}</span>
 			</h1>
 			<p class="hero-affiliation">
-				<span class="lang-ja">{profile.department_ja}</span>
-				<span class="lang-en">{profile.department_en || profile.department_ja}</span>
+				<span class="lang-ja">{profile.personalInfo.department.ja}</span>
+				<span class="lang-en">{profile.personalInfo.department.en || profile.personalInfo.department.ja}</span>
 			</p>
 			<div class="hero-links">
 				<span class="link-item">
 					<Icon name="mdi:email-outline" class="link-icon" />
-					{profile.email.user}<Icon name="mdi:at" class="at-icon" />{profile.email.domain}
+					{profile.contact.email.user}<Icon name="mdi:at" class="at-icon" />{profile.contact.email.domain}
 				</span>
-				<a href={profile.github} target="_blank" rel="noopener noreferrer" class="link-item">
+				<a href={profile.socialLinks.github} target="_blank" rel="noopener noreferrer" class="link-item">
 					<Icon name="mdi:github" class="link-icon" />
 					@{githubUsername}
 				</a>
-				{profile.atcoder && (
+				{profile.socialLinks.atcoder && (
 					<a
-						href={profile.atcoder.url}
+						href={profile.socialLinks.atcoder.url}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="link-item atcoder-link"
@@ -75,9 +75,9 @@ const atcoderColor = getAtcoderRankColor(profile.atcoder?.rank);
 						AtCoder
 					</a>
 				)}
-				{profile.zenn && (
+				{profile.socialLinks.zenn && (
 					<a
-						href={profile.zenn}
+						href={profile.socialLinks.zenn}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="link-item zenn-link"

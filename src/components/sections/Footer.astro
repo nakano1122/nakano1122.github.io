@@ -2,11 +2,19 @@
 /**
  * フッターコンポーネント
  */
+import type { Profile } from '@/domain';
+
+export interface Props {
+	profile: Profile;
+}
+
+const { profile } = Astro.props;
 const currentYear = new Date().getFullYear();
+const name = profile.personalInfo.name.en || profile.personalInfo.name.ja;
 ---
 
 <footer class="footer">
-	<p class="footer-text">&copy; {currentYear} Akito Nakano.</p>
+	<p class="footer-text">&copy; {currentYear} {name}.</p>
 </footer>
 
 <style>

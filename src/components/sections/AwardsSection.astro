@@ -2,44 +2,36 @@
 /**
  * 受賞セクションコンポーネント
  */
-import type { CollectionEntry } from 'astro:content';
-import { render } from 'astro:content';
-import SectionHeader from '../ui/SectionHeader.astro';
+import type { Award } from '@/domain';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
 
 export interface Props {
-	entries: CollectionEntry<'awards'>[];
+	entries: { award: Award; Content: AstroComponentFactory }[];
 }
 
 const { entries } = Astro.props;
-
-// 各エントリをレンダリング
-const awards = await Promise.all(
-	entries.map(async (entry) => {
-		const { Content } = await render(entry);
-		return { slug: entry.id, Content, ...entry.data };
-	})
-);
 ---
 
 <section class="section" id="awards">
-	<SectionHeader title="Awards" count={`${awards.length} Awards`} />
+	<SectionHeader title="Awards" count={`${entries.length} Awards`} />
 	<div class="award-list">
-		{awards.map((item) => (
+		{entries.map(({ award }, index) => (
 			<div
 				class="award-item modal-trigger"
-				data-modal-trigger={item.slug}
+				data-modal-trigger={`award-${index}`}
 				role="button"
 				tabindex="0"
 			>
 				<div class="award-content">
 					<span class="award-title">
-						<span class="lang-ja">{item.title_ja}</span>
-						<span class="lang-en">{item.title_en || item.title_ja}</span>
+						<span class="lang-ja">{award.title.ja}</span>
+						<span class="lang-en">{award.title.en || award.title.ja}</span>
 					</span>
-					{(item.summary_ja || item.summary_en) && (
+					{award.summary && (
 						<span class="award-subtitle">
-							<span class="lang-ja">{item.summary_ja}</span>
-							<span class="lang-en">{item.summary_en || item.summary_ja}</span>
+							<span class="lang-ja">{award.summary.ja}</span>
+							<span class="lang-en">{award.summary.en || award.summary.ja}</span>
 						</span>
 					)}
 				</div>
@@ -51,14 +43,14 @@ const awards = await Promise.all(
 		))}
 	</div>
 
-	{awards.map((item) => (
+	{entries.map(({ award, Content }, index) => (
 		<template
-			id={`detail-${item.slug}`}
-			data-title-ja={item.title_ja}
-			data-title-en={item.title_en || item.title_ja}
-			data-links={(item.links || []).join('|')}
+			id={`detail-award-${index}`}
+			data-title-ja={award.title.ja}
+			data-title-en={award.title.en || award.title.ja}
+			data-links={(award.links || []).join('|')}
 		>
-			<item.Content />
+			<Content />
 		</template>
 	))}
 </section>

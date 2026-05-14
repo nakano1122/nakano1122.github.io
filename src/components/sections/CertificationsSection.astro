@@ -2,12 +2,12 @@
 /**
  * 資格セクションコンポーネント
  */
-import type { CollectionEntry } from 'astro:content';
-import { formatDate } from '../../functions/dataLoader';
-import SectionHeader from '../ui/SectionHeader.astro';
+import type { Certification } from '@/domain';
+import { formatYearMonth } from '@/domain/infrastructure/formatters/date';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
 
 export interface Props {
-	entries: CollectionEntry<'certifications'>[];
+	entries: Certification[];
 }
 
 const { entries } = Astro.props;
@@ -16,12 +16,12 @@ const { entries } = Astro.props;
 <section class="section" id="certifications">
 	<SectionHeader title="Certifications" />
 	<div class="cert-list">
-		{entries.map((entry) => (
+		{entries.map((cert) => (
 			<div class="cert-item">
-				<span class="cert-date">{formatDate(entry.data.date)}</span>
+				<span class="cert-date">{formatYearMonth(cert.date)}</span>
 				<span class="cert-name">
-					<span class="lang-ja">{entry.data.name_ja}</span>
-					<span class="lang-en">{entry.data.name_en || entry.data.name_ja}</span>
+					<span class="lang-ja">{cert.name.ja}</span>
+					<span class="lang-en">{cert.name.en || cert.name.ja}</span>
 				</span>
 			</div>
 		))}

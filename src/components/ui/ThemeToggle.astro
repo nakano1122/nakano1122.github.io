@@ -16,38 +16,18 @@ import { Icon } from 'astro-icon/components';
 </button>
 
 <script>
-	function initTheme() {
+	import { initTheme, toggleTheme } from '../../hooks/useTheme';
+
+	function setupThemeToggle() {
 		const toggle = document.querySelector('.theme-toggle');
 		if (!toggle) return;
 
-		const getPreferredTheme = (): 'light' | 'dark' => {
-			const stored = localStorage.getItem('theme');
-			if (stored === 'light' || stored === 'dark') return stored;
-			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-		};
-
-		const applyTheme = (theme: 'light' | 'dark') => {
-			document.documentElement.setAttribute('data-theme', theme);
-			localStorage.setItem('theme', theme);
-		};
-
-		applyTheme(getPreferredTheme());
-
-		toggle.addEventListener('click', () => {
-			const current = document.documentElement.getAttribute('data-theme');
-			const next = current === 'dark' ? 'light' : 'dark';
-			applyTheme(next);
-		});
-
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-			if (!localStorage.getItem('theme')) {
-				applyTheme(e.matches ? 'dark' : 'light');
-			}
-		});
+		initTheme();
+		toggle.addEventListener('click', toggleTheme);
 	}
 
-	initTheme();
-	document.addEventListener('astro:after-swap', initTheme);
+	setupThemeToggle();
+	document.addEventListener('astro:after-swap', setupThemeToggle);
 </script>
 
 <style>
