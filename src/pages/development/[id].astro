@@ -25,7 +25,7 @@ const { development, Content } = result;
 
 <ProjectDetailLayout
 	title={`${development.title.ja} | Development`}
-	description={development.title.en || development.title.ja}
+	description={`${development.name.ja}で取り組んだプロジェクト「${development.title.ja}」の詳細です。`}
 	backLink={{
 		href: '/development',
 		labelJa: 'Development に戻る',
