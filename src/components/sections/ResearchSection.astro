@@ -1,112 +1,21 @@
 ---
 /**
  * 研究セクションコンポーネント
+ * TOP と /research で共通利用
  */
 import type { Research } from '@/domain';
-import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
+import ProjectCardGrid from '@/components/ui/ProjectCardGrid.astro';
 
 export interface Props {
-	entries: { research: Research; Content: AstroComponentFactory }[];
+	entries: Research[];
+	showHeader?: boolean;
 }
 
-const { entries } = Astro.props;
+const { entries, showHeader = true } = Astro.props;
 ---
 
 <section class="section" id="research">
-	<SectionHeader title="Research" count={`${entries.length} Publications`} />
-	<div class="research-list">
-		{entries.map(({ research }, index) => (
-			<article
-				class="research-item modal-trigger"
-				data-modal-trigger={`research-${index}`}
-				role="button"
-				tabindex="0"
-			>
-				<div class="research-meta">
-					<span class="research-conference">{research.conference}</span>
-				</div>
-				<h3 class="research-title">
-					<span class="lang-ja">{research.title.ja}</span>
-					<span class="lang-en">{research.title.en || research.title.ja}</span>
-				</h3>
-				<p class="research-authors">
-					<span class="lang-ja">{research.authors.ja}</span>
-					<span class="lang-en">{research.authors.en || research.authors.ja}</span>
-				</p>
-				<span class="detail-indicator">
-					<span class="lang-ja">詳細を見る →</span>
-					<span class="lang-en">View details →</span>
-				</span>
-			</article>
-		))}
-	</div>
-
-	{entries.map(({ research, Content }, index) => (
-		<template
-			id={`detail-research-${index}`}
-			data-title-ja={research.title.ja}
-			data-title-en={research.title.en || research.title.ja}
-			data-presentation={research.conference || ''}
-			data-award-ja={research.award?.ja || ''}
-			data-award-en={research.award?.en || research.award?.ja || ''}
-			data-links={(research.links || []).join('|')}
-		>
-			<Content />
-		</template>
-	))}
+	{showHeader && <SectionHeader title="Research" count={`${entries.length} Projects`} />}
+	<ProjectCardGrid type="research" items={entries} />
 </section>
-
-<style>
-	.research-list {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.research-item {
-		padding: var(--space-lg) 0;
-		border-bottom: 1px solid var(--color-border);
-		transition: color var(--transition-base);
-		position: relative;
-	}
-
-	.research-item:first-child {
-		padding-top: 0;
-	}
-
-	.research-item:hover {
-		color: var(--color-text-muted);
-	}
-
-	.research-item:hover .research-title {
-		color: var(--color-text);
-	}
-
-	.research-meta {
-		display: flex;
-		align-items: center;
-		gap: var(--space-md);
-		margin-bottom: var(--space-sm);
-	}
-
-	.research-conference {
-		font-size: 0.8rem;
-		color: var(--color-text-muted);
-		font-weight: 500;
-	}
-
-	.research-title {
-		font-size: 1.05rem;
-		font-weight: 600;
-		line-height: 1.6;
-		margin-bottom: var(--space-xs);
-		color: var(--color-text);
-		transition: color var(--transition-base);
-	}
-
-	.research-authors {
-		font-size: 0.9rem;
-		color: var(--color-text-muted);
-		line-height: 1.6;
-	}
-</style>

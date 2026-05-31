@@ -1,117 +1,21 @@
 ---
 /**
  * Development セクションコンポーネント
- * ハッカソン・開発イベントの成果を表示
+ * TOP と /development で共通利用
  */
 import type { Development } from '@/domain';
-import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
+import ProjectCardGrid from '@/components/ui/ProjectCardGrid.astro';
 
 export interface Props {
-	entries: { development: Development; Content: AstroComponentFactory }[];
+	entries: Development[];
+	showHeader?: boolean;
 }
 
-const { entries } = Astro.props;
+const { entries, showHeader = true } = Astro.props;
 ---
 
 <section class="section" id="development">
-	<SectionHeader title="Development" count={`${entries.length} Projects`} />
-	<div class="dev-list">
-		{entries.map(({ development }, index) => (
-			<div
-				class="dev-item modal-trigger"
-				data-modal-trigger={`dev-${index}`}
-				role="button"
-				tabindex="0"
-			>
-				<div class="dev-content">
-					<span class="dev-event">
-						<span class="lang-ja">{development.name.ja}</span>
-						<span class="lang-en">{development.name.en || development.name.ja}</span>
-					</span>
-					<span class="dev-title">
-						<span class="lang-ja">{development.title.ja}</span>
-						<span class="lang-en">{development.title.en || development.title.ja}</span>
-					</span>
-				</div>
-				<span class="detail-indicator">
-					<span class="lang-ja">詳細を見る →</span>
-					<span class="lang-en">View details →</span>
-				</span>
-			</div>
-		))}
-	</div>
-
-	{entries.map(({ development, Content }, index) => (
-		<template
-			id={`detail-dev-${index}`}
-			data-title-ja={development.title.ja}
-			data-title-en={development.title.en || development.title.ja}
-			data-repository={development.repository || ''}
-			data-links={(development.links || []).join('|')}
-		>
-			<Content />
-		</template>
-	))}
+	{showHeader && <SectionHeader title="Development" count={`${entries.length} Projects`} />}
+	<ProjectCardGrid type="development" items={entries} />
 </section>
-
-<style>
-	.dev-list {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.dev-item {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-md);
-		padding: var(--space-lg) 0;
-		border-bottom: 1px solid var(--color-border);
-		transition: color var(--transition-base);
-		position: relative;
-	}
-
-	.dev-item:first-child {
-		padding-top: 0;
-	}
-
-	.dev-item:hover .dev-title {
-		color: var(--color-text);
-	}
-
-	.dev-content {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		min-width: 0;
-	}
-
-	.dev-event {
-		font-size: 0.8rem;
-		font-weight: 500;
-		color: var(--color-text-muted);
-		line-height: 1.4;
-	}
-
-	.dev-title {
-		font-size: 1rem;
-		font-weight: 500;
-		color: var(--color-text);
-		line-height: 1.5;
-		transition: color var(--transition-base);
-	}
-
-	.dev-item:focus-visible {
-		outline: 2px solid var(--color-accent);
-		outline-offset: 4px;
-	}
-
-	@media (max-width: 768px) {
-		.dev-item {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: var(--space-xs);
-		}
-	}
-</style>

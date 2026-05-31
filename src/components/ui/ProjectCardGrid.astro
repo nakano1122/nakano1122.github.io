@@ -1,0 +1,49 @@
+---
+/**
+ * プロジェクトカードグリッドコンポーネント
+ * Research と Development の両方で使用
+ */
+import type { Research, Development } from '@/domain';
+import ProjectCard from './ProjectCard.astro';
+
+export interface Props {
+	type: 'research' | 'development';
+	items: Research[] | Development[];
+}
+
+const { type, items } = Astro.props;
+---
+
+<div class="card-grid">
+	{type === 'research' && (items as Research[]).map((research) => (
+		<ProjectCard
+			href={`/research/${research.id}`}
+			image={research.image}
+			title={research.title}
+			summary={research.summary}
+		/>
+	))}
+	{type === 'development' && (items as Development[]).map((dev) => (
+		<ProjectCard
+			href={`/development/${dev.id}`}
+			image={dev.image}
+			title={dev.title}
+			label={dev.name}
+		/>
+	))}
+</div>
+
+<style>
+	.card-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-xl);
+	}
+
+	@media (max-width: 768px) {
+		.card-grid {
+			grid-template-columns: 1fr;
+			gap: var(--space-lg);
+		}
+	}
+</style>

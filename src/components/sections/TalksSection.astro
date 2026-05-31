@@ -1,0 +1,118 @@
+---
+/**
+ * 登壇セクションコンポーネント
+ */
+import type { Talk } from '@/domain';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
+import { formatYearMonth } from '@/infrastructure/formatters/date';
+
+export interface Props {
+	talks: Talk[];
+}
+
+const { talks } = Astro.props;
+---
+
+<section class="section" id="talks">
+	<SectionHeader title="Talks" count={`${talks.length} Talks`} />
+	<div class="talks-list">
+		{talks.map((talk) => (
+			<a href={talk.url} target="_blank" rel="noopener noreferrer" class="talk-item">
+				<div class="talk-content">
+					<span class="talk-meta">
+						<span class="talk-date">{formatYearMonth(talk.date)}</span>
+						<span class="talk-event">{talk.event}</span>
+					</span>
+					<span class="talk-title">
+						<span class="lang-ja">{talk.title.ja}</span>
+						<span class="lang-en">{talk.title.en || talk.title.ja}</span>
+					</span>
+				</div>
+				<Icon name="mdi:open-in-new" class="external-icon" />
+			</a>
+		))}
+	</div>
+</section>
+
+<style>
+	.talks-list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.talk-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-md);
+		padding: var(--space-lg) 0;
+		border-bottom: 1px solid var(--color-border);
+		text-decoration: none;
+		color: inherit;
+		transition: color var(--transition-base);
+	}
+
+	.talk-item:first-child {
+		padding-top: 0;
+	}
+
+	.talk-item:hover .talk-title {
+		color: var(--color-accent);
+	}
+
+	.talk-content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		min-width: 0;
+	}
+
+	.talk-meta {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		font-size: 0.8rem;
+		color: var(--color-text-muted);
+	}
+
+	.talk-event {
+		padding: 2px 8px;
+		background: var(--color-accent-soft);
+		border-radius: 4px;
+		font-size: 0.75rem;
+	}
+
+	.talk-title {
+		font-size: 1rem;
+		font-weight: 500;
+		color: var(--color-text);
+		line-height: 1.5;
+		transition: color var(--transition-base);
+	}
+
+	.external-icon {
+		width: 16px;
+		height: 16px;
+		color: var(--color-text-muted);
+		flex-shrink: 0;
+		opacity: 0;
+		transition: opacity var(--transition-base);
+	}
+
+	.talk-item:hover .external-icon {
+		opacity: 1;
+	}
+
+	@media (max-width: 768px) {
+		.talk-item {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: var(--space-xs);
+		}
+
+		.external-icon {
+			display: none;
+		}
+	}
+</style>

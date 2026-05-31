@@ -2,32 +2,24 @@
 import Layout from '@/components/layouts/Layout.astro';
 import {
 	loadProfile,
-	loadJobHistory,
-	loadResearchWithContent,
-	loadDevelopmentWithContent,
-	loadAwardsWithContent,
-	loadEducationWithContent,
-	loadCertifications,
-} from '@/domain';
+	loadResearch,
+	loadDevelopment,
+	loadAwards,
+} from '@/application';
 
 // Sections
 import HeroSection from '@/components/sections/HeroSection.astro';
 import ResearchSection from '@/components/sections/ResearchSection.astro';
 import DevelopmentSection from '@/components/sections/DevelopmentSection.astro';
-import AwardsSection from '@/components/sections/AwardsSection.astro';
-import BlogsSection from '@/components/sections/BlogsSection.astro';
-import ExperienceSection from '@/components/sections/ExperienceSection.astro';
-import CertificationsSection from '@/components/sections/CertificationsSection.astro';
+import AwardsListSection from '@/components/sections/AwardsListSection.astro';
+import ActivitySection from '@/components/sections/ActivitySection.astro';
+import NavigationModal from '@/components/ui/NavigationModal.astro';
 import Footer from '@/components/sections/Footer.astro';
-import DetailModal from '@/components/ui/DetailModal.astro';
 
 const profile = await loadProfile();
-const jobHistory = await loadJobHistory();
-const researchEntries = await loadResearchWithContent();
-const developmentEntries = await loadDevelopmentWithContent();
-const awardEntries = await loadAwardsWithContent();
-const educationEntries = await loadEducationWithContent();
-const certificationEntries = await loadCertifications();
+const researchEntries = await loadResearch();
+const developmentEntries = await loadDevelopment();
+const awards = await loadAwards();
 ---
 
 <Layout title={profile.seo.title} description={profile.seo.description} keywords={profile.seo.keywords}>
@@ -37,24 +29,18 @@ const certificationEntries = await loadCertifications();
 		<div class="content">
 			<ResearchSection entries={researchEntries} />
 			<DevelopmentSection entries={developmentEntries} />
-			<BlogsSection />
-			<AwardsSection entries={awardEntries} />
-			<ExperienceSection
-				jobHistory={jobHistory}
-				education={educationEntries}
-			/>
-			<CertificationsSection entries={certificationEntries} />
+			<AwardsListSection awards={awards} />
+			<ActivitySection />
+			<NavigationModal />
 		</div>
 
 		<Footer profile={profile} />
 	</main>
-
-	<DetailModal />
 </Layout>
 
 <style>
 	.main {
-		max-width: 800px;
+		max-width: 880px;
 		margin: 0 auto;
 		padding: 0 var(--space-xl);
 	}

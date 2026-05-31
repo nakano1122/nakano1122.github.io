@@ -3,8 +3,9 @@
  * ブログセクションコンポーネント
  * Zenn・Note記事を外部リンクとして表示
  */
-import { loadAllBlogArticles, type BlogArticle } from '@/domain';
-import { formatYearMonthDay } from '@/domain/infrastructure/formatters/date';
+import { loadAllBlogArticles } from '@/application';
+import type { BlogArticle } from '@/domain';
+import { formatYearMonthDay } from '@/infrastructure/formatters/date';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 
 const articles: BlogArticle[] = await loadAllBlogArticles();

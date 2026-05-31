@@ -1,0 +1,98 @@
+---
+/**
+ * 受賞リストセクションコンポーネント（シンプル版）
+ */
+import type { Award } from '@/domain';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+	awards: Award[];
+}
+
+const { awards } = Astro.props;
+
+// 日付降順（最新順）にソート
+const sortedAwards = [...awards].sort((a, b) => b.date.getTime() - a.date.getTime());
+---
+
+<section class="section" id="awards">
+	<SectionHeader title="Awards" count={`${sortedAwards.length} Awards`} />
+	<div class="award-list">
+		{sortedAwards.map((award) => {
+			const hasLink = award.links && award.links.length > 0;
+			return hasLink ? (
+				<a href={award.links![0]} target="_blank" rel="noopener noreferrer" class="award-item award-link">
+					<span class="award-title">
+						<span class="lang-ja">{award.title.ja}</span>
+						<span class="lang-en">{award.title.en || award.title.ja}</span>
+					</span>
+					<Icon name="mdi:open-in-new" class="external-icon" />
+				</a>
+			) : (
+				<div class="award-item">
+					<span class="award-title">
+						<span class="lang-ja">{award.title.ja}</span>
+						<span class="lang-en">{award.title.en || award.title.ja}</span>
+					</span>
+				</div>
+			);
+		})}
+	</div>
+</section>
+
+<style>
+	.award-list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.award-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-md);
+		padding: var(--space-md) 0;
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.award-link {
+		text-decoration: none;
+		color: inherit;
+		transition: color var(--transition-base);
+	}
+
+	.award-item:first-child {
+		padding-top: 0;
+	}
+
+	.award-link:hover .award-title {
+		color: var(--color-accent);
+	}
+
+	.award-title {
+		font-size: 0.95rem;
+		color: var(--color-text);
+		line-height: 1.5;
+		transition: color var(--transition-base);
+	}
+
+	.external-icon {
+		width: 14px;
+		height: 14px;
+		color: var(--color-text-muted);
+		flex-shrink: 0;
+		opacity: 0;
+		transition: opacity var(--transition-base);
+	}
+
+	.award-link:hover .external-icon {
+		opacity: 1;
+	}
+
+	@media (max-width: 768px) {
+		.external-icon {
+			display: none;
+		}
+	}
+</style>

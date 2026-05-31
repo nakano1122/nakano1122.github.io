@@ -1,0 +1,42 @@
+---
+/**
+ * Development 詳細ページ
+ * 各開発プロジェクトの詳細を表示
+ */
+import ProjectDetailLayout from '@/components/layouts/ProjectDetailLayout.astro';
+import { loadDevelopment, loadDevelopmentById } from '@/application';
+
+export async function getStaticPaths() {
+	const developments = await loadDevelopment();
+	return developments.map((dev) => ({
+		params: { id: dev.id },
+	}));
+}
+
+const { id } = Astro.params;
+const result = await loadDevelopmentById(id);
+
+if (!result) {
+	return Astro.redirect('/404');
+}
+
+const { development, Content } = result;
+---
+
+<ProjectDetailLayout
+	title={`${development.title.ja} | Development`}
+	description={development.title.en || development.title.ja}
+	backLink={{
+		href: '/development',
+		labelJa: 'Development に戻る',
+		labelEn: 'Back to Development',
+	}}
+	label={development.name}
+	projectTitle={development.title}
+	image={development.image}
+	period={development.period}
+	repository={development.repository}
+	links={development.links}
+>
+	<Content />
+</ProjectDetailLayout>

@@ -95,7 +95,7 @@ Development（集約ルート）
 
 ### 5. BlogArticle（ブログ記事集約）
 
-外部プラットフォームに公開した技術記事を表す集約。URLで一意に識別可能。
+外部プラットフォームに公開した技術記事を表す集約。URL で一意に識別可能。
 
 ```
 BlogArticle（集約ルート）
@@ -307,5 +307,5 @@ pages → components → domain
 ```
 
 - pages はコンポーネントを組み合わせてページを構築
-- components はドメイン層のデータを使用し、hooksでUI状態を管理
-- domain は他に依存しない（infrastructure含む）
+- components はドメイン層のデータを使用し、hooks で UI 状態を管理
+- domain は他に依存しない（infrastructure 含む）

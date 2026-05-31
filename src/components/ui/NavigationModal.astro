@@ -1,0 +1,243 @@
+---
+/**
+ * ナビゲーションモーダルコンポーネント
+ * 「もっと見る」ボタンとフルスクリーンモーダル
+ */
+import { Icon } from 'astro-icon/components';
+---
+
+<div class="see-more-wrapper">
+	<button class="see-more-btn" id="seeMoreBtn" type="button">
+		<span class="see-more-text">
+			<span class="lang-ja">もっと見る</span>
+			<span class="lang-en">See More</span>
+		</span>
+		<Icon name="mdi:chevron-down" class="see-more-icon" />
+	</button>
+</div>
+
+<!-- Navigation Modal -->
+<div class="nav-modal" id="navModal">
+	<button class="nav-modal-close" id="navModalClose" type="button" aria-label="Close">
+		<Icon name="mdi:close" class="close-icon" />
+	</button>
+	<nav class="nav-modal-content">
+		<a href="/about" class="nav-modal-link">
+			<span class="nav-link-title">
+				<span class="lang-ja">プロフィール</span>
+				<span class="lang-en">About</span>
+			</span>
+			<span class="nav-link-desc">
+				<span class="lang-ja">経歴・学歴・受賞歴・資格</span>
+				<span class="lang-en">Experience, Education, Awards & Certifications</span>
+			</span>
+		</a>
+		<a href="/research" class="nav-modal-link">
+			<span class="nav-link-title">
+				<span class="lang-ja">研究活動</span>
+				<span class="lang-en">Research</span>
+			</span>
+			<span class="nav-link-desc">
+				<span class="lang-ja">研究テーマ・論文</span>
+				<span class="lang-en">Projects & Publications</span>
+			</span>
+		</a>
+		<a href="/development" class="nav-modal-link">
+			<span class="nav-link-title">
+				<span class="lang-ja">開発</span>
+				<span class="lang-en">Development</span>
+			</span>
+			<span class="nav-link-desc">
+				<span class="lang-ja">個人開発・ハッカソン</span>
+				<span class="lang-en">Personal Projects & Hackathons</span>
+			</span>
+		</a>
+	</nav>
+</div>
+
+<script>
+	const seeMoreBtn = document.getElementById('seeMoreBtn');
+	const navModal = document.getElementById('navModal');
+	const navModalClose = document.getElementById('navModalClose');
+
+	seeMoreBtn?.addEventListener('click', () => {
+		navModal?.classList.add('is-open');
+		document.body.style.overflow = 'hidden';
+	});
+
+	const closeModal = () => {
+		navModal?.classList.remove('is-open');
+		document.body.style.overflow = '';
+	};
+
+	navModalClose?.addEventListener('click', closeModal);
+
+	navModal?.addEventListener('click', (e) => {
+		if (e.target === navModal) {
+			closeModal();
+		}
+	});
+
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape' && navModal?.classList.contains('is-open')) {
+			closeModal();
+		}
+	});
+</script>
+
+<style>
+	/* See More Button */
+	.see-more-wrapper {
+		display: flex;
+		justify-content: center;
+		padding: var(--space-3xl) 0;
+	}
+
+	.see-more-btn {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--space-md);
+		padding: var(--space-md) var(--space-xl);
+		background: transparent;
+		border: 1.5px solid var(--color-text);
+		border-radius: 30px;
+		cursor: pointer;
+		color: var(--color-text);
+		transition: background var(--transition-base), color var(--transition-base);
+	}
+
+	.see-more-btn:hover {
+		background: var(--color-text);
+		color: var(--color-bg);
+	}
+
+	.see-more-text {
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+	}
+
+	.see-more-icon {
+		width: 16px;
+		height: 16px;
+		transition: transform var(--transition-base);
+	}
+
+	.see-more-btn:hover .see-more-icon {
+		transform: translateY(2px);
+	}
+
+	/* Navigation Modal */
+	.nav-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.3s ease, visibility 0.3s ease;
+	}
+
+	:global([data-theme="dark"]) .nav-modal {
+		background: rgba(10, 10, 10, 0.85);
+	}
+
+	.nav-modal.is-open {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.nav-modal-close {
+		position: absolute;
+		top: var(--space-xl);
+		right: var(--space-xl);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+		background: transparent;
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		color: var(--color-text-muted);
+		transition: color var(--transition-base), background var(--transition-base);
+	}
+
+	.nav-modal-close:hover {
+		color: var(--color-text);
+		background: var(--color-bg-subtle);
+	}
+
+	.close-icon {
+		width: 24px;
+		height: 24px;
+	}
+
+	.nav-modal-content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+		padding: var(--space-xl);
+		width: 100%;
+		max-width: 400px;
+	}
+
+	.nav-modal-link {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: var(--space-xs);
+		padding: var(--space-xl);
+		text-decoration: none;
+		color: inherit;
+		border-radius: 12px;
+		transition: background var(--transition-base);
+	}
+
+	.nav-modal-link:hover {
+		background: var(--color-bg-subtle);
+	}
+
+	.nav-link-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--color-text);
+	}
+
+	.nav-link-desc {
+		font-size: 0.9rem;
+		color: var(--color-text-muted);
+	}
+
+	@media (max-width: 768px) {
+		.see-more-wrapper {
+			padding: var(--space-2xl) 0;
+		}
+
+		.nav-modal-close {
+			top: var(--space-lg);
+			right: var(--space-lg);
+		}
+
+		.nav-modal-content {
+			padding: var(--space-lg);
+		}
+
+		.nav-modal-link {
+			padding: var(--space-lg);
+		}
+
+		.nav-link-title {
+			font-size: 1.25rem;
+		}
+	}
+</style>

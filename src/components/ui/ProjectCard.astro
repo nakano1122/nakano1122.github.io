@@ -1,0 +1,142 @@
+---
+/**
+ * プロジェクトカードコンポーネント
+ * Research と Development で共通利用
+ */
+import type { BilingualText } from '@/types';
+
+export interface Props {
+  href: string;
+  image?: string;
+  title: BilingualText;
+  label?: BilingualText;
+  summary?: BilingualText;
+}
+
+const { href, image, title, label, summary } = Astro.props;
+---
+
+<a class="card" href={href}>
+  {image && (
+    <div class="card-image">
+      <img src={image} alt="" loading="lazy" />
+    </div>
+  )}
+  <div class="card-content">
+    {label && (
+      <span class="card-label">
+        <span class="lang-ja">{label.ja}</span>
+        <span class="lang-en">{label.en || label.ja}</span>
+      </span>
+    )}
+    <h2 class="card-title">
+      <span class="lang-ja">{title.ja}</span>
+      <span class="lang-en">{title.en || title.ja}</span>
+    </h2>
+    {summary && (
+      <p class="card-summary">
+        <span class="lang-ja">{summary.ja}</span>
+        <span class="lang-en">{summary.en || summary.ja}</span>
+      </p>
+    )}
+    <span class="card-link">
+      <span class="lang-ja">詳細を見る →</span>
+      <span class="lang-en">View details →</span>
+    </span>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
+  }
+
+  .card:hover {
+    border-color: var(--color-text-muted);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .card-image {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-bg-subtle);
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .card:hover .card-image img {
+    transform: scale(1.03);
+  }
+
+  .card-content {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    flex: 1;
+  }
+
+  .card-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-text-muted);
+    padding: 0.2em 0.6em;
+    border-radius: 3px;
+    background: var(--color-accent-soft);
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--color-text);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-summary {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-link {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-top: var(--space-sm);
+    transition: color var(--transition-base);
+  }
+
+  .card:hover .card-link {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .card-title {
+      font-size: 0.95rem;
+    }
+  }
+</style>

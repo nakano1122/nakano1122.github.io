@@ -1,0 +1,205 @@
+---
+/**
+ * Activity セクションコンポーネント
+ * ブログ記事と登壇資料を統合表示
+ */
+import { loadAllBlogArticles, loadTalks } from '@/application';
+import type { BlogArticle, Talk } from '@/domain';
+import { formatYearMonthDay } from '@/infrastructure/formatters/date';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+
+const articles = await loadAllBlogArticles();
+const talks = await loadTalks();
+
+// 統一された Activity 型
+type ActivityItem =
+  | { type: 'blog'; data: BlogArticle; date: Date }
+  | { type: 'talk'; data: Talk; date: Date };
+
+// ブログと登壇を統合して日付順にソート
+const activities: ActivityItem[] = [
+  ...articles.map((article): ActivityItem => ({
+    type: 'blog',
+    data: article,
+    date: article.publishedAt,
+  })),
+  ...talks.map((talk): ActivityItem => ({
+    type: 'talk',
+    data: talk,
+    date: talk.date,
+  })),
+].sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const platformIcons: Record<BlogArticle['platform'], string> = {
+  zenn: '/icons/zenn.svg',
+  note: '/icons/note.svg',
+};
+---
+
+<section class="section" id="activity">
+  <SectionHeader title="Activity" count={`${activities.length} Items`} />
+  <div class="activity-list">
+    {activities.map((activity) => {
+      if (activity.type === 'blog') {
+        const article = activity.data;
+        return (
+          <a
+            class="activity-item"
+            href={article.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="activity-icon" aria-hidden="true">
+              <img src={platformIcons[article.platform]} alt="" width="20" height="20" />
+            </div>
+            <div class="activity-content">
+              <span class="activity-label">
+                <span class="lang-ja">ブログ</span>
+                <span class="lang-en">Blog</span>
+              </span>
+              <span class="activity-title">{article.title}</span>
+              <span class="activity-date">{formatYearMonthDay(article.publishedAt)}</span>
+            </div>
+            <span class="activity-link">→</span>
+          </a>
+        );
+      } else {
+        const talk = activity.data;
+        return (
+          <a
+            class="activity-item"
+            href={talk.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="activity-icon" aria-hidden="true">
+              <img src="/icons/speakerdeck.svg" alt="" width="20" height="20" />
+            </div>
+            <div class="activity-content">
+              <span class="activity-label">
+                {talk.type === 'paper-reading' ? (
+                  <>
+                    <span class="lang-ja">論文紹介</span>
+                    <span class="lang-en">Paper Reading</span>
+                  </>
+                ) : (
+                  <>
+                    <span class="lang-ja">発表</span>
+                    <span class="lang-en">Presentation</span>
+                  </>
+                )}
+              </span>
+              <span class="activity-title">
+                <span class="lang-ja">{talk.title.ja}</span>
+                <span class="lang-en">{talk.title.en || talk.title.ja}</span>
+              </span>
+              <span class="activity-meta">{talk.event}</span>
+            </div>
+            <span class="activity-link">→</span>
+          </a>
+        );
+      }
+    })}
+  </div>
+</section>
+
+<style>
+  .section {
+    margin-bottom: var(--space-4xl);
+  }
+
+  .activity-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-border);
+    transition: color var(--transition-base);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .activity-item:first-child {
+    padding-top: 0;
+  }
+
+  .activity-item:hover .activity-title {
+    color: var(--color-text-muted);
+  }
+
+  .activity-item:hover .activity-link {
+    color: var(--color-text);
+  }
+
+  .activity-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+
+  .activity-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .activity-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .activity-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .activity-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.5;
+    transition: color var(--transition-base);
+  }
+
+  .activity-date,
+  .activity-meta {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .activity-link {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: color var(--transition-base);
+  }
+
+  .activity-item:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .activity-item {
+      gap: var(--space-sm);
+    }
+
+    .activity-title {
+      font-size: 0.9rem;
+    }
+  }
+</style>

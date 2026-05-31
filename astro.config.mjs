@@ -15,7 +15,7 @@ export default defineConfig({
   },
   integrations: [icon({
     include: {
-      mdi: ['weather-sunny', 'weather-night', 'email-outline', 'github', 'open-in-new', 'close', 'at', 'translate'],
+      mdi: ['weather-sunny', 'weather-night', 'email-outline', 'github', 'open-in-new', 'close', 'at', 'translate', 'file-document-outline', 'arrow-right', 'arrow-left', 'chevron-down', 'chevron-left', 'chevron-right'],
     },
   }), sitemap()],
 });

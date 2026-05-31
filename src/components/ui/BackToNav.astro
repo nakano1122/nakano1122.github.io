@@ -1,0 +1,52 @@
+---
+/**
+ * 戻るナビゲーションコンポーネント
+ * ページ上部・下部で共通利用
+ */
+export interface Props {
+	href: string;
+	labelJa: string;
+	labelEn: string;
+	position?: 'top' | 'bottom';
+}
+
+const { href, labelJa, labelEn, position = 'top' } = Astro.props;
+---
+
+<nav class:list={['back-nav', `back-nav--${position}`]}>
+	<a href={href} class="back-link">
+		<span class="lang-ja">← {labelJa}</span>
+		<span class="lang-en">← {labelEn}</span>
+	</a>
+</nav>
+
+<style>
+	.back-nav {
+		display: flex;
+	}
+
+	.back-nav--top {
+		padding-top: var(--space-2xl);
+		justify-content: flex-start;
+	}
+
+	.back-nav--bottom {
+		padding-top: var(--space-3xl);
+		padding-bottom: var(--space-xl);
+		justify-content: center;
+		border-top: 1px solid var(--color-border);
+		margin-top: var(--space-2xl);
+	}
+
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.9rem;
+		color: var(--color-text-muted);
+		transition: color var(--transition-base);
+	}
+
+	.back-link:hover {
+		color: var(--color-text);
+	}
+</style>
