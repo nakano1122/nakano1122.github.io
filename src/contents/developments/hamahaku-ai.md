@@ -6,7 +6,8 @@ name_ja: "産官学連携プロジェクト 開発担当"
 name_en: "Industry-Academia-Government Collaborative Project"
 title_ja: "図録に興味を持ってもらうための博物館チャットボット開発"
 title_en: "AI chatbot for promoting museum exhibition catalogs"
-image: "/images/development/hamahaku-ai.webp"
+image_ja: "/images/development/hamahaku-ai_ja.webp"
+image_en: "/images/development/hamahaku-ai_en.png"
 links:
   - "https://www.inf.shizuoka.ac.jp/news/4506/"
 ---

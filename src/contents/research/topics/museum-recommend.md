@@ -4,7 +4,8 @@ title_ja: "ミュージアムにおける展示物推薦"
 title_en: "Museum Exhibit Recommendation"
 summary_ja: "再訪促進のための意外な共通点を持つ展示物の発見手法"
 summary_en: "Methods for discovering exhibits with surprising commonalities to encourage revisits"
-image: "/images/research/museum-recommend.webp"
+image_ja: "/images/research/museum-recommend_ja.webp"
+image_en: "/images/research/museum-recommend_en.png"
 status: "completed"
 startDate: 2025-04-01
 endDate: 2026-03-31

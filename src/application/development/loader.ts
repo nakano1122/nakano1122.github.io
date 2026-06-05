@@ -5,6 +5,12 @@
 import { getCollection, render } from 'astro:content';
 import type { Development } from '@/domain';
 
+function resolveImage(data: { image?: string; image_ja?: string; image_en?: string }) {
+  const imageJa = data.image_ja || data.image;
+  if (!imageJa) return undefined;
+  return { ja: imageJa, en: data.image_en || imageJa };
+}
+
 export async function loadDevelopment(): Promise<Development[]> {
   const entries = await getCollection('developments');
 
@@ -19,7 +25,7 @@ export async function loadDevelopment(): Promise<Development[]> {
       },
       name: { ja: data.name_ja, en: data.name_en },
       title: { ja: data.title_ja, en: data.title_en },
-      image: data.image,
+      image: resolveImage(data),
       repository: data.repository,
       links: data.links,
     };
@@ -48,7 +54,7 @@ export async function loadDevelopmentWithContent() {
         },
         name: { ja: data.name_ja, en: data.name_en },
         title: { ja: data.title_ja, en: data.title_en },
-        image: data.image,
+        image: resolveImage(data),
         repository: data.repository,
         links: data.links,
       };
@@ -79,7 +85,7 @@ export async function loadDevelopmentById(id: string) {
     },
     name: { ja: data.name_ja, en: data.name_en },
     title: { ja: data.title_ja, en: data.title_en },
-    image: data.image,
+    image: resolveImage(data),
     repository: data.repository,
     links: data.links,
   };

@@ -6,6 +6,12 @@ import { getCollection } from 'astro:content';
 import { render } from 'astro:content';
 import type { Research } from '@/domain';
 
+function resolveImage(data: { image?: string; image_ja?: string; image_en?: string }) {
+  const imageJa = data.image_ja || data.image;
+  if (!imageJa) return undefined;
+  return { ja: imageJa, en: data.image_en || imageJa };
+}
+
 export async function loadResearch(): Promise<Research[]> {
   const entries = await getCollection('research');
 
@@ -16,7 +22,7 @@ export async function loadResearch(): Promise<Research[]> {
       id: data.id,
       title: { ja: data.title_ja, en: data.title_en },
       summary: { ja: data.summary_ja, en: data.summary_en },
-      image: data.image,
+      image: resolveImage(data),
       status: data.status,
       period: {
         startDate: data.startDate,
@@ -44,7 +50,7 @@ export async function loadResearchWithContent() {
         id: data.id,
         title: { ja: data.title_ja, en: data.title_en },
         summary: { ja: data.summary_ja, en: data.summary_en },
-        image: data.image,
+        image: resolveImage(data),
         status: data.status,
         period: {
           startDate: data.startDate,
@@ -74,7 +80,7 @@ export async function loadResearchById(id: string) {
     id: data.id,
     title: { ja: data.title_ja, en: data.title_en },
     summary: { ja: data.summary_ja, en: data.summary_en },
-    image: data.image,
+    image: resolveImage(data),
     status: data.status,
     period: {
       startDate: data.startDate,

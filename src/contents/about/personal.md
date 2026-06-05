@@ -16,14 +16,20 @@ atcoder:
   rank: 茶
 zenn: https://zenn.dev/cafkaf
 jobHistory:
+  - company_ja: 株式会社ビズリーチ
+    company_en: BizReach, Inc.
+    startMonth: "2026-06"
+    hpLink: https://www.bizreach.co.jp/
+    position_ja: リサーチアシスタント（共同研究）
+    position_en: Research Assistant (joint research)
   - company_ja: 株式会社 NITI Technology
-    company_en: NITI Technology
+    company_en: NITI Technology, Inc.
     startMonth: "2025-08"
     hpLink: https://nititech.jp/
     position_ja: 長期インターン
     position_en: Long-term Internship
   - company_ja: シックスワン株式会社
-    company_en: SIX1 inc.
+    company_en: Six One Inc.
     startMonth: "2024-07"
     finishMonth: "2025-07"
     hpLink: https://six1.jp/

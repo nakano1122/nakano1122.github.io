@@ -7,7 +7,7 @@ import type { BilingualText } from '@/types';
 
 export interface Props {
   href: string;
-  image?: string;
+  image?: BilingualText;
   title: BilingualText;
   label?: BilingualText;
   summary?: BilingualText;
@@ -19,7 +19,8 @@ const { href, image, title, label, summary } = Astro.props;
 <a class="card" href={href}>
   {image && (
     <div class="card-image">
-      <img src={image} alt="" loading="lazy" />
+      <img class="lang-ja" src={image.ja} alt="" loading="lazy" />
+      <img class="lang-en" src={image.en || image.ja} alt="" loading="lazy" />
     </div>
   )}
   <div class="card-content">

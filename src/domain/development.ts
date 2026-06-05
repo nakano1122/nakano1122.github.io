@@ -9,7 +9,7 @@ export interface Development {
   period: Period;
   name: BilingualText;
   title: BilingualText;
-  image?: string;
+  image?: BilingualText;
   repository?: string;
   links?: ExternalLink[];
 }

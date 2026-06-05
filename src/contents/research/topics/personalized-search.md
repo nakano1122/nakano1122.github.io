@@ -4,7 +4,8 @@ title_ja: "パーソナライズ検索"
 title_en: "Personalized Search"
 summary_ja: "ユーザーの嗜好や文脈に応じた検索結果のパーソナライゼーション"
 summary_en: "Search result personalization based on user preferences and context"
-image: "/images/research/personalized-search.webp"
+image_ja: "/images/research/personalized-search_ja.webp"
+image_en: "/images/research/personalized-search_en.png"
 status: "ongoing"
 startDate: 2026-04-01
 ---

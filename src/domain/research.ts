@@ -10,7 +10,7 @@ export interface Research {
   id: string;
   title: BilingualText;
   summary: BilingualText;
-  image?: string;
+  image?: BilingualText;
   status: ResearchStatus;
   period: Period;
 }

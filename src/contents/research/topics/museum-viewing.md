@@ -4,7 +4,8 @@ title_ja: "ミュージアムの鑑賞支援"
 title_en: "Museum Viewing Support"
 summary_ja: "多様な視点で展示物を鑑賞するための対話型システムの研究"
 summary_en: "Research on interactive systems for viewing exhibits from diverse perspectives"
-image: "/images/research/museum-viewing.webp"
+image_ja: "/images/research/museum-viewing_ja.webp"
+image_en: "/images/research/museum-viewing_en.png"
 status: "completed"
 startDate: 2024-04-01
 endDate: 2025-12-01
