@@ -8,16 +8,17 @@ import { Icon } from 'astro-icon/components';
 
 export interface Props {
 	awards: Award[];
+	actionHref?: string;
 }
 
-const { awards } = Astro.props;
+const { awards, actionHref } = Astro.props;
 
 // 日付降順（最新順）にソート
 const sortedAwards = [...awards].sort((a, b) => b.date.getTime() - a.date.getTime());
 ---
 
 <section class="section" id="awards">
-	<SectionHeader title="Awards" count={`${sortedAwards.length} Awards`} />
+	<SectionHeader title="Awards" actionHref={actionHref} />
 	<div class="award-list">
 		{sortedAwards.map((award) => {
 			const hasLink = award.links && award.links.length > 0;

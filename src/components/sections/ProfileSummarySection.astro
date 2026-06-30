@@ -1,0 +1,335 @@
+---
+/**
+ * TOP 用プロフィール概要セクション
+ */
+import type { Development, JobHistory, Profile, Research } from '@/domain';
+
+export interface Props {
+	profile: Profile;
+	jobHistory: JobHistory;
+	researchEntries: Research[];
+	developmentEntries: Development[];
+}
+
+const { profile, jobHistory, researchEntries, developmentEntries } = Astro.props;
+const currentJobs = jobHistory.entries.filter((job) => !job.period.endDate);
+const currentResearchEntries = researchEntries.filter((research) => !research.period.endDate);
+const currentDevelopmentEntries = developmentEntries.filter((development) => !development.period.endDate);
+
+const activityItems = [
+	...currentResearchEntries.map((research) => ({
+		type: 'research',
+		href: `/research/${research.id}`,
+		labelJa: '研究',
+		labelEn: 'Research',
+		title: research.title,
+		description: research.summary,
+	})),
+	...currentJobs.map((job) => ({
+		type: 'career',
+		href: job.website || '/about#career',
+		external: Boolean(job.website),
+		labelJa: '仕事',
+		labelEn: 'Work',
+		title: job.company,
+		description: job.position,
+	})),
+	...currentDevelopmentEntries.map((development) => ({
+		type: 'development',
+		href: `/development/${development.id}`,
+		labelJa: '開発',
+		labelEn: 'Development',
+		title: development.name,
+		description: development.title,
+	})),
+];
+---
+
+<section class="profile-summary" aria-labelledby="profile-summary-title">
+	<div class="profile-copy">
+		<p class="eyebrow">Profile</p>
+		<h2 id="profile-summary-title" class="profile-title">
+			<span class="lang-ja">情報検索を研究し、プロダクトを作る。</span>
+			<span class="lang-en">An engineer researching information retrieval and building products.</span>
+		</h2>
+		<p class="profile-description">
+			<span class="lang-ja">
+				{profile.personalInfo.department.ja}。検索・推薦・LLM活用を軸に、研究・共同研究・業務委託・個人開発へ取り組んでいます。
+			</span>
+			<span class="lang-en">
+				{profile.personalInfo.department.en || profile.personalInfo.department.ja}. I work across research, joint research, contract work, and personal development with interests in search, recommendation, and LLM applications.
+			</span>
+		</p>
+		<div class="profile-actions">
+			<a class="primary-link" href="/about">
+				<span class="lang-ja">詳しいプロフィール</span>
+				<span class="lang-en">Full profile</span>
+				<span aria-hidden="true">→</span>
+			</a>
+			<a class="secondary-link" href="/research">
+				<span class="lang-ja">研究を見る</span>
+				<span class="lang-en">View research</span>
+			</a>
+		</div>
+	</div>
+
+	<div class="profile-panel">
+		<div class="current-work">
+			<h3 class="panel-title">
+				<span class="lang-ja">現在の活動</span>
+				<span class="lang-en">Current Work</span>
+			</h3>
+			<div class="work-list">
+				{activityItems.length > 0 ? activityItems.map((item) => (
+					<a
+						class={`work-item work-item--${item.type}`}
+						href={item.href}
+						target={item.external ? '_blank' : undefined}
+						rel={item.external ? 'noopener noreferrer' : undefined}
+					>
+						<span class="work-kind">
+							<span class="lang-ja">{item.labelJa}</span>
+							<span class="lang-en">{item.labelEn}</span>
+						</span>
+						<span class="work-title">
+							<span class="lang-ja">{item.title.ja}</span>
+							<span class="lang-en">{item.title.en || item.title.ja}</span>
+						</span>
+						<span class="work-description">
+							<span class="lang-ja">{item.description.ja}</span>
+							<span class="lang-en">{item.description.en || item.description.ja}</span>
+						</span>
+					</a>
+				)) : (
+					<p class="work-empty">
+						<span class="lang-ja">現在進行中の活動はありません。</span>
+						<span class="lang-en">No current activity.</span>
+					</p>
+				)}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.profile-summary {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+		gap: var(--space-2xl);
+		align-items: start;
+		min-width: 0;
+		padding: var(--space-xl) 0 var(--space-3xl);
+		border-bottom: 1px solid var(--color-border);
+		margin-bottom: var(--space-3xl);
+	}
+
+	.profile-copy {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		min-width: 0;
+	}
+
+	.eyebrow {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--color-text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+
+	.profile-title {
+		font-size: 1.6rem;
+		font-weight: 700;
+		line-height: 1.5;
+		color: var(--color-text);
+		overflow-wrap: anywhere;
+	}
+
+	.profile-title :global(.lang-ja),
+	.profile-title :global(.lang-en) {
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+
+	.profile-description {
+		font-size: 0.98rem;
+		color: var(--color-text-secondary);
+		line-height: 1.9;
+		overflow-wrap: anywhere;
+	}
+
+	.profile-description :global(.lang-ja),
+	.profile-description :global(.lang-en) {
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+
+	.profile-description span {
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+
+	.profile-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-md);
+		margin-top: var(--space-sm);
+	}
+
+	.primary-link,
+	.secondary-link {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-xs);
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: color var(--transition-base), background var(--transition-base), border-color var(--transition-base);
+	}
+
+	.primary-link {
+		padding: 0.65rem 0.95rem;
+		border: 1px solid var(--color-text);
+		background: var(--color-text);
+		color: var(--color-bg);
+		border-radius: 6px;
+	}
+
+	.primary-link:hover {
+		background: var(--color-text-secondary);
+		border-color: var(--color-text-secondary);
+	}
+
+	.secondary-link {
+		color: var(--color-text-secondary);
+	}
+
+	.secondary-link:hover {
+		color: var(--color-text);
+	}
+
+	.primary-link:focus-visible,
+	.secondary-link:focus-visible,
+	.work-item:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 4px;
+	}
+
+	.profile-panel {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+		min-width: 0;
+	}
+
+	.current-work {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.panel-title {
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: var(--color-text);
+	}
+
+	.work-list {
+		display: flex;
+		flex-direction: column;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.work-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: var(--space-md) 0;
+		border-bottom: 1px solid var(--color-border);
+		text-decoration: none;
+		transition: color var(--transition-base);
+	}
+
+	.work-item:hover .work-title {
+		color: var(--color-accent);
+	}
+
+	.work-kind {
+		align-self: flex-start;
+		padding: 0.12rem 0.45rem;
+		border-radius: 4px;
+		font-size: 0.68rem;
+		font-weight: 700;
+		line-height: 1.5;
+	}
+
+	.work-item--research .work-kind {
+		color: #1f5f70;
+		background: rgba(31, 95, 112, 0.1);
+	}
+
+	.work-item--career .work-kind {
+		color: #8a4f14;
+		background: rgba(138, 79, 20, 0.11);
+	}
+
+	.work-item--development .work-kind {
+		color: #4e5f9f;
+		background: rgba(78, 95, 159, 0.11);
+	}
+
+	:global([data-theme='dark']) .work-item--research .work-kind {
+		color: #8bd1e0;
+		background: rgba(139, 209, 224, 0.12);
+	}
+
+	:global([data-theme='dark']) .work-item--career .work-kind {
+		color: #f0b36e;
+		background: rgba(240, 179, 110, 0.14);
+	}
+
+	:global([data-theme='dark']) .work-item--development .work-kind {
+		color: #b7c1ff;
+		background: rgba(183, 193, 255, 0.14);
+	}
+
+	.work-title {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--color-text);
+		transition: color var(--transition-base);
+	}
+
+	.work-description {
+		font-size: 0.82rem;
+		color: var(--color-text-muted);
+		line-height: 1.6;
+	}
+
+	.work-empty {
+		padding: var(--space-md) 0;
+		border-bottom: 1px solid var(--color-border);
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+	}
+
+	@media (max-width: 768px) {
+		.profile-summary {
+			grid-template-columns: 1fr;
+			gap: var(--space-xl);
+			padding: var(--space-lg) 0 var(--space-2xl);
+			margin-bottom: var(--space-2xl);
+		}
+
+		.profile-title {
+			font-size: 1.3rem;
+		}
+
+		.profile-description :global(.lang-ja),
+		.profile-title :global(.lang-ja) {
+			word-break: break-all;
+		}
+	}
+</style>

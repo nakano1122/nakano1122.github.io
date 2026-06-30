@@ -51,10 +51,6 @@ const atcoderColor = getAtcoderRankColor(profile.socialLinks.atcoder?.rank);
 				<span class="lang-ja">{profile.personalInfo.name.ja}</span>
 				<span class="lang-en">{profile.personalInfo.name.en}</span>
 			</h1>
-			<p class="hero-affiliation">
-				<span class="lang-ja">{profile.personalInfo.department.ja}</span>
-				<span class="lang-en">{profile.personalInfo.department.en || profile.personalInfo.department.ja}</span>
-			</p>
 			<div class="hero-links">
 				<span class="link-item">
 					<Icon name="mdi:email-outline" class="link-icon" />
@@ -93,17 +89,21 @@ const atcoderColor = getAtcoderRankColor(profile.socialLinks.atcoder?.rank);
 
 <style>
 	.hero {
-		min-height: 88vh;
+		min-height: 66vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		padding: var(--space-3xl) 0 var(--space-2xl);
+		padding: var(--space-3xl) 0 var(--space-xl);
 	}
 
 	.hero-content {
 		display: flex;
 		align-items: center;
 		gap: var(--space-2xl);
+	}
+
+	.hero-text {
+		min-width: 0;
 	}
 
 	.hero-avatar {
@@ -123,27 +123,22 @@ const atcoderColor = getAtcoderRankColor(profile.socialLinks.atcoder?.rank);
 		color: var(--color-text);
 	}
 
-	.hero-affiliation {
-		font-size: 1rem;
-		color: var(--color-text-secondary);
-		margin-bottom: var(--space-xl);
-		font-weight: 400;
-		line-height: 1.6;
-	}
-
 	.hero-links {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-lg);
 		align-items: center;
+		max-width: 100%;
 	}
 
 	.link-item {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4rem;
+		max-width: 100%;
 		font-size: 0.9rem;
 		color: var(--color-text-secondary);
+		overflow-wrap: anywhere;
 	}
 
 	a.link-item {
@@ -208,12 +203,15 @@ const atcoderColor = getAtcoderRankColor(profile.socialLinks.atcoder?.rank);
 		}
 
 		.hero-links {
+			flex-direction: column;
 			gap: var(--space-md);
 			justify-content: center;
+			width: 100%;
 		}
 
 		.link-item {
 			font-size: 0.85rem;
+			justify-content: center;
 		}
 	}
 </style>

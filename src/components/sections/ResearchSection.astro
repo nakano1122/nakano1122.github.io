@@ -10,12 +10,13 @@ import ProjectCardGrid from '@/components/ui/ProjectCardGrid.astro';
 export interface Props {
 	entries: Research[];
 	showHeader?: boolean;
+	actionHref?: string;
 }
 
-const { entries, showHeader = true } = Astro.props;
+const { entries, showHeader = true, actionHref } = Astro.props;
 ---
 
 <section class="section" id="research">
-	{showHeader && <SectionHeader title="Research" count={`${entries.length} Projects`} />}
+	{showHeader && <SectionHeader title="Research" actionHref={actionHref} />}
 	<ProjectCardGrid type="research" items={entries} />
 </section>

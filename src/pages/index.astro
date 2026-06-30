@@ -2,6 +2,7 @@
 import Layout from '@/components/layouts/Layout.astro';
 import {
 	loadProfile,
+	loadJobHistory,
 	loadResearch,
 	loadDevelopment,
 	loadAwards,
@@ -9,6 +10,7 @@ import {
 
 // Sections
 import HeroSection from '@/components/sections/HeroSection.astro';
+import ProfileSummarySection from '@/components/sections/ProfileSummarySection.astro';
 import ResearchSection from '@/components/sections/ResearchSection.astro';
 import DevelopmentSection from '@/components/sections/DevelopmentSection.astro';
 import AwardsListSection from '@/components/sections/AwardsListSection.astro';
@@ -17,6 +19,7 @@ import NavigationModal from '@/components/ui/NavigationModal.astro';
 import Footer from '@/components/sections/Footer.astro';
 
 const profile = await loadProfile();
+const jobHistory = await loadJobHistory();
 const researchEntries = await loadResearch();
 const developmentEntries = await loadDevelopment();
 const awards = await loadAwards();
@@ -27,10 +30,16 @@ const awards = await loadAwards();
 		<HeroSection profile={profile} />
 
 		<div class="content">
-			<ResearchSection entries={researchEntries} />
-			<DevelopmentSection entries={developmentEntries} />
-			<AwardsListSection awards={awards} />
-			<ActivitySection />
+			<ProfileSummarySection
+				profile={profile}
+				jobHistory={jobHistory}
+				researchEntries={researchEntries}
+				developmentEntries={developmentEntries}
+			/>
+			<ResearchSection entries={researchEntries} actionHref="/research" />
+			<DevelopmentSection entries={developmentEntries} actionHref="/development" />
+			<AwardsListSection awards={awards} actionHref="/about#awards" />
+			<ActivitySection actionHref="/about#activity" />
 			<NavigationModal />
 		</div>
 
@@ -41,12 +50,17 @@ const awards = await loadAwards();
 <style>
 	.main {
 		max-width: 880px;
+		overflow-x: hidden;
 		margin: 0 auto;
 		padding: 0 var(--space-xl);
 	}
 
 	.content {
 		padding-bottom: var(--space-4xl);
+	}
+
+	.content :global(.section) {
+		scroll-margin-top: var(--space-3xl);
 	}
 
 	@media (max-width: 768px) {

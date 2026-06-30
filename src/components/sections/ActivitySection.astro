@@ -8,6 +8,11 @@ import type { BlogArticle, Talk } from '@/domain';
 import { formatYearMonthDay } from '@/infrastructure/formatters/date';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 
+export interface Props {
+  actionHref?: string;
+}
+
+const { actionHref } = Astro.props;
 const articles = await loadAllBlogArticles();
 const talks = await loadTalks();
 
@@ -37,7 +42,7 @@ const platformIcons: Record<BlogArticle['platform'], string> = {
 ---
 
 <section class="section" id="activity">
-  <SectionHeader title="Activity" count={`${activities.length} Items`} />
+  <SectionHeader title="Activity" actionHref={actionHref} />
   <div class="activity-list">
     {activities.map((activity) => {
       if (activity.type === 'blog') {

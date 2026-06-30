@@ -4,15 +4,23 @@
  */
 export interface Props {
 	title: string;
-	count?: string;
+	actionHref?: string;
+	actionLabelJa?: string;
+	actionLabelEn?: string;
 }
 
-const { title, count } = Astro.props;
+const { title, actionHref, actionLabelJa = 'すべて見る', actionLabelEn = 'View all' } = Astro.props;
 ---
 
 <div class="section-header">
 	<h2 class="section-title">{title}</h2>
-	{count && <span class="section-count">{count}</span>}
+	{actionHref && (
+		<a class="section-action" href={actionHref}>
+			<span class="lang-ja">{actionLabelJa}</span>
+			<span class="lang-en">{actionLabelEn}</span>
+			<span aria-hidden="true">→</span>
+		</a>
+	)}
 </div>
 
 <style>
@@ -20,6 +28,7 @@ const { title, count } = Astro.props;
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
+		gap: var(--space-md);
 		margin-bottom: var(--space-lg);
 		padding-bottom: var(--space-sm);
 		border-bottom: 1px solid var(--color-border);
@@ -29,21 +38,34 @@ const { title, count } = Astro.props;
 		font-family: var(--font-display);
 		font-size: 1.25rem;
 		font-weight: 600;
-		letter-spacing: -0.01em;
+		color: var(--color-text);
+		min-width: 0;
+	}
+
+	.section-action {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-xs);
+		flex-shrink: 0;
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--color-text-secondary);
+		text-decoration: none;
+		transition: color var(--transition-base);
+	}
+
+	.section-action:hover {
 		color: var(--color-text);
 	}
 
-	.section-count {
-		font-size: 0.8rem;
-		color: var(--color-text-muted);
-		letter-spacing: 0.05em;
-		font-weight: 400;
+	.section-action:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 4px;
 	}
 
 	@media (max-width: 768px) {
 		.section-header {
-			flex-direction: column;
-			align-items: flex-start;
+			align-items: flex-end;
 			gap: var(--space-xs);
 		}
 

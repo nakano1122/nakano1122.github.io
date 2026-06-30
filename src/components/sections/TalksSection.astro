@@ -15,7 +15,7 @@ const { talks } = Astro.props;
 ---
 
 <section class="section" id="talks">
-	<SectionHeader title="Talks" count={`${talks.length} Talks`} />
+	<SectionHeader title="Talks" />
 	<div class="talks-list">
 		{talks.map((talk) => (
 			<a href={talk.url} target="_blank" rel="noopener noreferrer" class="talk-item">
