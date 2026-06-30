@@ -16,6 +16,12 @@ atcoder:
   rank: 茶
 zenn: https://zenn.dev/cafkaf
 jobHistory:
+  - company_ja: Panda株式会社
+    company_en: Panda Co., Ltd.
+    startMonth: "2026-06"
+    hpLink: https://pd-panda.com/
+    position_ja: MLエンジニア（業務委託）
+    position_en: ML Engineer (Contractor)
   - company_ja: 株式会社ビズリーチ
     company_en: BizReach, Inc.
     startMonth: "2026-06"
@@ -25,14 +31,15 @@ jobHistory:
   - company_ja: 株式会社 NITI Technology
     company_en: NITI Technology, Inc.
     startMonth: "2025-08"
+    finishMonth: "2026-06"
     hpLink: https://nititech.jp/
-    position_ja: 長期インターン
-    position_en: Long-term Internship
+    position_ja: ソフトウェアエンジニア（業務委託）
+    position_en: Software Engineer (Contractor)
   - company_ja: シックスワン株式会社
     company_en: Six One Inc.
     startMonth: "2024-07"
     finishMonth: "2025-07"
     hpLink: https://six1.jp/
-    position_ja: 長期インターン
-    position_en: Long-term Internship
+    position_ja: ソフトウェアエンジニア（長期インターン）
+    position_en: Software Engineer (Long-term Internship)
 ---
