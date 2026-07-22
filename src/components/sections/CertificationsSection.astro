@@ -14,7 +14,7 @@ const { entries } = Astro.props;
 ---
 
 <section class="section" id="certifications">
-	<SectionHeader title="Certifications" />
+	<SectionHeader title={{ ja: '資格', en: 'Certifications' }} />
 	<div class="cert-list">
 		{entries.map((cert) => (
 			<div class="cert-item">

@@ -4,10 +4,17 @@
  * 「もっと見る」ボタンとフルスクリーンモーダル
  */
 import { Icon } from 'astro-icon/components';
+import { localizePath, type Locale } from '@/i18n/routing';
+
+export interface Props {
+	locale?: Locale;
+}
+
+const { locale = 'ja' } = Astro.props;
 ---
 
 <div class="see-more-wrapper">
-	<button class="see-more-btn" id="seeMoreBtn" type="button">
+	<button class="see-more-btn" id="seeMoreBtn" type="button" aria-expanded="false" aria-controls="navModal">
 		<span class="see-more-text">
 			<span class="lang-ja">もっと見る</span>
 			<span class="lang-en">See More</span>
@@ -17,12 +24,16 @@ import { Icon } from 'astro-icon/components';
 </div>
 
 <!-- Navigation Modal -->
-<div class="nav-modal" id="navModal">
+<div class="nav-modal" id="navModal" role="dialog" aria-modal="true" aria-labelledby="navModalTitle" aria-hidden="true">
+	<h2 id="navModalTitle" class="sr-only">
+		<span class="lang-ja">サイト内ナビゲーション</span>
+		<span class="lang-en">Site navigation</span>
+	</h2>
 	<button class="nav-modal-close" id="navModalClose" type="button" aria-label="Close">
 		<Icon name="mdi:close" class="close-icon" />
 	</button>
 	<nav class="nav-modal-content">
-		<a href="/about" class="nav-modal-link">
+		<a href={localizePath(locale, '/about')} class="nav-modal-link">
 			<span class="nav-link-title">
 				<span class="lang-ja">プロフィール</span>
 				<span class="lang-en">About</span>
@@ -32,24 +43,24 @@ import { Icon } from 'astro-icon/components';
 				<span class="lang-en">Experience, Education, Awards & Certifications</span>
 			</span>
 		</a>
-		<a href="/research" class="nav-modal-link">
+		<a href={localizePath(locale, '/research')} class="nav-modal-link">
 			<span class="nav-link-title">
-				<span class="lang-ja">研究活動</span>
+				<span class="lang-ja">研究</span>
 				<span class="lang-en">Research</span>
 			</span>
 			<span class="nav-link-desc">
-				<span class="lang-ja">研究テーマ・論文</span>
-				<span class="lang-en">Projects & Publications</span>
+				<span class="lang-ja">共同研究から広がる、検索・推薦の研究テーマと論文</span>
+				<span class="lang-en">Research themes, joint projects, and publications on search and recommendation</span>
 			</span>
 		</a>
-		<a href="/development" class="nav-modal-link">
+		<a href={localizePath(locale, '/development')} class="nav-modal-link">
 			<span class="nav-link-title">
-				<span class="lang-ja">開発</span>
+				<span class="lang-ja">開発経験</span>
 				<span class="lang-en">Development</span>
 			</span>
 			<span class="nav-link-desc">
-				<span class="lang-ja">個人開発・ハッカソン</span>
-				<span class="lang-en">Personal Projects & Hackathons</span>
+				<span class="lang-ja">研究活動に寄り添う、プロダクト開発・ハッカソンの経験</span>
+				<span class="lang-en">Product development and hackathon experience alongside research</span>
 			</span>
 		</a>
 	</nav>
@@ -59,15 +70,23 @@ import { Icon } from 'astro-icon/components';
 	const seeMoreBtn = document.getElementById('seeMoreBtn');
 	const navModal = document.getElementById('navModal');
 	const navModalClose = document.getElementById('navModalClose');
+	let previousFocus: HTMLElement | null = null;
 
 	seeMoreBtn?.addEventListener('click', () => {
+		previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 		navModal?.classList.add('is-open');
+		navModal?.setAttribute('aria-hidden', 'false');
+		seeMoreBtn.setAttribute('aria-expanded', 'true');
 		document.body.style.overflow = 'hidden';
+		requestAnimationFrame(() => navModalClose?.focus());
 	});
 
 	const closeModal = () => {
 		navModal?.classList.remove('is-open');
+		navModal?.setAttribute('aria-hidden', 'true');
+		seeMoreBtn?.setAttribute('aria-expanded', 'false');
 		document.body.style.overflow = '';
+		previousFocus?.focus();
 	};
 
 	navModalClose?.addEventListener('click', closeModal);
@@ -205,6 +224,25 @@ import { Icon } from 'astro-icon/components';
 
 	.nav-modal-link:hover {
 		background: var(--color-bg-subtle);
+	}
+
+	.see-more-btn:focus-visible,
+	.nav-modal-close:focus-visible,
+	.nav-modal-link:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 	}
 
 	.nav-link-title {

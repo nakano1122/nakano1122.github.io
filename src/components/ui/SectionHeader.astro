@@ -3,17 +3,22 @@
  * セクションヘッダーコンポーネント
  */
 export interface Props {
-	title: string;
+	title: string | { ja: string; en?: string };
 	actionHref?: string;
 	actionLabelJa?: string;
 	actionLabelEn?: string;
 }
 
 const { title, actionHref, actionLabelJa = 'すべて見る', actionLabelEn = 'View all' } = Astro.props;
+const titleJa = typeof title === 'string' ? title : title.ja;
+const titleEn = typeof title === 'string' ? title : title.en || title.ja;
 ---
 
 <div class="section-header">
-	<h2 class="section-title">{title}</h2>
+	<h2 class="section-title">
+		<span class="lang-ja">{titleJa}</span>
+		<span class="lang-en">{titleEn}</span>
+	</h2>
 	{actionHref && (
 		<a class="section-action" href={actionHref}>
 			<span class="lang-ja">{actionLabelJa}</span>

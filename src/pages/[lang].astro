@@ -1,0 +1,101 @@
+---
+import Layout from '@/components/layouts/Layout.astro';
+import {
+	loadProfile,
+	loadJobHistory,
+	loadResearch,
+	loadDevelopment,
+	loadAwards,
+} from '@/application';
+import { alternateLocalePath, isLocale, locales, localizePath } from '@/i18n/routing';
+
+import HeroSection from '@/components/sections/HeroSection.astro';
+import ProfileSummarySection from '@/components/sections/ProfileSummarySection.astro';
+import ResearchSection from '@/components/sections/ResearchSection.astro';
+import DevelopmentSection from '@/components/sections/DevelopmentSection.astro';
+import AwardsListSection from '@/components/sections/AwardsListSection.astro';
+import ActivitySection from '@/components/sections/ActivitySection.astro';
+import NavigationModal from '@/components/ui/NavigationModal.astro';
+import Footer from '@/components/sections/Footer.astro';
+
+export function getStaticPaths() {
+	return locales.map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang;
+if (!isLocale(locale)) {
+	return Astro.redirect('/ja', 302);
+}
+
+const profile = await loadProfile();
+const jobHistory = await loadJobHistory();
+const researchEntries = await loadResearch();
+const developmentEntries = await loadDevelopment();
+const awards = await loadAwards();
+const localized = (text: { ja: string; en?: string }) => locale === 'en' ? text.en || text.ja : text.ja;
+const title = {
+	ja: '研究 | 中野暁登',
+	en: 'Research | Akito Nakano',
+};
+const description = {
+	ja: '情報検索・推薦システムに関する研究テーマ、共同研究、論文を紹介する中野暁登のポートフォリオです。',
+	en: 'Research portfolio of Akito Nakano, featuring work in information retrieval and recommender systems, joint research, and publications.',
+};
+---
+
+<Layout
+	locale={locale}
+	alternateHref={alternateLocalePath(locale, Astro.url.pathname)}
+	title={localized(title)}
+	titleJa={title.ja}
+	titleEn={title.en}
+	description={localized(description)}
+	descriptionJa={description.ja}
+	descriptionEn={description.en}
+	keywords={localized(profile.seo.keywords)}
+	headerMaxWidth="880px"
+>
+	<main class="main">
+		<HeroSection profile={profile} />
+
+		<div class="content">
+			<ProfileSummarySection
+				profile={profile}
+				jobHistory={jobHistory}
+				researchEntries={researchEntries}
+				developmentEntries={developmentEntries}
+				locale={locale}
+			/>
+			<ResearchSection entries={researchEntries} locale={locale} />
+			<DevelopmentSection entries={developmentEntries} locale={locale} />
+			<AwardsListSection awards={awards} actionHref={localizePath(locale, '/about#awards')} />
+			<ActivitySection actionHref={localizePath(locale, '/about#activity')} />
+			<NavigationModal locale={locale} />
+		</div>
+
+		<Footer profile={profile} />
+	</main>
+</Layout>
+
+<style>
+	.main {
+		max-width: 880px;
+		overflow-x: hidden;
+		margin: 0 auto;
+		padding: 0 var(--space-xl);
+	}
+
+	.content {
+		padding-bottom: var(--space-4xl);
+	}
+
+	.content :global(.section) {
+		scroll-margin-top: var(--space-3xl);
+	}
+
+	@media (max-width: 768px) {
+		.main {
+			padding: 0 var(--space-lg);
+		}
+	}
+</style>

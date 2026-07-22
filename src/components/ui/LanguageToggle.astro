@@ -1,30 +1,39 @@
 ---
 /**
- * 言語切り替えボタンコンポーネント
- * ThemeToggle と同じパターンで実装
+ * 同一ページの別ロケールへ移動する言語切り替えリンク
  */
-import { Icon } from 'astro-icon/components';
+import { localizePath, type Locale } from '@/i18n/routing';
+
+export interface Props {
+	locale?: Locale;
+	alternateHref?: string;
+}
+
+const { locale = 'ja', alternateHref } = Astro.props;
+const targetLocale: Locale = locale === 'ja' ? 'en' : 'ja';
+const href = alternateHref ?? localizePath(targetLocale, Astro.url.pathname);
+const label = locale === 'ja' ? 'EN: Switch to English' : 'JA: 日本語に切り替える';
+const title = locale === 'ja' ? 'English' : '日本語';
 ---
 
-<button
+<a
 	class="lang-toggle"
-	type="button"
-	aria-label="Switch language"
-	title="日本語 / English"
+	href={href}
+	aria-label={label}
+	title={title}
 >
-	<span class="lang-toggle-label lang-toggle-ja">EN</span>
-	<span class="lang-toggle-label lang-toggle-en">JA</span>
-</button>
+	{locale === 'ja' ? 'EN' : 'JA'}
+</a>
 
 <script>
-	import { initLanguage, toggleLanguage } from '../../hooks/useLanguage';
-
 	function setupLanguageToggle() {
-		const toggle = document.querySelector('.lang-toggle');
-		if (!toggle) return;
-
-		initLanguage();
-		toggle.addEventListener('click', toggleLanguage);
+		document.querySelectorAll<HTMLAnchorElement>('.lang-toggle:not([data-url-preserved])').forEach((toggle) => {
+			const target = new URL(toggle.href, window.location.origin);
+			target.search = window.location.search;
+			target.hash = window.location.hash;
+			toggle.href = target.toString();
+			toggle.dataset.urlPreserved = 'true';
+		});
 	}
 
 	setupLanguageToggle();
@@ -33,17 +42,18 @@ import { Icon } from 'astro-icon/components';
 
 <style>
 	.lang-toggle {
-		position: relative;
 		width: 40px;
 		height: 40px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: transparent;
-		border: none;
 		border-radius: 8px;
-		cursor: pointer;
 		color: var(--color-text-muted);
+		text-decoration: none;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
 		transition: color var(--transition-base);
 	}
 
@@ -51,33 +61,8 @@ import { Icon } from 'astro-icon/components';
 		color: var(--color-text);
 	}
 
-	.lang-toggle-label {
-		font-size: 0.75rem;
-		font-weight: 600;
-		letter-spacing: 0.02em;
-		position: absolute;
-		transition: opacity var(--transition-fast), transform var(--transition-fast);
-	}
-
-	/* 日本語モード: "EN" を表示（クリックで英語へ） */
-	.lang-toggle-ja {
-		opacity: 1;
-		transform: scale(1);
-	}
-
-	.lang-toggle-en {
-		opacity: 0;
-		transform: scale(0.5);
-	}
-
-	/* 英語モード: "JA" を表示（クリックで日本語へ） */
-	:global([data-lang='en']) .lang-toggle-ja {
-		opacity: 0;
-		transform: scale(0.5);
-	}
-
-	:global([data-lang='en']) .lang-toggle-en {
-		opacity: 1;
-		transform: scale(1);
+	.lang-toggle:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
 	}
 </style>

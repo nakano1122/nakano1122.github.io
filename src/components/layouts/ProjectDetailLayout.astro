@@ -5,12 +5,14 @@
  */
 import Layout from './Layout.astro';
 import NavigationModal from '@/components/ui/NavigationModal.astro';
-import BackToNav from '@/components/ui/BackToNav.astro';
 import type { BilingualText } from '@/types';
+import type { Locale } from '@/i18n/routing';
 
 export interface Props {
-	title: string;
-	description: string;
+	title: BilingualText | string;
+	description: BilingualText | string;
+	locale?: Locale;
+	alternateHref?: string;
 	backLink: {
 		href: string;
 		labelJa: string;
@@ -31,6 +33,8 @@ export interface Props {
 const {
 	title,
 	description,
+	locale = 'ja',
+	alternateHref,
 	backLink,
 	label,
 	projectTitle,
@@ -40,6 +44,18 @@ const {
 	repository,
 	links,
 } = Astro.props;
+
+const localizedText = (value: BilingualText | string, targetLocale: Locale) => {
+	if (typeof value === 'string') return value;
+	return targetLocale === 'en' ? value.en || value.ja : value.ja;
+};
+
+const titleJa = localizedText(title, 'ja');
+const titleEn = localizedText(title, 'en');
+const descriptionJa = localizedText(description, 'ja');
+const descriptionEn = localizedText(description, 'en');
+const localizedTitle = localizedText(title, locale);
+const localizedDescription = localizedText(description, locale);
 
 const formatPeriod = (startDate: Date, endDate?: Date) => {
 	const start = startDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'short' });
@@ -56,10 +72,19 @@ const formatPeriodEn = (startDate: Date, endDate?: Date) => {
 };
 ---
 
-<Layout title={title} description={description}>
+<Layout
+	title={localizedTitle}
+	description={localizedDescription}
+	locale={locale}
+	alternateHref={alternateHref}
+	titleJa={titleJa}
+	titleEn={titleEn}
+	descriptionJa={descriptionJa}
+	descriptionEn={descriptionEn}
+	headerMaxWidth="800px"
+	backLink={backLink}
+>
 	<main class="main">
-		<BackToNav href={backLink.href} labelJa={backLink.labelJa} labelEn={backLink.labelEn} position="top" />
-
 		<article class="project-detail">
 			<header class="project-header">
 				<div class="project-meta">
@@ -136,8 +161,7 @@ const formatPeriodEn = (startDate: Date, endDate?: Date) => {
 			<slot name="extra" />
 		</article>
 
-		<BackToNav href={backLink.href} labelJa={backLink.labelJa} labelEn={backLink.labelEn} position="bottom" />
-		<NavigationModal />
+		<NavigationModal locale={locale} />
 	</main>
 </Layout>
 
@@ -146,22 +170,6 @@ const formatPeriodEn = (startDate: Date, endDate?: Date) => {
 		max-width: 800px;
 		margin: 0 auto;
 		padding: var(--space-2xl) var(--space-xl) var(--space-4xl);
-	}
-
-	.back-nav {
-		margin-bottom: var(--space-xl);
-	}
-
-	.back-link {
-		display: inline-flex;
-		align-items: center;
-		font-size: 0.9rem;
-		color: var(--color-text-muted);
-		transition: color var(--transition-base);
-	}
-
-	.back-link:hover {
-		color: var(--color-text);
 	}
 
 	.project-header {

@@ -15,7 +15,7 @@ const { talks } = Astro.props;
 ---
 
 <section class="section" id="talks">
-	<SectionHeader title="Talks" />
+	<SectionHeader title={{ ja: '登壇', en: 'Talks' }} />
 	<div class="talks-list">
 		{talks.map((talk) => (
 			<a href={talk.url} target="_blank" rel="noopener noreferrer" class="talk-item">

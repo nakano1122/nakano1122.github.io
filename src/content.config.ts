@@ -4,32 +4,38 @@ import { glob } from 'astro/loaders';
 const personal = defineCollection({
 	loader: glob({ pattern: 'personal.md', base: './src/contents/about' }),
 	schema: z.object({
-		title: z.string().optional(),
-		description: z.string().optional(),
-		keywords: z.string().optional(),
+		seo: z.object({
+			title: z.object({ ja: z.string(), en: z.string() }),
+			description: z.object({ ja: z.string(), en: z.string() }),
+			keywords: z.object({ ja: z.string(), en: z.string() }),
+		}),
 		avatar: z.string().optional(),
-		name_ja: z.string(),
-		name_en: z.string(),
-		department_ja: z.string(),
-		department_en: z.string().optional(),
-		email: z.object({ user: z.string(), domain: z.string() }),
-		github: z.string(),
-		atcoder: z
-			.object({
-				url: z.string(),
-				rank: z.string(),
-			})
-			.optional(),
-		zenn: z.string().optional(),
+		profile: z.object({
+			name: z.object({ ja: z.string(), en: z.string() }),
+			department: z.object({ ja: z.string(), en: z.string() }),
+			headline: z.object({ ja: z.string(), en: z.string() }),
+			bio: z.object({ ja: z.string(), en: z.string() }),
+		}),
+		contact: z.object({
+			email: z.object({ user: z.string(), domain: z.string() }),
+		}),
+		socialLinks: z.object({
+			github: z.string(),
+			atcoder: z
+				.object({
+					url: z.string(),
+					rank: z.string(),
+				})
+				.optional(),
+			zenn: z.string().optional(),
+		}),
 		jobHistory: z.array(
 			z.object({
-				company_ja: z.string(),
-				company_en: z.string().optional(),
+				company: z.object({ ja: z.string(), en: z.string() }),
 				startMonth: z.string(),
 				finishMonth: z.string().optional(),
 				hpLink: z.string().optional(),
-				position_ja: z.string(),
-				position_en: z.string().optional(),
+				position: z.object({ ja: z.string(), en: z.string() }),
 			}),
 		),
 	}),

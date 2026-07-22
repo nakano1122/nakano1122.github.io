@@ -10,10 +10,12 @@ export interface Props {
   image?: BilingualText;
   title: BilingualText;
   label?: BilingualText;
+  collaborator?: BilingualText;
   summary?: BilingualText;
+  cta?: BilingualText;
 }
 
-const { href, image, title, label, summary } = Astro.props;
+const { href, image, title, label, collaborator, summary, cta } = Astro.props;
 ---
 
 <a class="card" href={href}>
@@ -30,6 +32,18 @@ const { href, image, title, label, summary } = Astro.props;
         <span class="lang-en">{label.en || label.ja}</span>
       </span>
     )}
+    {collaborator && (
+      <span class="card-collaboration">
+        <span class="card-collaboration__tag">
+          <span class="lang-ja">共同研究</span>
+          <span class="lang-en">Joint research</span>
+        </span>
+        <span class="card-collaboration__partner">
+          <span class="lang-ja">{collaborator.ja}</span>
+          <span class="lang-en">{collaborator.en || collaborator.ja}</span>
+        </span>
+      </span>
+    )}
     <h2 class="card-title">
       <span class="lang-ja">{title.ja}</span>
       <span class="lang-en">{title.en || title.ja}</span>
@@ -41,8 +55,8 @@ const { href, image, title, label, summary } = Astro.props;
       </p>
     )}
     <span class="card-link">
-      <span class="lang-ja">詳細を見る →</span>
-      <span class="lang-en">View details →</span>
+      <span class="lang-ja">{cta?.ja || '詳細を見る'} →</span>
+      <span class="lang-en">{cta?.en || cta?.ja || 'View details'} →</span>
     </span>
   </div>
 </a>
@@ -60,9 +74,14 @@ const { href, image, title, label, summary } = Astro.props;
   }
 
   .card:hover {
-    border-color: var(--color-text-muted);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
+	border-color: var(--color-text-muted);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+	transform: translateY(-2px);
+  }
+
+  .card:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 3px;
   }
 
   .card-image {
@@ -99,6 +118,34 @@ const { href, image, title, label, summary } = Astro.props;
     padding: 0.2em 0.6em;
     border-radius: 3px;
     background: var(--color-accent-soft);
+  }
+
+  .card-collaboration {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+    width: fit-content;
+    max-width: 100%;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .card-collaboration__tag {
+    color: var(--color-text-secondary);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0.15em 0.55em;
+    font-size: 0.9em;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .card-collaboration__partner {
+    color: var(--color-text-muted);
+    overflow-wrap: anywhere;
   }
 
   .card-title {

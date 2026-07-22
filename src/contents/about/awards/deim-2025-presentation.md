@@ -3,7 +3,7 @@ date: 2025-03-04
 title_ja: "DEIM2025 学生プレゼンテーション賞"
 title_en: "DEIM2025 Student Presentation Award"
 summary_ja: "ミュージアム訪問者に多様な視点を持たせるための「なりきって答える」対話型鑑賞支援システム"
-summary_en: ""
+summary_en: "An interactive viewing support system that uses role-playing responses to help museum visitors develop diverse perspectives"
 category: research
 links:
   - "https://pub.confit.atlas.jp/ja/event/deim2025/presentation/1H-01"

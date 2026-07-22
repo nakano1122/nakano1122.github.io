@@ -1,0 +1,98 @@
+---
+import Layout from '@/components/layouts/Layout.astro';
+import { loadCertifications, loadJobHistory, loadEducationWithContent, loadAwards } from '@/application';
+import { alternateLocalePath, isLocale, locales, localizePath } from '@/i18n/routing';
+import CareerSection from '@/components/sections/CareerSection.astro';
+import EducationSection from '@/components/sections/EducationSection.astro';
+import AwardsListSection from '@/components/sections/AwardsListSection.astro';
+import CertificationsSection from '@/components/sections/CertificationsSection.astro';
+import ActivitySection from '@/components/sections/ActivitySection.astro';
+import NavigationModal from '@/components/ui/NavigationModal.astro';
+
+export function getStaticPaths() {
+	return locales.map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang;
+if (!isLocale(locale)) {
+	return Astro.redirect('/ja/about', 302);
+}
+
+const certificationEntries = await loadCertifications();
+const jobHistory = await loadJobHistory();
+const educationEntries = await loadEducationWithContent();
+const awards = await loadAwards();
+---
+
+<Layout
+	locale={locale}
+	alternateHref={alternateLocalePath(locale, Astro.url.pathname)}
+	title={locale === 'en' ? 'Research Profile | Akito Nakano' : '研究者プロフィール | 中野暁登'}
+	titleJa="研究者プロフィール | 中野暁登"
+	titleEn="Research Profile | Akito Nakano"
+	description={locale === 'en' ? 'Research profile of Akito Nakano, featuring work in information retrieval and recommender systems, joint research, and software development experience.' : '情報検索・推薦システムに関する研究、共同研究、ソフトウェア開発の経験を紹介するプロフィールです。'}
+	descriptionJa="情報検索・推薦システムに関する研究、共同研究、ソフトウェア開発の経験を紹介するプロフィールです。"
+	descriptionEn="Research profile of Akito Nakano, featuring work in information retrieval and recommender systems, joint research, and software development experience."
+	headerMaxWidth="800px"
+	backLink={{
+		href: localizePath(locale),
+		labelJa: 'TOP に戻る',
+		labelEn: 'Back to TOP',
+	}}
+>
+	<main class="main">
+		<header class="page-header">
+			<h1 class="page-title"><span class="lang-ja">研究者プロフィール</span><span class="lang-en">Research Profile</span></h1>
+			<p class="intro">
+				<span class="lang-ja">情報検索・推薦システムの研究に取り組む大学院生です。企業・博物館との共同研究を進め、ソフトウェア開発の経験も積んでいます。</span>
+				<span class="lang-en">A graduate student researching information retrieval and recommender systems through joint research with companies and museums, with software development experience.</span>
+			</p>
+		</header>
+
+		<div class="content">
+			<CareerSection jobHistory={jobHistory} />
+			<EducationSection entries={educationEntries} />
+			<AwardsListSection awards={awards} />
+			<CertificationsSection entries={certificationEntries} />
+			<ActivitySection />
+		</div>
+
+		<NavigationModal locale={locale} />
+	</main>
+</Layout>
+
+<style>
+	.main {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 0 var(--space-xl);
+	}
+
+	.page-header {
+		padding: var(--space-xl) 0 var(--space-2xl);
+	}
+
+	.page-title {
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--color-text);
+		margin-bottom: var(--space-lg);
+	}
+
+	.intro {
+		font-size: 1.1rem;
+		color: var(--color-text-secondary);
+		line-height: 1.8;
+		letter-spacing: 0.02em;
+	}
+
+	@media (max-width: 768px) {
+		.main {
+			padding: 0 var(--space-lg);
+		}
+
+		.page-title {
+			font-size: 1.75rem;
+		}
+	}
+</style>

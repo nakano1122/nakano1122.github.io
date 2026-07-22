@@ -12,21 +12,13 @@ export async function loadProfile(): Promise<Profile> {
   return {
     avatar: data.avatar,
     personalInfo: {
-      name: { ja: data.name_ja, en: data.name_en },
-      department: { ja: data.department_ja, en: data.department_en },
+      name: data.profile.name,
+      department: data.profile.department,
     },
-    contact: {
-      email: data.email,
-    },
-    socialLinks: {
-      github: data.github,
-      zenn: data.zenn,
-      atcoder: data.atcoder,
-    },
-    seo: {
-      title: data.title,
-      description: data.description,
-      keywords: data.keywords,
-    },
+    headline: data.profile.headline,
+    bio: data.profile.bio,
+    contact: data.contact,
+    socialLinks: data.socialLinks,
+    seo: data.seo,
   };
 }

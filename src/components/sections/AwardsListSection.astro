@@ -18,7 +18,7 @@ const sortedAwards = [...awards].sort((a, b) => b.date.getTime() - a.date.getTim
 ---
 
 <section class="section" id="awards">
-	<SectionHeader title="Awards" actionHref={actionHref} />
+	<SectionHeader title={{ ja: '受賞', en: 'Awards' }} actionHref={actionHref} />
 	<div class="award-list">
 		{sortedAwards.map((award) => {
 			const hasLink = award.links && award.links.length > 0;

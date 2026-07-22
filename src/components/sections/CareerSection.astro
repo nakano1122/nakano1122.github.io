@@ -22,16 +22,18 @@ function formatPeriod(startDate: Date, endDate?: Date): { ja: string; en: string
 ---
 
 <section class="section" id="career">
-	<SectionHeader title="Career" />
+	<SectionHeader title={{ ja: '経歴', en: 'Career' }} />
 
 	<div class="timeline">
 		{jobHistory.entries.map((job) => {
 			const url = job.website || '';
 			const period = formatPeriod(job.period.startDate, job.period.endDate);
 
+			const className = ['timeline-item', url && 'timeline-link', !job.period.endDate && 'timeline-item--current'].filter(Boolean).join(' ');
+
 			return url ? (
 				<a
-					class="timeline-item timeline-link"
+					class={className}
 					href={url}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -53,7 +55,7 @@ function formatPeriod(startDate: Date, endDate?: Date): { ja: string; en: string
 					</div>
 				</a>
 			) : (
-				<div class="timeline-item">
+				<div class={className}>
 					<div class="timeline-content">
 						<span class="timeline-period">
 							<span class="lang-ja">{period.ja}</span>
@@ -100,7 +102,7 @@ function formatPeriod(startDate: Date, endDate?: Date): { ja: string; en: string
 		border-radius: 50%;
 	}
 
-	.timeline-item:first-child::before {
+	.timeline-item--current::before {
 		background: var(--color-text);
 		border-color: var(--color-text);
 	}

@@ -4,31 +4,52 @@
  * Research と Development の両方で使用
  */
 import type { Research, Development } from '@/domain';
+import { localizePath, type Locale } from '@/i18n/routing';
+import type { BilingualText } from '@/types';
 import ProjectCard from './ProjectCard.astro';
 
 export interface Props {
 	type: 'research' | 'development';
 	items: Research[] | Development[];
+	locale?: Locale;
 }
 
-const { type, items } = Astro.props;
+const { type, items, locale = 'ja' } = Astro.props;
+
+const researchCollaborators: Record<string, BilingualText> = {
+	'personalized-search': {
+		ja: 'ビズリーチ株式会社',
+		en: 'BizReach, Inc.',
+	},
+	'museum-recommend': {
+		ja: '国立民族学博物館',
+		en: 'National Museum of Ethnology',
+	},
+	'museum-viewing': {
+		ja: '国立民族学博物館',
+		en: 'National Museum of Ethnology',
+	},
+};
 ---
 
 <div class="card-grid">
 	{type === 'research' && (items as Research[]).map((research) => (
 		<ProjectCard
-			href={`/research/${research.id}`}
+			href={localizePath(locale, `/research/${research.id}`)}
 			image={research.image}
 			title={research.title}
+			collaborator={researchCollaborators[research.id]}
 			summary={research.summary}
+			cta={{ ja: '研究内容を見る', en: 'Read research' }}
 		/>
 	))}
 	{type === 'development' && (items as Development[]).map((dev) => (
 		<ProjectCard
-			href={`/development/${dev.id}`}
+			href={localizePath(locale, `/development/${dev.id}`)}
 			image={dev.image}
 			title={dev.title}
 			label={dev.name}
+			cta={{ ja: '開発詳細を見る', en: 'View development' }}
 		/>
 	))}
 </div>

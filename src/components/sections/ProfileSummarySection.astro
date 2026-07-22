@@ -3,15 +3,17 @@
  * TOP 用プロフィール概要セクション
  */
 import type { Development, JobHistory, Profile, Research } from '@/domain';
+import { localizePath, type Locale } from '@/i18n/routing';
 
 export interface Props {
 	profile: Profile;
 	jobHistory: JobHistory;
 	researchEntries: Research[];
 	developmentEntries: Development[];
+	locale?: Locale;
 }
 
-const { profile, jobHistory, researchEntries, developmentEntries } = Astro.props;
+const { profile, jobHistory, researchEntries, developmentEntries, locale = 'ja' } = Astro.props;
 const currentJobs = jobHistory.entries.filter((job) => !job.period.endDate);
 const currentResearchEntries = researchEntries.filter((research) => !research.period.endDate);
 const currentDevelopmentEntries = developmentEntries.filter((development) => !development.period.endDate);
@@ -19,7 +21,8 @@ const currentDevelopmentEntries = developmentEntries.filter((development) => !de
 const activityItems = [
 	...currentResearchEntries.map((research) => ({
 		type: 'research',
-		href: `/research/${research.id}`,
+		href: localizePath(locale, `/research/${research.id}`),
+		external: false,
 		labelJa: '研究',
 		labelEn: 'Research',
 		title: research.title,
@@ -27,7 +30,7 @@ const activityItems = [
 	})),
 	...currentJobs.map((job) => ({
 		type: 'career',
-		href: job.website || '/about#career',
+		href: job.website || `${localizePath(locale, '/about')}#career`,
 		external: Boolean(job.website),
 		labelJa: '仕事',
 		labelEn: 'Work',
@@ -36,8 +39,9 @@ const activityItems = [
 	})),
 	...currentDevelopmentEntries.map((development) => ({
 		type: 'development',
-		href: `/development/${development.id}`,
-		labelJa: '開発',
+		href: localizePath(locale, `/development/${development.id}`),
+		external: false,
+		labelJa: '開発経験',
 		labelEn: 'Development',
 		title: development.name,
 		description: development.title,
@@ -49,26 +53,22 @@ const activityItems = [
 	<div class="profile-copy">
 		<p class="eyebrow">Profile</p>
 		<h2 id="profile-summary-title" class="profile-title">
-			<span class="lang-ja">情報検索を研究し、プロダクトを作る。</span>
-			<span class="lang-en">An engineer researching information retrieval and building products.</span>
+			<span class="lang-ja">{profile.headline.ja}</span>
+			<span class="lang-en">{profile.headline.en}</span>
 		</h2>
 		<p class="profile-description">
-			<span class="lang-ja">
-				{profile.personalInfo.department.ja}。検索・推薦・LLM活用を軸に、研究・共同研究・業務委託・個人開発へ取り組んでいます。
-			</span>
-			<span class="lang-en">
-				{profile.personalInfo.department.en || profile.personalInfo.department.ja}. I work across research, joint research, contract work, and personal development with interests in search, recommendation, and LLM applications.
-			</span>
+			<span class="lang-ja">{profile.bio.ja}</span>
+			<span class="lang-en">{profile.bio.en}</span>
 		</p>
 		<div class="profile-actions">
-			<a class="primary-link" href="/about">
-				<span class="lang-ja">詳しいプロフィール</span>
-				<span class="lang-en">Full profile</span>
+			<a class="primary-link" href={localizePath(locale, '/research')}>
+				<span class="lang-ja">研究テーマを見る</span>
+				<span class="lang-en">Explore research</span>
 				<span aria-hidden="true">→</span>
 			</a>
-			<a class="secondary-link" href="/research">
-				<span class="lang-ja">研究を見る</span>
-				<span class="lang-en">View research</span>
+			<a class="secondary-link" href={localizePath(locale, '/about')}>
+				<span class="lang-ja">プロフィールを見る</span>
+				<span class="lang-en">View profile</span>
 			</a>
 		</div>
 	</div>
@@ -185,6 +185,7 @@ const activityItems = [
 		gap: var(--space-xs);
 		font-size: 0.9rem;
 		font-weight: 600;
+		min-height: 40px;
 		text-decoration: none;
 		transition: color var(--transition-base), background var(--transition-base), border-color var(--transition-base);
 	}

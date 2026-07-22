@@ -1,0 +1,53 @@
+---
+import ProjectDetailLayout from '@/components/layouts/ProjectDetailLayout.astro';
+import { loadDevelopment, loadDevelopmentById } from '@/application';
+import { alternateLocalePath, isLocale, locales, localizePath } from '@/i18n/routing';
+
+export async function getStaticPaths() {
+	const developments = await loadDevelopment();
+	return locales.flatMap((lang) => developments.map((development) => ({
+		params: { lang, id: development.id },
+	})));
+}
+
+const locale = Astro.params.lang;
+const { id } = Astro.params;
+if (!isLocale(locale)) {
+	return Astro.redirect('/ja/development', 302);
+}
+
+const result = await loadDevelopmentById(id);
+if (!result) {
+	return Astro.redirect(localizePath(locale, '/development'), 302);
+}
+
+const { development, Content } = result;
+const title = {
+	ja: `${development.title.ja} | 開発経験 | 中野暁登`,
+	en: `${development.title.en || development.title.ja} | Development | Akito Nakano`,
+};
+const description = {
+	ja: `中野暁登の開発経験「${development.title.ja}」の詳細です。`,
+	en: `Software development experience by Akito Nakano: "${development.title.en || development.title.ja}".`,
+};
+---
+
+<ProjectDetailLayout
+	locale={locale}
+	alternateHref={alternateLocalePath(locale, Astro.url.pathname)}
+	title={title}
+	description={description}
+	backLink={{
+		href: localizePath(locale, '/development'),
+		labelJa: 'Development に戻る',
+		labelEn: 'Back to Development',
+	}}
+	label={development.name}
+	projectTitle={development.title}
+	image={development.image}
+	period={development.period}
+	repository={development.repository}
+	links={development.links}
+>
+	<Content />
+</ProjectDetailLayout>

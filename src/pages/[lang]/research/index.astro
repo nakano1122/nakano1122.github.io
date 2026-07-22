@@ -1,0 +1,82 @@
+---
+import Layout from '@/components/layouts/Layout.astro';
+import NavigationModal from '@/components/ui/NavigationModal.astro';
+import ProjectCardGrid from '@/components/ui/ProjectCardGrid.astro';
+import { loadResearch } from '@/application';
+import { alternateLocalePath, isLocale, locales, localizePath } from '@/i18n/routing';
+
+export function getStaticPaths() {
+	return locales.map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang;
+if (!isLocale(locale)) {
+	return Astro.redirect('/ja/research', 302);
+}
+
+const researchEntries = await loadResearch();
+---
+
+<Layout
+	locale={locale}
+	alternateHref={alternateLocalePath(locale, Astro.url.pathname)}
+	title={locale === 'en' ? 'Research | Akito Nakano' : '研究 | 中野暁登'}
+	titleJa="研究 | 中野暁登"
+	titleEn="Research | Akito Nakano"
+	description={locale === 'en' ? 'Research themes, joint research, and publications in information retrieval and recommender systems.' : '情報検索・推薦システムに関する研究テーマ、共同研究、論文を紹介します。'}
+	descriptionJa="情報検索・推薦システムに関する研究テーマ、共同研究、論文を紹介します。"
+	descriptionEn="Research themes, joint research, and publications in information retrieval and recommender systems."
+	headerMaxWidth="900px"
+	backLink={{
+		href: localizePath(locale),
+		labelJa: 'TOP に戻る',
+		labelEn: 'Back to TOP',
+	}}
+>
+	<main class="main">
+		<header class="page-header">
+			<h1 class="page-title"><span class="lang-ja">研究</span><span class="lang-en">Research</span></h1>
+			<p class="intro">
+				<span class="lang-ja">情報検索・推薦システムに関する研究に取り組み、企業・博物館との共同研究を進めています。</span>
+				<span class="lang-en">I investigate information retrieval and recommender systems through joint research with companies and museums.</span>
+			</p>
+		</header>
+		<ProjectCardGrid type="research" items={researchEntries} locale={locale} />
+
+		<NavigationModal locale={locale} />
+	</main>
+</Layout>
+
+<style>
+	.main {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 0 var(--space-xl);
+	}
+
+	.page-title {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: var(--space-md);
+	}
+
+	.page-header {
+		margin-bottom: var(--space-2xl);
+	}
+
+	.intro {
+		color: var(--color-text-secondary);
+		line-height: 1.8;
+		letter-spacing: 0.02em;
+	}
+
+	@media (max-width: 768px) {
+		.main {
+			padding: 0 var(--space-lg);
+		}
+
+		.page-title {
+			font-size: 1.75rem;
+		}
+	}
+</style>

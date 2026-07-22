@@ -14,7 +14,7 @@ const { entries } = Astro.props;
 ---
 
 <section class="section" id="awards">
-	<SectionHeader title="Awards" />
+	<SectionHeader title={{ ja: '受賞', en: 'Awards' }} />
 	<div class="award-list">
 		{entries.map(({ award }, index) => (
 			<div

@@ -6,17 +6,20 @@
 import type { Research } from '@/domain';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import ProjectCardGrid from '@/components/ui/ProjectCardGrid.astro';
+import { localizePath, type Locale } from '@/i18n/routing';
 
 export interface Props {
 	entries: Research[];
 	showHeader?: boolean;
 	actionHref?: string;
+	locale?: Locale;
 }
 
-const { entries, showHeader = true, actionHref } = Astro.props;
+const { entries, showHeader = true, actionHref, locale = 'ja' } = Astro.props;
+const localizedActionHref = actionHref?.startsWith('/') ? localizePath(locale, actionHref) : actionHref;
 ---
 
 <section class="section" id="research">
-	{showHeader && <SectionHeader title="Research" actionHref={actionHref} />}
-	<ProjectCardGrid type="research" items={entries} />
+	{showHeader && <SectionHeader title={{ ja: '研究', en: 'Research' }} actionHref={localizedActionHref} />}
+	<ProjectCardGrid type="research" items={entries} locale={locale} />
 </section>

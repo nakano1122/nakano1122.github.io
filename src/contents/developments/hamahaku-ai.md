@@ -4,15 +4,15 @@ startDate: 2024-10-01
 endDate: 2025-03-01
 name_ja: "産官学連携プロジェクト 開発担当"
 name_en: "Industry-Academia-Government Collaborative Project"
-title_ja: "図録に興味を持ってもらうための博物館チャットボット開発"
-title_en: "AI chatbot for promoting museum exhibition catalogs"
+title_ja: "博物館図録への関心を高める AI チャットボット"
+title_en: "AI chatbot that promotes interest in museum exhibition catalogs"
 image_ja: "/images/development/hamahaku-ai_ja.webp"
 image_en: "/images/development/hamahaku-ai_en.png"
 links:
   - "https://www.inf.shizuoka.ac.jp/news/4506/"
 ---
 
-浜松市博物館、株式会社NXワンビシアーカイブズ、静岡大学情報学部の産官学連携プロジェクトの開発を担当しました。
+産官学連携でのソフトウェア開発の実践として、浜松市博物館、株式会社NXワンビシアーカイブズ、静岡大学情報学部のプロジェクトの開発を担当しました。
 博物館が発行する図録に対して訪問者に興味を持ってもらうためのAIチャットアプリを作成しました。
 
 チャットアプリ上では、図録を持った子供のキャラクターに質問することができ、図録の内容を参照しているため、最新で詳しい内容を知ることができます。
@@ -24,7 +24,7 @@ links:
 
 <!-- lang:en -->
 
-Led development for an industry-academia-government collaborative project between Hamamatsu City Museum, NX Wanbishi Archives, and Shizuoka University's Faculty of Informatics.
+As a software development project in industry-academia-government collaboration, I led development for a project between Hamamatsu City Museum, NX Wanbishi Archives, and Shizuoka University's Faculty of Informatics.
 Built an AI chat application to engage museum visitors with exhibition catalogs.
 
 The chat app features a child character holding a catalog that visitors can ask questions to, referencing the actual catalog content for accurate and detailed answers.

@@ -5,9 +5,11 @@
 
 import type { BilingualText, Email, AtCoderProfile } from '@/types';
 
+export type ProfileText = BilingualText & { en: string };
+
 export interface PersonalInfo {
-  name: BilingualText;
-  department: BilingualText;
+  name: ProfileText;
+  department: ProfileText;
 }
 
 export interface Contact {
@@ -21,14 +23,16 @@ export interface SocialLinks {
 }
 
 export interface SEO {
-  title?: string;
-  description?: string;
-  keywords?: string;
+  title: ProfileText;
+  description: ProfileText;
+  keywords: ProfileText;
 }
 
 export interface Profile {
   avatar?: string;
   personalInfo: PersonalInfo;
+  headline: ProfileText;
+  bio: ProfileText;
   contact: Contact;
   socialLinks: SocialLinks;
   seo: SEO;

@@ -39,6 +39,8 @@ Profile（集約ルート）
 ├── PersonalInfo（値オブジェクト）
 │   ├── name: BilingualText       # 氏名
 │   └── department: BilingualText # 所属
+├── headline: BilingualText        # プロフィール用キャッチコピー
+├── bio: BilingualText             # プロフィール用自己PR
 ├── Contact（値オブジェクト）
 │   └── email: Email              # メールアドレス
 ├── SocialLinks（値オブジェクト）

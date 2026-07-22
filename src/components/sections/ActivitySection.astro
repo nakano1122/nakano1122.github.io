@@ -42,7 +42,7 @@ const platformIcons: Record<BlogArticle['platform'], string> = {
 ---
 
 <section class="section" id="activity">
-  <SectionHeader title="Activity" actionHref={actionHref} />
+  <SectionHeader title={{ ja: '活動', en: 'Activity' }} actionHref={actionHref} />
   <div class="activity-list">
     {activities.map((activity) => {
       if (activity.type === 'blog') {
