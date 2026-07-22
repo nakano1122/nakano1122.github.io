@@ -1,0 +1,6 @@
+interface:
+  display_name: "ポートフォリオデザイン"
+  short_description: "既存のデザイン原則を守る UI 設計と実装を支援する"
+  default_prompt: "$portfolio-design を使い、既存のポートフォリオデザインに沿って UI を改善して。"
+policy:
+  allow_implicit_invocation: true

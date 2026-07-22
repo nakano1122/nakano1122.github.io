@@ -1,0 +1,6 @@
+interface:
+  display_name: "ポートフォリオコンテンツ"
+  short_description: "実績コンテンツをスキーマに沿って安全に更新する手順を提供する"
+  default_prompt: "$portfolio-content を使い、ポートフォリオの実績コンテンツを追加または更新して。"
+policy:
+  allow_implicit_invocation: true

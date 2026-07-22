@@ -1,0 +1,6 @@
+interface:
+  display_name: "ポートフォリオ統括"
+  short_description: "開発依頼を分類し、競合を避けて専門担当へ委譲する"
+  default_prompt: "$portfolio-orchestration を使い、このポートフォリオサイトの開発依頼を分解して進めて。"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Astro ポートフォリオ"
+  short_description: "この Astro 5 サイトの構成に沿った安全な実装を支援する"
+  default_prompt: "$astro-portfolio を使い、この Astro ポートフォリオサイトに機能を追加して。"
+policy:
+  allow_implicit_invocation: true

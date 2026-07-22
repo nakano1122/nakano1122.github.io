@@ -1,0 +1,6 @@
+interface:
+  display_name: "ポートフォリオ SEO"
+  short_description: "SEO・共有表示・アクセシビリティを監査して改善する"
+  default_prompt: "$portfolio-seo を使い、このポートフォリオサイトの SEO とアクセシビリティを監査して。"
+policy:
+  allow_implicit_invocation: true
